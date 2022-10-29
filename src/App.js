@@ -7,9 +7,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <div class="btn-group">
-          <button>Customer</button>
-          <button>Server</button>
-          <button>Manager</button>
+          <button class="role-button">Customer</button>
+          <button class="role-button">Server</button>
+          <button class="role-button">Manager</button>
         </div>
       </header>
     </div>

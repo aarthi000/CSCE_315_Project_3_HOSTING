@@ -37,17 +37,21 @@
   }
 }
 
+.btn-group {
+  padding-top: 50px;
+}
+
 .btn-group button {
-  background-color: #f5bf1a; /* Green background */
-  border: 1px solid #f5bf1a; /* Green border */
-  color: white; /* White text */
-  padding: 20px 40px; /* Some padding */
-  cursor: pointer; /* Pointer/hand icon */
-  float: left; /* Float the buttons side by side */
+  background-color: #f5bf1a;
+  border: 30px solid #5A0625; 
+  color: white; 
+  padding: 20px 80px; 
+  cursor: pointer; 
+  float: left; 
 }
 
 .btn-group button:not(:last-child) {
-  border-right: none; /* Prevent double borders */
+  border-right: none;
 }
 
 /* Clear floats (clearfix hack) */
@@ -57,7 +61,13 @@
   display: table;
 }
 
-/* Add a background color on hover */
 .btn-group button:hover {
-  background-color: #be920c;
+  background-color: #d49f00;
+}
+
+.role-button {
+  font-weight : bold ;
+  font-size: 18px;
+  color: white;
+  text-shadow: 2px 2px #5A0625; 
 }
