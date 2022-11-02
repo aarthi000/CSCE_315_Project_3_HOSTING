@@ -1,0 +1,23 @@
+.Customer {
+    text-align: center;
+}
+
+.Customer-header {
+    background-color: #5A0625;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.list-items {
+    align-items: left;
+    justify-content: left;
+}
+
+
+
+

@@ -1,18 +1,23 @@
-import logo from './images/revs.png';
+import React from "react";
 import './App.css';
+import { BrowserRouter as Routers, Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import Customer from "./customerWindowGUI"
+// import ManagerWindow from "./ManagerWindowGUI"
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <div class="btn-group">
-          <button class="role-button">Customer</button>
-          <button class="role-button">Server</button>
-          <button class="role-button">Manager</button>
-        </div>
-      </header>
-    </div>
+    <div className="main-app">
+      <Routers>
+		<Routes>
+			<Route exact path="/" element={<Home/>} />
+			<Route exact path="/customer" element={<Customer/>} />
+			{/* <Route exact path="/server" element={<Server/>} /> */}
+			{/* <Route exact path="/manager" element={<ManagerWindow/>} /> */}
+		</Routes>
+      </Routers>
+    </div>  
   );
 }
 
