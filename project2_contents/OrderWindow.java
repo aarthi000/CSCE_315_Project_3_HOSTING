@@ -89,6 +89,20 @@ public class OrderWindow {
     }
 
     /**
+     * [changeMinimumAmount changes the minimum amount in the inventory for a specific ingredient]
+     * @param  ingredient                    [An ingredient that is passed as a string as we need to know what ingredient to restock]
+     * @param  amountRestocked               [A number that is passed as a double that represents the specific amount of 'ingredient'
+     *                                        to be restocked]
+     * @throws SQLException    [throws a]
+     */
+    public void changeMinimumAmount(String ingredient, Double minimumVal) throws SQLException {
+
+        String minValueQuery = "update inventory set minimumamount=" + minimumVal
+                + " where ingredient='" + ingredient + "';";
+        ResultSet result = dbConnection.oneLinerQuery(minValueQuery); 
+    }
+
+    /**
      * [loadMenuItemsIntoHashMap: loads menu items into MenuItemsForGUI ArrayList to
      * generate menuitems. Run general query and get all rows from menu items. If this itemType already exists in the HashMap,
      * then just add to that ArrayList. Check if there is a hashmap entry for this type of item If the type doesn't exist then create a HashMap]

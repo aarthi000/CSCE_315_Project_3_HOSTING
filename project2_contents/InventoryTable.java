@@ -124,6 +124,7 @@ public class InventoryTable extends JFrame {
         JButton excessReport = new JButton("Excess Report");
         JButton restockReport = new JButton("Restock Report");
         JButton addReport = new JButton("Add-On Report");
+        JButton minimumValueButton = new JButton("Edit Minimum Value");
 
         panel.add(updateInven);
         panel.add(addNewIngredient);
@@ -132,6 +133,7 @@ public class InventoryTable extends JFrame {
         panel.add(excessReport);
         panel.add(restockReport);
         panel.add(addReport);
+        panel.add(minimumValueButton);
 
         updateInven.addActionListener(new OrderWindowActionListener(o, cBox));
         addNewIngredient.addActionListener(new OrderWindowActionListener(o, cBox));
@@ -140,6 +142,7 @@ public class InventoryTable extends JFrame {
         excessReport.addActionListener(new OrderWindowActionListener(o));
         restockReport.addActionListener(new OrderWindowActionListener(o));
         addReport.addActionListener(new OrderWindowActionListener(o));
+        minimumValueButton.addActionListener(new OrderWindowActionListener(o, cBox));
 
 
     }

@@ -222,6 +222,21 @@ public class OrderWindowActionListener implements ActionListener {
         // add item feature
         if (((JButton) e.getSource()).getText().equals("Add New Menu Item")) {
         }
+        
+        if (((JButton) e.getSource()).getText().equals("Edit Minimum Value")) {
+            String minimumValueStr = JOptionPane.showInputDialog(f, "Enter the Minimum Value: ");// Note: input can be
+            if (minimumValueStr == null) {
+                return;
+            }
+            Double num = Double.parseDouble(minimumValueStr);
+            String ingredient = j.getSelectedItem().toString();
+            try {
+                o.changeMinimumAmount(ingredient, num);
+            }
+            catch(Exception ex) {
+                ex.printStackTrace();
+            }
+        }
 
         // order summary
         if (((JButton) e.getSource()).getText().equals("Order Summary")) {
