@@ -287,16 +287,63 @@ public class OrderWindowActionListener implements ActionListener {
         }
 
         if (((JButton) e.getSource()).getText().equals("Add New Ingredient")) {
-            String ingredient = JOptionPane.showInputDialog(f,
-                    "Enter the name of the new ingredient. Must be lowercase with no spaces and no captials.");
-            try {
-                o.createIngredient(ingredient);
+            JTextField ingredientName = new JTextField();
+            JTextField amountRem = new JTextField();
+            JTextField amountUsed = new JTextField();
+            JTextField amountMinimum = new JTextField();
 
-            } catch (Exception error) {
-                error.printStackTrace();
-                System.err.println(error.getClass().getName() + ": " + error.getMessage());
-                System.exit(0);
-            }
+            Object[] message = {
+                "Ingredient Name:", ingredientName,
+                "Amount Remaining:", amountRem,
+                "Amount Used:", amountUsed,
+                "Amount Minimum", amountMinimum
+            };
+
+            boolean cancelDialog = false;
+            String ingredientNameStr = "";
+            String amountRemStr      = "";
+            String amountUsedStr     = ""; 
+            String amountMinStr      = ""; 
+
+            while (!cancelDialog) {
+                int ret = JOptionPane.showConfirmDialog(null,message,"Add New Ingredient", JOptionPane.OK_CANCEL_OPTION);
+                if (ret == JOptionPane.OK_OPTION) {
+                    ingredientNameStr = ingredientName.getText();
+                    amountRemStr      = amountRem.getText();
+                    amountUsedStr     = amountUsed.getText();
+                    amountMinStr      = amountMinimum.getText();
+
+                    if(ingredientNameStr.equals("")) {
+                           JOptionPane.showMessageDialog(null, "Invalid Value", "Invalid Ingredient Name", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else if(amountRemStr.equals("")) {
+                           JOptionPane.showMessageDialog(null, "Invalid Value", "Invalid Amount Remaining Value", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else if(amountUsedStr.equals("")) {
+                           JOptionPane.showMessageDialog(null, "Invalid Value", "Invalid Amount Used Value", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else if(amountMinStr.equals("")) {
+                           JOptionPane.showMessageDialog(null, "Invalid Value", "Invalid Amount Minimum Value", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else
+                           cancelDialog = true;
+              }
+              else
+                  return;
+          }
+
+          try {
+              Double amountRemaining = Double.parseDouble(amountRemStr);
+              Double amountUsedVal      = Double.parseDouble(amountUsedStr);
+              Double minimumAmount = Double.parseDouble(amountMinStr);
+
+              o.createIngredient(ingredientNameStr,minimumAmount, amountRemaining, amountUsedVal);
+          } 
+          catch (Exception error) {
+                  error.printStackTrace();
+                  System.err.println(error.getClass().getName() + ": " + error.getMessage());
+                  System.exit(0);
+                }
         }
 
         if (((JButton) e.getSource()).getText().equals("Delete Ingredient")) {

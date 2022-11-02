@@ -51,7 +51,7 @@ public class InventoryTable extends JFrame {
         f.getContentPane().setBackground(new Color(90, 6, 25));
         // DefaultTableModel model = new DefaultTableModel();
         DefaultTableModel model = new DefaultTableModel(
-                new Object[] { "ingredients", "quanitity remaining", "amount used" }, 0);
+                new Object[] { "ingredients", "quanitity remaining", "amount used", "minimum amount" }, 0);
         JScrollPane scrollPane = new JScrollPane();
         ArrayList<String> inven = o.AddOnsForGUI;
 
@@ -66,7 +66,8 @@ public class InventoryTable extends JFrame {
                 String ingredient = rs.getString("ingredient");
                 Double ingredientremaining = rs.getDouble("ingredientremaining");
                 Double amountused = rs.getDouble("amountused");
-                ingred.add(new ingredient(ingredient, ingredientremaining, amountused));
+                Double minimumamount = rs.getDouble("minimumamount");
+                ingred.add(new ingredient(ingredient, ingredientremaining, amountused,minimumamount));
 
             }
         } catch (Exception e) {
@@ -82,17 +83,19 @@ public class InventoryTable extends JFrame {
         int j = 0;
         for (int i = 0; i < inven.size(); i++) {
             if (j == 0) {
-                Object[] rowData = new Object[3];
+                Object[] rowData = new Object[4];
                 rowData[0] = "Ingredient";
                 rowData[1] = "Ingredients Remaining";
                 rowData[2] = "Amount Used";
+                rowData[3] = "Minimum Amount";
                 model.addRow(rowData);
             }
             else {
-                Object[] rowData = new Object[3];
+                Object[] rowData = new Object[4];
                 rowData[0] = ingred.get(i).ingredient;
                 rowData[1] = ingred.get(i).ingredientremaining;
                 rowData[2] = ingred.get(i).amountused;
+                rowData[3] = ingred.get(i).minimumamount;
                 model.addRow(rowData);
             }  
             j++;  
