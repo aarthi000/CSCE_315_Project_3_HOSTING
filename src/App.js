@@ -2,7 +2,7 @@ import React from "react";
 import './App.css';
 import { BrowserRouter as Routers, Route, Routes } from "react-router-dom";
 import Home from "./Home";
-import Customer from "./customerWindowGUI"
+import Customer from "./components_customer/customerWindowGUI"
 // import ManagerWindow from "./ManagerWindowGUI"
 
 
