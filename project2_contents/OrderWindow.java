@@ -89,6 +89,20 @@ public class OrderWindow {
     }
 
     /**
+     * [changeMinimumAmount changes the minimum amount in the inventory for a specific ingredient]
+     * @param  ingredient                    [An ingredient that is passed as a string as we need to know what ingredient to restock]
+     * @param  amountRestocked               [A number that is passed as a double that represents the specific amount of 'ingredient'
+     *                                        to be restocked]
+     * @throws SQLException    [throws a]
+     */
+    public void changeMinimumAmount(String ingredient, Double minimumVal) throws SQLException {
+
+        String minValueQuery = "update inventory set minimumamount=" + minimumVal
+                + " where ingredient='" + ingredient + "';";
+        ResultSet result = dbConnection.oneLinerQuery(minValueQuery); 
+    }
+
+    /**
      * [loadMenuItemsIntoHashMap: loads menu items into MenuItemsForGUI ArrayList to
      * generate menuitems. Run general query and get all rows from menu items. If this itemType already exists in the HashMap,
      * then just add to that ArrayList. Check if there is a hashmap entry for this type of item If the type doesn't exist then create a HashMap]
@@ -147,22 +161,38 @@ public class OrderWindow {
             String ingredient = rs.getString("ingredient");
             Double ingredientremaining = rs.getDouble("ingredientremaining");
             Double amountused = rs.getDouble("amountused");
+            Double minimumamount = rs.getDouble("minimumamount");
 
             AddOnsForGUI.add(ingredient);
-            Ingredients.add(new ingredient(ingredient, ingredientremaining, amountused));
+            Ingredients.add(new ingredient(ingredient, ingredientremaining, amountused,minimumamount));
 
         }
 
 
     }
 
-    /**
+    public void createIngredient(String ingredient) throws SQLException {
+        createIngredient(ingredient, 5.0, 30.0, 0.0);
+    }
+    public void createIngredient(String ingredient, Double minimumamount) throws SQLException {
+        createIngredient(ingredient, minimumamount, 30.0, 0.0);
+    }
+    public void createIngredient(String ingredient, Double minimumamount, Double ingredientremaining) throws SQLException {
+        createIngredient(ingredient, minimumamount, ingredientremaining, 0.0);
+    }
+
+    /*
      * [createIngredient creates and ingredient and inserts into the inventory table in DB]
      * @param  ingredient                 [string 'ingredient' passed to specify the new ingredient to create]
      */
-    public void createIngredient(String ingredient) throws SQLException {
-        String inventoryQuery = "INSERT into inventory (ingredient, ingredientremaining, amountused) VALUES ('"
-                + ingredient + "', 30.0, 0.0);";
+    public void createIngredient(String ingredient,Double minimumAmount,Double ingredientRemaining, Double amountUsed) throws SQLException {
+        String inventoryQuery = "INSERT into inventory (" + 
+                         "ingredient, ingredientremaining, amountused,minimumamount) VALUES ('"
+                         + ingredient          + "'" + ","  
+                         + ingredientRemaining + "," 
+                         + amountUsed          + "," 
+                         + minimumAmount       + ");";
+                        //30.0, 0.0,5.0);";
 
         // add to ingredient_map DB
         String mapQuery = "ALTER TABLE ingredient_map ADD COLUMN " + ingredient + " DOUBLE PRECISION;";
@@ -752,43 +782,28 @@ public class OrderWindow {
      * [getRestockReportData gets the ingredients that needs to be restocked at the time the restock report buttom is clicked]
      * @return [returns an ArrayList of Strings that holds the ingredients that need to be restocked]
      */
+
     public ArrayList<String> getRestockReportData() throws SQLException {
-         int minAmount = 30;
-         ArrayList<String> itemsToRestock = new ArrayList<String>();
         HashMap<String, Double> itemsToRestockMap = new HashMap<String, Double>();
+        ArrayList<String> itemsToRestock = new ArrayList<String>();
+        String menuTableQuery = "select * from inventory;";
 
-         // for each menu item
-         for (MenuItem item : MenuItemsForGUI) {
-            // Go through the ingredient map, if any of the item is less than the minimum
-            // Then add that menu item name to list and go to next menu item
-            for (Map.Entry<String, Double> set : item.ingredients.entrySet()) {
-                if (set.getValue() != 0) {
+        ResultSet rs = dbConnection.oneLinerQuery(menuTableQuery);
 
-                    // If the ingredient already exists in the HashMap, then no need to add again
-                    // Just move to next ingredient
-                    Double doubleVal = itemsToRestockMap.get(set.getKey());
-                    if (doubleVal != null)
-                        continue;
+        while (rs.next()) {
+            String ingredient    = rs.getString("ingredient");
+            Double ingredientremaining = rs.getDouble("ingredientremaining");
+            Double minimumamount = rs.getDouble("minimumamount");
 
-                    Double value = set.getValue() * minAmount;
-
-                    // If the ingredient is enough in stock (return value is true)
-                    // Then no need to do anything go to next ingredient
-                    // If not enough, add to HashMap and go to next ingredient
-
-                    if (!ingredientInStock(set.getKey(), value)) {
-                        // itemsToRestock.add(item.itemName);
-                        itemsToRestockMap.put(set.getKey(), value);
-                    }
-                }
-            }
+            if(ingredientremaining < minimumamount)
+               itemsToRestockMap.put(ingredient,minimumamount);
         }
         for (Map.Entry<String, Double> set : itemsToRestockMap.entrySet()) {
             itemsToRestock.add(set.getKey());
-         }
+        }
 
-         return itemsToRestock;
-     }
+        return itemsToRestock;
+    }
 
     /**
      * [getAddOnsReport gets the add ons report for the customized order between 2 specific dates given the the dates]

@@ -18,9 +18,11 @@ export default function DeliveryInput() {
                             </label>
                         </form>
                     </div>
-                    <div className='submit-class'>
-                        <button className='save-address-button'>Save Address</button>
-                    </div>
+                    <div>
+                        <div className='submit-class'>
+                            <button className='save-address-button'>Save Address</button>
+                        </div>
+                    </div>    
                 </div>    
         </header>
     );
