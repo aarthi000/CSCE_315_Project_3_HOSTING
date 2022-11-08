@@ -7,6 +7,10 @@ class ManagerWindow extends Component {
     };
 
     render() { 
+        const handleClick = (event, nameStr) => {
+              /* window.open("http://localhost:3300/inventory"); */
+              window.open("http://localhost:3300/restock");
+        }
         return (
             <section className='ManagerWindow'>
                 <div className='left-half'>
@@ -16,7 +20,7 @@ class ManagerWindow extends Component {
                     <div class="report-btn-group">
                         <button class="role-button">Sales</button>
                         <button class="role-button">Excess</button>
-                        <button class="role-button">Restock</button>
+                        <button onClick={event => handleClick(event,'restock')}class="role-button">Restock</button>
                         <button class="role-button">Add-ons</button>
                     </div>
 
