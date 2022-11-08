@@ -17,18 +17,24 @@ body {
 }
 
 .report-btn-group button {
-    background-color: #EEA73C;
+    /* background-color: #EEA73C;
     border: 10px solid #5A0625; 
     color: black; 
     padding: 10px 30px; 
     cursor: pointer; 
     float: left; 
     border-radius: 16px;
-    text-shadow: none;
+    text-shadow: none; */
+    background-color: #f5bf1a;
+    border: 20px solid #5A0625; 
+    color: white; 
+    padding: 10px 30px; 
+    cursor: pointer; 
+    float: center; 
 }
 
 /* Clear floats (clearfix hack) */
-.report-btn-group:after {
+/* .report-btn-group:after {
     content: "";
     clear: both;
     display: table;
@@ -36,7 +42,22 @@ body {
 
 .report-btn-group button:hover {
     background-color: #d49f00;
+} */
+
+.report-btn-group button:not(:last-child) {
+    border-right: none;
+    }
+    
+.report-btn-group button:hover {
+background-color: #d49f00;
 }
+
+.report-btn-group button {
+    font-weight : bold ;
+    font-size: 14px;
+    color: white;
+    text-shadow: 2px 2px #5A0625; 
+    }
 
 h1 {
     color: white;

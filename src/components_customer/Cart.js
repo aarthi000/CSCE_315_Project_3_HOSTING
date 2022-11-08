@@ -3,7 +3,7 @@ import './customerWindowGUI.css'
 
 function Cart(props) {
     return (
-        <aside className="block width-1">
+        <aside className="block1 width-1">
             <h2 className="sub-headers">Order Summary</h2>
             <button className='customize_button'>Place Order</button>
         </aside>
