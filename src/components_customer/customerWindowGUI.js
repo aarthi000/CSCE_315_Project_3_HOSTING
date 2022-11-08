@@ -8,6 +8,7 @@ import React from "react";
 import DeliveryInput from './deliveryAddress';
 
 
+
 function Customer() {
   const {items} = data;
   return (
