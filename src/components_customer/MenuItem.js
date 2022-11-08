@@ -2,15 +2,16 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import getMenuitems from '../appdb';
 
 export default function MenuItems(props) {
     const {item} = props;
     return (
         <div className="item-block">
-            <div className = "item">
+            <div className="item">
                 <Row>
-                    <h3>{item.name}</h3>
-                    <h3 className="price">${item.price}</h3>
+                    <h3>{getMenuitems.itemname}</h3>
+                    <h3 className="price">${getMenuitems.itemprice}</h3>
                 </Row>
                 
                 <button className='customize_button'>Customize</button>
