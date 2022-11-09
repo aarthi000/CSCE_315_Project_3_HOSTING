@@ -9,9 +9,26 @@ app.listen(3300, () => {
      console.log("Server is now listening at port 3300");
    });
 
-client.connect();
 
 app.get('/restock', (req,res)=> {
+      client.connect();
+      client.query(`Select * from inventory`, (err,result) => {
+          if(!err) {
+              const data = result.rows;
+              var  resStr = '';
+              data.forEach(row =>  { if (row.ingredientremaining < row.minimumamount) {
+                                      resStr += `${row.ingredient} ${row.ingredientremaining}
+                                              ${row.minimumamount}` + '<br>';
+                                   }
+                                });
+              res.send(resStr);
+          }
+      });
+      client.end();
+});
+
+app.get('/salesreport', (req,res)=> {
+      client.connect();
       client.query(`Select * from inventory`, (err,result) => {
           if(!err) {
               const data = result.rows;
@@ -28,6 +45,7 @@ app.get('/restock', (req,res)=> {
 });
 
 app.get('/inventory', (req,res)=> {
+      client.connect();
       client.query(`Select * from inventory`, (err,result) => {
           if(!err) {
               const data = result.rows;
@@ -39,3 +57,17 @@ app.get('/inventory', (req,res)=> {
       });
       client.end();
 });
+function getMenuitems() {
+    client.connect();
+         client.query(`Select * from menu_items`, (err,result) => {
+          if(!err) {
+            const data = result.rows;
+            console.log(data);
+            return data;
+          }
+      });
+      client.end;
+    
+ }
+
+module.exports  = getMenuitems;

@@ -7,9 +7,24 @@ class ManagerWindow extends Component {
     };
 
     render() { 
-        const handleClick = (event, nameStr) => {
-              /* window.open("http://localhost:3300/inventory"); */
+        const handleRestock = (event, nameStr) => {
               window.open("http://localhost:3300/restock");
+        }
+        const handleSales = (event, nameStr) => {
+              /* window.open("http://localhost:3300/inventory"); */
+              let timeinput = prompt("Enter Start Time and End Time (DD/MM/YYYY DD/MM/YYYY)");
+              if (timeinput != null) {
+                  let dates = timeinput.split(" ");
+                  let starttime = dates[0];
+                  let endtime = dates[1];
+
+                  window.open("http://localhost:3300/salesreport");
+                  /*
+                  window.open("http://localhost:3300/sales/?starttime='"+starttime+
+                                     "'&endtime='"+endtime+"'");
+                  */
+              }
+              
         }
         return (
             <section className='ManagerWindow'>
@@ -18,9 +33,9 @@ class ManagerWindow extends Component {
                 </div>
                 <div className='right-half'>
                     <div class="report-btn-group">
-                        <button class="role-button">Sales</button>
+                        <button onClick={event => handleSales(event,'sales')}class="role-button">Sales</button>
                         <button class="role-button">Excess</button>
-                        <button onClick={event => handleClick(event,'restock')}class="role-button">Restock</button>
+                        <button onClick={event => handleRestock(event,'restock')}class="role-button">Restock</button>
                         <button class="role-button">Add-ons</button>
                     </div>
 
