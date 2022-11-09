@@ -24,7 +24,7 @@ app.get('/restock', (req,res)=> {
               res.send(resStr);
           }
       });
-      client.end();
+      client.end;
 });
 
 app.get('/inventory', (req,res)=> {
@@ -37,5 +37,5 @@ app.get('/inventory', (req,res)=> {
               res.send(resStr);
           }
       });
-      client.end();
+      client.end;
 });
