@@ -10,7 +10,7 @@ function Menu(props) {
             <h2 className="sub-headers1">Menu Items</h2>
             <div className="row"></div>
             {items.map((item) => (
-                <MenuItems key={item.id} item={item}></MenuItems>
+                <MenuItems key={item.itemtype} item={item}></MenuItems>
             ))}
         </main>
     )
