@@ -11,7 +11,7 @@ function Cart(props) {
                 </div>
             </div>  
             <div className="delivery">  
-                <h2 className="delivery_heading">Delivery Address</h2>
+                <h2 className="delivery_heading">Enter Delivery Address</h2>
                 <form className ="form">
                     <label className="text-boxes">
                         <input type="text" placeholder="12345 Main St." />
