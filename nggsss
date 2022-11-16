@@ -1,0 +1,221 @@
+[33mcommit 3c06d1299b711f42090454173ad0885efa66032b[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: mj591806 <mj591806@tamu.edu>
+Date:   Wed Nov 16 14:07:40 2022 -0600
+
+    Revert "Added table component and created temporary data"
+    
+    This reverts commit 821fb49da3f76a1945bc93c2372cef0fb535ad44.
+
+[33mcommit 821fb49da3f76a1945bc93c2372cef0fb535ad44[m
+Author: mj591806 <mj591806@tamu.edu>
+Date:   Wed Nov 16 13:53:15 2022 -0600
+
+    Added table component and created temporary data
+
+[33mcommit 333e1fb8ac8aa675da23537e139a84165cf167a5[m
+Author: Varun Somarouthu <varuns@connect-172-31-0-121.vpn.tamu.edu>
+Date:   Sun Nov 13 18:24:04 2022 -0600
+
+    Fixed client-server data exchange and Restock, Sales
+
+[33mcommit 78fa79f2cf88374fca776878cb1db9b5ec116c8e[m
+Author: Aarthi <aarthis10@tamu.edu>
+Date:   Fri Nov 11 11:41:27 2022 -0600
+
+    Added backend folder, moved appdb.js and connection.js into it
+
+[33mcommit aa04ed4852909dfa4923fca0ed113c9c3a9ef883[m
+Author: Varun Somarouthu <varuns@connect-172-31-54-124.vpn.tamu.edu>
+Date:   Wed Nov 9 20:41:43 2022 -0600
+
+    Added Sales window hardcoded dates
+
+[33mcommit 9d385fb3856165a40ae9b87a6a542ebcbffe55cd[m
+Author: Varun Somarouthu <varuns@client-10-228-201-241.tamulink.tamu.edu>
+Date:   Wed Nov 9 15:49:45 2022 -0600
+
+    Changed some code in MenuItem.js
+
+[33mcommit 50d336cfe4fc76714f291ebf3718094633e60b8c[m
+Author: Varun Somarouthu <varuns@client-10-228-201-241.tamulink.tamu.edu>
+Date:   Wed Nov 9 14:44:32 2022 -0600
+
+    Re added connection.js for now
+
+[33mcommit 28043d6b057c511813aaa710567f41e224d176c3[m
+Merge: 26eb04a0 dc7145ce
+Author: mj591806 <mj591806@tamu.edu>
+Date:   Wed Nov 9 13:44:13 2022 -0600
+
+    Modified ManagerWindow
+
+[33mcommit 26eb04a0d92d26fe58533351e856fc586388c9c2[m
+Author: mj591806 <mj591806@tamu.edu>
+Date:   Wed Nov 9 13:42:23 2022 -0600
+
+    Modified ManagerWindow
+
+[33mcommit dc7145ce15f8161c8e76e2c587482f4b0ea4ad08[m[33m ([m[1;33mtag: Sprint1[m[33m)[m
+Merge: 35b90876 f79cf5b7
+Author: Aarthi <aarthis10@tamu.edu>
+Date:   Tue Nov 8 23:39:14 2022 -0600
+
+    Merge branch 'main' of github.tamu.edu:varuns/CSCE_315_Project3
+
+[33mcommit 35b9087674b384fab433e8f6d834eead5e420fd1[m
+Author: Aarthi <aarthis10@tamu.edu>
+Date:   Tue Nov 8 23:38:59 2022 -0600
+
+    Removed credentials
+
+[33mcommit f79cf5b7110bba0b79204bf358dc5ffcc5ebb201[m
+Author: Aarthis10 <aarthis10@tamu.edu>
+Date:   Tue Nov 8 23:38:13 2022 -0600
+
+    Sprint 1 Scrum 3 Minutes
+
+[33mcommit f5b25966ce441672e8ac022482c3646251fe73f1[m
+Author: Aarthis10 <aarthis10@tamu.edu>
+Date:   Tue Nov 8 23:37:15 2022 -0600
+
+    Sprint 1 Scrum 2 Minutes
+
+[33mcommit 166c351ddc420e5aab4fd6ffc905010c92da0327[m
+Author: Aarthis10 <aarthis10@tamu.edu>
+Date:   Tue Nov 8 23:36:57 2022 -0600
+
+    Sprint 1 Scrum 1 Minutes
+
+[33mcommit cb1b9b6b98243d0868cf468f0bc92b1e4db2f952[m
+Author: Varun Somarouthu <varuns@client-10-229-209-203.tamulink.tamu.edu>
+Date:   Tue Nov 8 23:07:09 2022 -0600
+
+    Revert "delivery_address"
+    
+    This reverts commit ddd76c8ecfa43e4077dfe1352cdd83d64de01629.
+
+[33mcommit 962469edbdb6ed3e89dddf802c7a47cbc47e641c[m
+Author: Varun Somarouthu <varuns@client-10-229-209-203.tamulink.tamu.edu>
+Date:   Tue Nov 8 23:07:06 2022 -0600
+
+    Revert "change_delivery_address_heading"
+    
+    This reverts commit fc058b7cb382d1286b96f8a2da5581719369c5b0.
+
+[33mcommit beef77977e4e3f1f6526687bebf7e392f5b123ab[m
+Author: Varun Somarouthu <varuns@client-10-229-209-203.tamulink.tamu.edu>
+Date:   Tue Nov 8 23:05:59 2022 -0600
+
+    Revert "updated appdb with getMenuItem"
+    
+    This reverts commit 0201f02773d21492e81fcda99d6811387f80ea00.
+
+[33mcommit 0201f02773d21492e81fcda99d6811387f80ea00[m
+Author: Varun Somarouthu <varuns@client-10-229-209-203.tamulink.tamu.edu>
+Date:   Tue Nov 8 21:57:18 2022 -0600
+
+    updated appdb with getMenuItem
+
+[33mcommit fc058b7cb382d1286b96f8a2da5581719369c5b0[m
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Tue Nov 8 20:10:53 2022 -0600
+
+    change_delivery_address_heading
+
+[33mcommit ddd76c8ecfa43e4077dfe1352cdd83d64de01629[m
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Tue Nov 8 19:30:20 2022 -0600
+
+    delivery_address
+
+[33mcommit bbe74dbf1172b9d9c016638c9e534d859c3ef6da[m
+Author: Varun Somarouthu <varuns@Varuns-MacBook-Pro.local>
+Date:   Tue Nov 8 14:40:33 2022 -0600
+
+    add Restock Report
+
+[33mcommit 1e3706b16191d095bb35d21421663d88d54053c9[m
+Merge: b0b14f2b 2e4aa166
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Tue Nov 8 12:50:51 2022 -0600
+
+    menu_reformat
+
+[33mcommit b0b14f2bcabf8a2411025888b4c724fff858d396[m
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Tue Nov 8 10:20:12 2022 -0600
+
+    reformat_menu_items
+
+[33mcommit 2e4aa1665c02d3c39011f06f6693f4af4c401758[m
+Author: Aarthi <aarthis10@tamu.edu>
+Date:   Tue Nov 8 09:32:04 2022 -0600
+
+    getMenuItems function for UI done
+
+[33mcommit 4c2163749b560d8eb8c70b147e0fbdf3205e4a9a[m
+Merge: 3928277d 58e71b31
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Mon Nov 7 13:39:00 2022 -0600
+
+    customer_window
+
+[33mcommit 3928277d7202f54af83185baa785ae939a397fbb[m
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Mon Nov 7 11:07:25 2022 -0600
+
+    customer_window
+
+[33mcommit 58e71b3197eeffe05656a22a0f2ca30822600445[m
+Author: Varun Somarouthu <varuns@connect-172-31-62-145.vpn.tamu.edu>
+Date:   Sun Nov 6 22:16:35 2022 -0600
+
+    Added appdb.js and connection.js
+
+[33mcommit 178fe52d0fc0e32b4089718c2e8399e43d04fff2[m
+Author: mj591806 <mj591806@tamu.edu>
+Date:   Sun Nov 6 18:31:32 2022 -0600
+
+    Added inputs for ManagerWindow
+
+[33mcommit eabddb5816ce7db2aadae162b3bcdf39db486f34[m
+Author: mj591806 <mj591806@tamu.edu>
+Date:   Wed Nov 2 15:41:11 2022 -0500
+
+    Added ManagerWindow jsx and css files
+
+[33mcommit 6bada3896ca7cf0affd40917228278af73aa0bb9[m
+Author: Varun Somarouthu <varuns@client-10-228-164-8.tamulink.tamu.edu>
+Date:   Wed Nov 2 15:39:27 2022 -0500
+
+    Added manager update fill levels
+
+[33mcommit dd49b5f3c3bbedeb6d13bda254bbd6110aa03f4a[m
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Wed Nov 2 14:51:43 2022 -0500
+
+    add_routing_home
+
+[33mcommit a37e8857e5f3f4dc2cf7eb16798a3967c644a5ca[m
+Author: Varun Somarouthu <varuns@client-10-228-164-8.tamulink.tamu.edu>
+Date:   Tue Nov 1 21:32:04 2022 -0500
+
+    fixed restock report
+
+[33mcommit c43193ebf2e8f1d6143a0c5e8a69c81f7a078ffc[m
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Sat Oct 29 14:17:50 2022 -0500
+
+    p2_contents
+
+[33mcommit d7e60a82b0519ce30ee1ef6e94e234a9522b7415[m
+Author: “hdhulipala02” <hdhulipala02@tamu.edu>
+Date:   Fri Oct 28 11:17:56 2022 -0500
+
+    react_app_setup
+
+[33mcommit 3b4817c0b20205e3bbaa3eacb3b4f6ee4ccf1567[m
+Author: Varun Somarouthu <varuns@tamu.edu>
+Date:   Fri Oct 28 10:54:49 2022 -0500
+
+    Initial commit
