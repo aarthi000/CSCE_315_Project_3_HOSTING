@@ -159,7 +159,6 @@ class ManagerWindow extends Component {
             <section className='ManagerWindow'>
                 <div className='left-half'>
                     <h1>Inventory</h1>
-                    <Table></Table>
                 </div>
                 <div className='right-half'>
                     <div class="report-btn-group">
