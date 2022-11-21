@@ -8,60 +8,53 @@ class ManagerWindow extends Component {
     };
 
     render() { 
-        const handleRestock = async (event, nameStr) => {
-            const requestURL = "http://localhost:3300/restock";
-	        const request = new Request(requestURL);
+        const handleAddons = async (event, nameStr) => {
+             let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
+             if (timeinput != null) {
+                 // OK button is pressed so timeinput is not null
+                 // split the input and get start date and end date
+                 let  timeperiods = timeinput.split(" ");
+                 var  startdate = timeperiods[0];
+                 var  enddate = timeperiods[1];
 
-	        const response = await fetch(request, {
-			    method: 'GET', 
-                    headers: { 
-                        'Content-Type': 'application/json',
-                    },
-                    mode: 'cors', 
-            });
-            const data = await response.json();
-            var i = 0;
-            for (i = 0; i < data.length; i++) {
-                console.log('ingredient          = ' + data[i].ingredient);
-                console.log('ingredientremaining = ' + data[i].ingredientremaining);
-                console.log('minimumamount       = ' + data[i].minimumamount);
-            }
-              
-            //window.open("http://localhost:3300/restock");
-            /* 
-                //console.log('hello' + recvData.portal + '-124');
-                table = '<table>';
+                 // Create a JSON object 'sendData' (name: value) format
+                 const sendData = {startdate,enddate};
 
-                table += '<th>';
-                table += 'ingredient';
-                table += '</th>
-                table += '<th>';
-                table += 'remaining';
-                table += '</th>
-                    
-                while (until last line) {
-                    // Get the next line and split the fields
-                    /// recvData2= recvData.split(" ");
-                    table += '<tr>';
-                    table += '<td>';
-                    table += recvData2[0];
-                    table += '</td>';
-                    table += '<td>';
-                    table += recvData2[1];
-                    table += '</td>';
-                    table += '</tr>';
-                }
-                document.insertElement("mytable") = table;
-               */ 
- 
-            const winHtml = `<!DOCTYPE html>
+
+                 const requestURL = "http://192.168.1.71:3300/addonsreport";
+	         const request = new Request(requestURL);
+
+	         const response = await fetch(request, {
+		      method: 'POST', 
+                      headers: { 
+                          'Content-Type': 'application/json',
+                       },
+                       mode: 'cors', 
+                       body: JSON.stringify(sendData)
+                   });
+                 const jsondata = await response.json();
+console.log(jsondata);
+                 let titleStr = "";
+                 titleStr += "This report shows the quantity of ingredients added on to customized orders between ";
+                 titleStr += startdate + " and " + enddate;
+                 var i = 0;
+                 var data = '<table border="1px solid black"> <th> Add Ons added to Customized Order </th> <th> Amount Added On </th>';
+                 for (i=0; i < jsondata.length; i++) {
+                        data += '<tr>';
+                        data += '<td>' + jsondata[i].addonname + '</td>';
+                        data += '<td>' + jsondata[i].addonamount + '</td>';
+                        data += '</tr>';
+                 }
+                 data += '</table>';
+
+                 const winHtml = `<!DOCTYPE html>
                             <html>
                             <head>
                                 <title>Restock Window</title>
                             </head>
-                            <body>
-                                <h1>This is the data!</h1>
-                            </body>
+                            <body>`
+                            + '<p>' + titleStr + '<br>' + data + '</p>' + 
+                            `</body>
                             <div name"mytable">
                             </div>
                             </html>`;
@@ -71,10 +64,100 @@ class ManagerWindow extends Component {
             const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
             if (window.focus())
                 win.focus();
+            }
+        }
+        const handleIngrList = async () => {
+            const requestURL = "http://192.168.1.71:3300/getingredientlist";
+	        const request = new Request(requestURL);
 
+	        const response = await fetch(request, {
+			    method: 'GET', 
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors', 
+            });
+            const jsondata = await response.json();
+            var select = document.getElementById("restock-menu-items"); 
 
-            //window.open("http://localhost:3300/sales?" + new URLSearchParams({
-            //      startdate:'${startdate}', enddate: '${enddate}'} ),{ mode: 'no-cors'})
+            for(var i = 1; i < jsondata.length; i++) {
+                var opt = jsondata[i];
+
+                var el = document.createElement("option");
+                el.text = opt;
+                el.value = opt;
+
+                select.add(el);
+           }
+        }
+        const handleRestockItem = async (event, nameStr) => {
+            var e = document.getElementById("restock-menu-items");
+
+            var ingredient = e.value;
+            e = document.getElementById("restock-item-amount");
+
+            var itemamount = e.value;
+            const sendData = {ingredient,itemamount};
+console.log(sendData);
+            // Create a request URL to send to the server
+            const requestURL = "http://192.168.1.71:3300/restockitem";
+            const request = new Request(requestURL);
+
+            // Send the request along with the data inside 'request body'
+            const response = await fetch(request, {
+                method: 'POST', 
+                headers: { 
+                        'Content-Type': 'application/json',
+                },
+                mode: 'cors', 
+                body: JSON.stringify(sendData)
+            });
+            // Now obtain the data from server.  Server sent a text so read it as text
+            const jsondata = await response.json();
+            let titleStr = "";
+        }
+        const handleRestock = async (event, nameStr) => {
+            const requestURL = "http://192.168.1.71:3300/restock";
+	        const request = new Request(requestURL);
+
+	        const response = await fetch(request, {
+			    method: 'GET', 
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors', 
+            });
+            const jsondata = await response.json();
+            var i = 0;
+            let titleStr = "";
+            titleStr += "This Restock Report";
+            var i = 0;
+            var data = '<table border="1px solid black"> <th> Ingredient </th> <th> Ingredient Remaining </th>';
+            for (i=0; i < jsondata.length; i++) {
+                        data += '<tr>';
+                        data += '<td>' + jsondata[i].ingredient + '</td>';
+                        data += '<td>' + jsondata[i].ingredientremaining + '</td>';
+                        data += '</tr>';
+            }
+            data += '</table>';
+
+            const winHtml = `<!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>Restock Window</title>
+                            </head>
+                            <body>`
+                            + '<p>' + titleStr + '<br>' + data + '</p>' + 
+                            `</body>
+                            <div name"mytable">
+                            </div>
+                            </html>`;
+
+            const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
+
+            const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
+            if (window.focus())
+                win.focus();
         }
         // Client code to process 'Sales' when user clicks on 'sales' button
         const handleSales = async (event, nameStr) => {
@@ -93,7 +176,7 @@ class ManagerWindow extends Component {
                 const sendData = {startdate,enddate};
 
                 // Create a request URL to send to the server
-                const requestURL = "http://localhost:3300/sales";
+                const requestURL = "http://192.168.1.71:3300/sales";
                 const request = new Request(requestURL);
 
                 // Send the request along with the data inside 'request body'
@@ -106,21 +189,43 @@ class ManagerWindow extends Component {
                     body: JSON.stringify(sendData)
                 });
                 // Now obtain the data from server.  Server sent a text so read it as text
-                const recvData = await response.json();
+                const jsondata = await response.json();
+                let titleStr = "";
+                titleStr += "This report shows the order sales between ";
+                titleStr += startdate + " and " + enddate;
                 var i = 0;
-                for (i = 0; i < recvData.length; i++) {
-                    console.log("orderpk    = " + recvData[i].orderpk);
-                    console.log("orderid    = " + recvData[i].orderid);
-                    console.log("lineitem   = " + recvData[i].lineitem);
-                    console.log("itemname   = " + recvData[i].itemname);
-                    console.log("itemprice  = " + recvData[i].itemprice);
-                    console.log("orderday   = " + recvData[i].orderday);
-                    console.log("ordermonth = " + recvData[i].ordermonth);
-                    console.log("orderyear  = " + recvData[i].orderyear);
+                var data = '<table border="1px solid black"> <th>OrderName</th> <th>Order ID</th> <th>LineItem</th> <th>ItemName</th> <th>ItemPrice</th> <th>OrderDay</th> <th>OrderMonth</th> <th>OrderYear</th>';
+                for (i=0; i < jsondata.length; i++) {
+                        data += '<tr>';
+                        data += '<td>' + jsondata[i].orderpk    + '</td>';
+                        data += '<td>' + jsondata[i].orderid    + '</td>';
+                        data += '<td>' + jsondata[i].lineitem   + '</td>';
+                        data += '<td>' + jsondata[i].itemname   + '</td>';
+                        data += '<td>' + jsondata[i].itemprice  + '</td>';
+                        data += '<td>' + jsondata[i].orderday   + '</td>';
+                        data += '<td>' + jsondata[i].ordermonth + '</td>';
+                        data += '<td>' + jsondata[i].orderyear  + '</td>';
+                        data += '</tr>';
                 }
-                // Now process the data and create a 'table' html element  to show in a new window
-            }
+                data += '</table>';
+                const winHtml = `<!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>Restock Window</title>
+                            </head>
+                            <body>`
+                            + '<p>' + titleStr + '<br>' + data + '</p>' + 
+                            `</body>
+                            <div name"mytable">
+                            </div>
+                            </html>`;
 
+                const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
+
+                const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
+                if (window.focus())
+                    win.focus();
+            }
         }
         const handleExcess = async (event, nameStr) => {
             // Read the input from propmpt window
@@ -138,7 +243,7 @@ class ManagerWindow extends Component {
                 const sendData = {startdate,enddate};
 
                 // Create a request URL to send to the server
-                const requestURL = "http://localhost:3300/excess";
+                const requestURL = "http://192.168.1.71:3300/excess";
                 const request = new Request(requestURL);
 
                 // Send the request along with the data inside 'request body'
@@ -152,7 +257,27 @@ class ManagerWindow extends Component {
                 });
                 // Now obtain the data from server.  Server sent a text so read it as text
                 const recvData = await response.text();
+                let titleStr = "";
+                titleStr += "This report shows the excess data between ";
+                titleStr += startdate + " and " + enddate;
                 // Excess report will come as list of strings.
+                const winHtml = `<!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>Restock Window</title>
+                            </head>
+                            <body>`
+                            + '<p>' + titleStr + '<br>' +'<br>'+ recvData + '</p>' + 
+                            `</body>
+                            <div name"mytable">
+                            </div>
+                            </html>`;
+
+                const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
+
+                const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
+                if (window.focus())
+                    win.focus();
             }
 
         }
@@ -161,14 +286,13 @@ class ManagerWindow extends Component {
             <section className='ManagerWindow'>
                 <div className='left-half'>
                     <h1>Inventory</h1>
-                    <Table></Table>
                 </div>
                 <div className='right-half'>
-                    <div class="report-btn-group">
-                        <button onClick={event => handleSales(event,'sales')}class="role-button">Sales</button>
-                        <button onClick={event => handleExcess(event,'excess')}class="role-button">Excess</button>
-                        <button onClick={event => handleRestock(event,'restock')}class="role-button">Restock</button>
-                        <button class="role-button">Add-ons</button>
+                    <div className="report-btn-group">
+                        <button onClick={event => handleSales(event,'sales')} className="role-button">Sales</button>
+                        <button onClick={event => handleExcess(event,'excess')} className="role-button">Excess</button>
+                        <button onClick={event => handleRestock(event,'restock')} className="role-button">Restock</button>
+                        <button onClick={event => handleAddons(event,'addons')} className="role-button">Add-ons</button>
                     </div>
 
                     <h2>Add Menu Item</h2>
@@ -195,12 +319,11 @@ class ManagerWindow extends Component {
                         <div className='input-class'>
                             <form>
                                 <label>
-                                    <select name='menu-items'>
+                                    <select name='edit-menu-items' id='edit-menu-items'>
                                         <option value='temp1'>temp1</option>
                                         <option value='temp2'>temp2</option>
                                         <option value='temp3'>temp3</option>
                                         <option value='temp4'>temp4</option>
-                                        <option value='temp5'>temp5</option>
                                     </select>
                                     <br></br>
                                     <input type="text" placeholder="Enter new menu item price" />
@@ -218,21 +341,16 @@ class ManagerWindow extends Component {
                         <div className='input-class'>
                             <form>
                                 <label>
-                                    <select name='menu-items'>
-                                        <option value='temp1'>temp1</option>
-                                        <option value='temp2'>temp2</option>
-                                        <option value='temp3'>temp3</option>
-                                        <option value='temp4'>temp4</option>
-                                        <option value='temp5'>temp5</option>
+                                    <select name='restock-menu-items' id='restock-menu-items' onChange={handleIngrList()}>
                                     </select>
                                     <br></br>
-                                    <input type="text" placeholder="Enter ingredient quantity" />
+                                    <input type="text" id="restock-item-amount" placeholder="Enter ingredient quantity" />
                                     <br></br>
                                 </label>
                             </form>
                         </div>
                         <div className='submit-class'>
-                            <button className='submit-btn'>+</button>
+                            <button onClick={event => handleRestockItem(event,'restock-item')} className='submit-btn'>+</button>
                         </div>
                     </div>
 
