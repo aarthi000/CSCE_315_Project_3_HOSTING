@@ -27,22 +27,24 @@ function Customer(props) {
   useEffect(()=> {
     getMenuitems();
   }, []);
-  console.log("menuitems");
+  // console.log("menuitems");
   
-
-  const {items} = menuitems;
-  console.log(menuitems);
   const [orderItems, setOrderItems] = useState([]);
+  const {items} = menuitems;
+  //console.log(menuitems);
+
   const onAdd = (item) => {
-    const exist = orderItems.find(x => x.itemname === item.itemname);
+    const exist = orderItems.find(x => x.id === item.id);
     if (exist) {
-      setOrderItems(
-        orderItems.map((x) => 
-        x.itemname === item.itemname ? {...exist, qty: exist.qty + 1} : x
-        )
-      );
+      const newItems = orderItems.map((x) => 
+      x.id === item.id ? {...exist, qty: exist.qty + 1} : x
+      )
+      setOrderItems(newItems);
+      localStorage.setItem('orderItems', JSON.stringify(newItems));
     } else {
-      setOrderItems([...orderItems, {...item, qty: 1}]);
+      const newItems = [...orderItems, {...item, qty: 1}];
+      setOrderItems(newItems);
+      localStorage.setItem('orderItems', JSON.stringify(newItems));
     } 
 
     };
@@ -50,13 +52,20 @@ function Customer(props) {
     const onRemove = (item) => {
       const exist = orderItems.find(x => x.id === item.id);
       if (exist.qty === 1) {
-        setOrderItems (orderItems.filter((x) => x.id !== item.id));
+        const newItems = orderItems.filter((x) => x.id !== item.id);
+        setOrderItems(newItems);
+        localStorage.setItem('orderItems', JSON.stringify(newItems));
       } else {
-        setOrderItems(
-          orderItems.map((x) => 
-            x.id === item.id ? {...exist, qty: exist.qty - 1} : x));
+          const newItems = orderItems.map((x) => 
+            x.id === item.id ? {...exist, qty: exist.qty - 1} : x);
+          setOrderItems(newItems);  
+          localStorage.setItem('orderItems', JSON.stringify(newItems));
       }
-    }
+    };
+
+    useEffect(() => {
+      setOrderItems(localStorage.getItem('orderItems') ? JSON.parse(localStorage.getItem('orderItems')):[]);
+    },[])
   return ( 
     // <div className="Customer Customer-header">
     <Container col>
