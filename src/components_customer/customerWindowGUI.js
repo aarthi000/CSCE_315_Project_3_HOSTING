@@ -32,6 +32,7 @@ function Customer() {
   }, []);
 
   const {items} = data;
+  // const {items} = menuitems;
 
   return ( 
     // <div className="Customer Customer-header">

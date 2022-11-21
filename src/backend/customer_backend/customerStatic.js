@@ -1,0 +1,178 @@
+const express = require("express");
+const cors = require("cors");
+const pool = require("./connection1");
+const bodyParser = require("body-parser");
+const app = express();
+
+//middleware
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
+
+/*Function to return hashmap of ingredients in an menuitem. 
+Parameter = string of menuitem name*/
+
+async function getIngredients(menuitem) {
+  var response = await pool.query(
+    "SELECT * FROM ingredient_map WHERE itemname = '" + menuitem + "'"
+  );
+  var data = response.rows[0];
+  delete data.itemname;
+  return data;
+}
+
+async function ingredientInStock(ingredient, numRequired) {
+  var response = await pool.query(
+    "SELECT ingredientremaining FROM inventory WHERE ingredient = '" +
+      ingredient +
+      "'"
+  );
+  var data = response.rows;
+  var numLeft = data[0].ingredientremaining;
+
+  if (numLeft < numRequired) {
+    return false;
+  }
+
+  return true;
+}
+
+async function itemInStock(menuitem) {
+  var ingredients = await getIngredients(menuitem);
+  for (var key of Object.keys(ingredients)) {
+    // console.log(key + " -> " + ingredients[key])
+    if (ingredients[key] != 0) {
+        var inStock = await ingredientInStock(key, ingredients[key]);   
+      if (!inStock) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+/*
+placeOrder(): takes in ordered menuitems, itemprices, and gameday and places order
+parameters: array of strings, array of itemprices, boolean
+*/
+async function placeOrder(menuitems, itemprices, isGameday){
+    //check if empty list
+    if (menuitems.length == 0 || itemprices.length == 0 || menuitems.length != itemprices.length){
+        console.log("Empty or mismatching menuitem list");
+        return;
+    }
+    
+
+    //get most recent orderID
+    var response = await pool.query(
+        "SELECT MAX(orderid) as max_orderids FROM order_totals"
+    );
+    var orderid = response.rows[0].max_orderids + 1;
+
+    //create line item
+    var lineitem = 0;
+
+    //create totalprice 
+    var totalprice = 0.0;
+
+    
+    //get current data and format
+    const date = new Date();
+    var orderday = date.getDate();
+    var ordermonth = date.getMonth() + 1; //0-based indexing    
+    var orderyear = date.getFullYear();
+
+    
+    //loop through menuitems
+    for (var i = 0; i < menuitems.length; i++){
+        // increment lineitem
+        lineitem++;
+
+        //get itemname
+        var itemname = "'" + menuitems[i] + "'";
+
+
+        // get price
+        var itemprice = itemprices[i];
+
+        //generate orderpk
+        var orderpk = "'" + orderid + "_" + lineitem + "'";
+
+        //send query to update order_history
+        var insertInto = "INSERT INTO order_history(orderpk, orderid, lineitem, itemname, itemprice, isgameday, orderday, ordermonth, orderyear) ";
+        var values = "VALUES(" + orderpk + "," + orderid + "," + lineitem + "," + itemname + "," + itemprice +
+                    "," + isGameday + "," + orderday + "," + ordermonth + "," + orderyear + ")";
+        var insertCMD = insertInto + values;
+        await pool.query(  //uncomment me!
+            insertCMD
+        );
+
+        //update inventory//
+        //getting hashmap of ingredients 
+        var ingredients = await getIngredients(menuitems[i]);
+
+        for (var key of Object.keys(ingredients)) {
+            if (ingredients[key] != 0) {
+                var updateUsed = "update inventory set amountused=amountused+" + ingredients[key]
+                            + " where ingredient='" + key + "';";
+                var updateRemaining = "update inventory set ingredientremaining=ingredientremaining-"
+                            + ingredients[key] + " where ingredient='" + key + "';";
+                
+
+                await pool.query(  //uncomment me!
+                    updateUsed
+                );
+
+                await pool.query(  //uncomment me!
+                    updateRemaining
+                );
+            }
+        }
+        
+        //sum price
+        totalprice += itemprices[i];
+        totalprice = Math.round(totalprice * 100.0) / 100.0;
+
+    }
+    //update order totals 
+    var totalQuery = "INSERT INTO order_totals(orderid,totalprice) VALUES (" + orderid + "," + totalprice + ");";
+
+    await pool.query(  //uncomment me!
+        totalQuery
+    );
+
+}
+
+
+
+
+
+
+
+
+//TESTING
+//this is how to call function!
+
+// console.log(getIngredients("seasonedTaterTots").then(function(result){
+//     console.log(result)
+//   }));
+
+// ingredientInStock("seasoning_4g", 500).then(function (result) {
+//     console.log(result);
+//   });
+
+// itemInStock("Revs Burger").then(function (result) {
+//   console.log(result);
+// });
+
+//testing placeOrder
+// var m = [];
+// m.push("Revs Burger", "Tater Tots");
+
+// var p = [];
+// p.push(10, 2.29, 4.29);
+
+// var g = true;
+
+// placeOrder(m, p, g);
+
