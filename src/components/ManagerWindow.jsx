@@ -90,6 +90,35 @@ console.log(jsondata);
                 select.add(el);
            }
         }
+        const handleNewIngredient = async (event, nameStr) => {
+            var e = document.getElementById("new-ingredient-name");
+            var ingredient = e.value;
+
+            e = document.getElementById("new-ingredient-amount");
+            var itemamount = e.value;
+
+            e = document.getElementById("new-ingredient-minamount");
+            var itemminamount = e.value;
+
+            const sendData = {ingredient,itemamount,itemminamount};
+console.log(sendData);
+            // Create a request URL to send to the server
+            const requestURL = "http://192.168.1.71:3300/addnewingredient";
+            const request = new Request(requestURL);
+
+            // Send the request along with the data inside 'request body'
+            const response = await fetch(request, {
+                method: 'POST', 
+                headers: { 
+                        'Content-Type': 'application/json',
+                },
+                mode: 'cors', 
+                body: JSON.stringify(sendData)
+            });
+            // Now obtain the data from server.  Server sent a text so read it as text
+            const jsondata = await response.json();
+            let titleStr = "";
+        }
         const handleRestockItem = async (event, nameStr) => {
             var e = document.getElementById("restock-menu-items");
 
@@ -359,15 +388,17 @@ console.log(sendData);
                         <div className='input-class'>
                             <form>
                                 <label>
-                                    <input type="text" placeholder="Enter ingredient name" />
+                                    <input type="text" id="new-ingredient-name" placeholder="Enter ingredient name" />
                                     <br></br>
-                                    <input type="text" placeholder="Enter ingredient quantity" />
+                                    <input type="text" id="new-ingredient-amount" placeholder="Enter ingredient quantity" />
+                                    <br></br>
+                                    <input type="text" id="new-ingredient-minamount" placeholder="Enter ingredient minimum quantity" />
                                     <br></br>
                                 </label>
                             </form>
                         </div>
                         <div className='submit-class'>
-                            <button className='submit-btn'>+</button>
+                            <button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button>
                         </div>
                     </div>
                 </div>
