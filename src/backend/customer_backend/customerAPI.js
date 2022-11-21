@@ -11,8 +11,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 
-app.listen(5000, () => {
-    console.log("customerAPI.js is now listening at port 5000");
+app.listen(4999, () => {
+    console.log("customerAPI.js is now listening at port 4999");
   });
 
 
