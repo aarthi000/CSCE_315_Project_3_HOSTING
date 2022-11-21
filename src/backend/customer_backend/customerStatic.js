@@ -159,7 +159,6 @@ async function removeOrder(orderID){
     for (var i = 0; i < menuitems.length; i++){
       itemsOrdered.push(menuitems[i].itemname);
     }
-    console.log(itemsOrdered);
     if (itemsOrdered.length == 0){
       console.log("Order doesn't exist or has already been deleted");
       return;
@@ -203,9 +202,14 @@ async function removeOrder(orderID){
       
 }
 
-// async function removeLastOrder(){
-
-// }
+async function removeLastOrder(){
+  //get most recent orderID
+  var response = await pool.query(
+    "SELECT MAX(orderid) as max_orderids FROM order_totals"
+  );
+  var orderid = response.rows[0].max_orderids;
+  removeOrder(orderid);
+}
 
 
 
@@ -239,4 +243,4 @@ async function removeOrder(orderID){
 // removeOrder(10070); //chose a different number/, this has already been used
 
 
-// removeLastOrder();
+removeLastOrder();
