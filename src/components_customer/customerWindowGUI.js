@@ -4,11 +4,9 @@ import Cart from './Cart';
 import Menu from './Menu';
 import Header from './Header';
 import React, {Fragment, useEffect, useState} from "react";
-import DeliveryInput from './deliveryAddress';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import MenuItems from './MenuItem';
 
 
 function Customer(props) {
@@ -18,7 +16,6 @@ function Customer(props) {
     try{
       const response = await fetch ("http://localhost:4999/menuitems_list");
       const jsonData = await response.json();
-      console.log(jsonData);
       setMenuitems(jsonData);
 
     }catch (err){
@@ -30,34 +27,44 @@ function Customer(props) {
   useEffect(()=> {
     getMenuitems();
   }, []);
+  console.log("menuitems");
+  
 
-  // const {items} = data;
-  // const {items} = menuitems;
-  const{items, onAdd} = props;
+  const {items} = menuitems;
+  console.log(menuitems);
+  const [orderItems, setOrderItems] = useState([]);
+  const onAdd = (item) => {
+    const exist = orderItems.find(x => x.itemname === item.itemname);
+    if (exist) {
+      setOrderItems(
+        orderItems.map((x) => 
+        x.itemname === item.itemname ? {...exist, qty: exist.qty + 1} : x
+        )
+      );
+    } else {
+      setOrderItems([...orderItems, {...item, qty: 1}]);
+    } 
 
+    };
+
+    const onRemove = (item) => {
+      const exist = orderItems.find(x => x.id === item.id);
+      if (exist.qty === 1) {
+        setOrderItems (orderItems.filter((x) => x.id !== item.id));
+      } else {
+        setOrderItems(
+          orderItems.map((x) => 
+            x.id === item.id ? {...exist, qty: exist.qty - 1} : x));
+      }
+    }
   return ( 
     // <div className="Customer Customer-header">
     <Container col>
         <Header></Header>
-        {/* <div className="row"> */}
         <Row>
-          {/* <Menu items={items}></Menu> */}
-          <main className = "width-2">
-            <h2 className="sub-headers1">Menu Items</h2>
-            <div className="row"></div>
-            {menuitems.map((item) => (
-                <MenuItems key={item.id} item={item} onAdd={onAdd}></MenuItems>
-            ))}
-        </main>
-          {/* <div className="Customer Customer-header"> */}
-          <Col>
-            <Cart></Cart>
-            <DeliveryInput></DeliveryInput>
-          </Col>  
-          {/* </div> */}
-        
-          {/* </div> */}
-        </Row>
+            <Menu onAdd={onAdd} items={items}></Menu>
+            <Cart onAdd={onAdd} onRemove={onRemove} orderItems={orderItems}></Cart>
+          </Row>
     </Container>
 
   );

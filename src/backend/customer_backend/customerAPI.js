@@ -21,10 +21,18 @@ app.listen(4999, () => {
 //get menu items for display
 app.get("/menuitems_list", async(req,res) => {
     try{
-        const menuitems = await pool.query("SELECT * from menu_items");
-        // var data = menuitems.rows; //uncomment and test
-        // res.json(data[0]);
-        res.json(menuitems.rows);
+        var menuitems = await pool.query("SELECT * from menu_items");
+        var rows = menuitems.rows;
+        for (var i = 0; i < rows.length; i++){
+            rows[i].id = i + 1;
+        }
+
+        var data = {
+            items: rows
+        };
+        res.json(data);
+
+        
     }catch (err){
         console.error("haha isnt working loser")
     }
