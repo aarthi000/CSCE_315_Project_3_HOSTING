@@ -143,10 +143,69 @@ async function placeOrder(menuitems, itemprices, isGameday){
 
 }
 
+/*
+removeOrder(): removes order given orderID (int)
+*/
+async function removeOrder(orderID){
+    //query order_history
+    var history_response = await pool.query(  //uncomment me!
+      "select * from order_history where orderid = " + orderID
+    );
+    
+    var menuitems = history_response.rows;
 
+    //figure out what items were ordered, store in array
+    var itemsOrdered = [];
+    for (var i = 0; i < menuitems.length; i++){
+      itemsOrdered.push(menuitems[i].itemname);
+    }
+    console.log(itemsOrdered);
+    if (itemsOrdered.length == 0){
+      console.log("Order doesn't exist or has already been deleted");
+      return;
+    }
+  
 
+    //delete from order_history 
+    await pool.query(  //uncomment me!
+    "delete from order_history where orderid = " + orderID
+    );
 
+    // delete from order totals
+    await pool.query(  //uncomment me!
+    "delete from order_totals where orderid = " + orderID
+    );
+    
 
+    //delete from inventory (opp of place order function)
+    
+    for (var i = 0; i < itemsOrdered.length; i++){
+      var ingredients = await getIngredients(itemsOrdered[i]);
+      
+        for (var key of Object.keys(ingredients)) {
+            if (ingredients[key] != 0) {
+                var updateUsed = "update inventory set amountused=amountused-" + ingredients[key]
+                            + " where ingredient='" + key + "';";
+                var updateRemaining = "update inventory set ingredientremaining=ingredientremaining+"
+                            + ingredients[key] + " where ingredient='" + key + "';";
+                
+                await pool.query(  //uncomment me!
+                    updateUsed
+                );
+
+                await pool.query(  //uncomment me!
+                    updateRemaining
+                );
+            }
+        }
+        
+    }
+      
+}
+
+// async function removeLastOrder(){
+
+// }
 
 
 
@@ -170,9 +229,14 @@ async function placeOrder(menuitems, itemprices, isGameday){
 // m.push("Revs Burger", "Tater Tots");
 
 // var p = [];
-// p.push(10, 2.29, 4.29);
+// p.push(10, 2.29);
 
 // var g = true;
 
 // placeOrder(m, p, g);
 
+//testing removeorder
+// removeOrder(10070); //chose a different number/, this has already been used
+
+
+// removeLastOrder();
