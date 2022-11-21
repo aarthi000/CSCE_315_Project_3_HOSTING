@@ -275,9 +275,11 @@ app.post('/updateaddons', (request,response)=> {
       client.query(query, (err,result) => {
           if(!err) {
               console.log('Successfully updated addons - 2');
+              response.send('success');
           }
           else {
               console.log(err);
+              response.send('failed');
           }
       });
       client.end;
@@ -323,10 +325,10 @@ app.post('/addnewingredient', (request,response)=> {
 console.log(q);
     client.query(q, (err,result) => {
           if(!err) {
-             response.json(['success']);
+             response.send('success');
           }
           else
-             response.json(['failed']);
+             response.send('failed');
     });
     client.end;
 });

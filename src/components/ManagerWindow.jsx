@@ -21,7 +21,7 @@ class ManagerWindow extends Component {
                  const sendData = {startdate,enddate};
 
 
-                 const requestURL = "http://192.168.1.71:3300/addonsreport";
+                 const requestURL = "http://localhost:3300/addonsreport";
 	         const request = new Request(requestURL);
 
 	         const response = await fetch(request, {
@@ -67,7 +67,7 @@ console.log(jsondata);
             }
         }
         const handleEditMenuItem = async () => {
-            const requestURL = "http://192.168.1.71:3300/getmenuitemlist";
+            const requestURL = "http://localhost:3300/getmenuitemlist";
 	        const request = new Request(requestURL);
 
 	        const response = await fetch(request, {
@@ -91,7 +91,7 @@ console.log(jsondata);
            }
         }
         const handleIngrList = async () => {
-            const requestURL = "http://192.168.1.71:3300/getingredientlist";
+            const requestURL = "http://localhost:3300/getingredientlist";
 	        const request = new Request(requestURL);
 
 	        const response = await fetch(request, {
@@ -124,7 +124,7 @@ console.log(jsondata);
             const sendData = {itemname,itemprice};
 console.log(sendData);
             // Create a request URL to send to the server
-            const requestURL = "http://192.168.1.71:3300/editmenuitemprice";
+            const requestURL = "http://localhost:3300/editmenuitemprice";
             const request = new Request(requestURL);
 
             // Send the request along with the data inside 'request body'
@@ -137,7 +137,11 @@ console.log(sendData);
                 body: JSON.stringify(sendData)
             });
             // Now obtain the data from server.  Server sent a text so read it as text
-            const jsondata = await response.json();
+            const status = await response.text();
+            if(status == 'success')
+               alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
+            else
+               alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
         }
         const handleNewIngredient = async (event, nameStr) => {
             var e = document.getElementById("new-ingredient-name");
@@ -152,7 +156,7 @@ console.log(sendData);
             const sendData = {ingredient,itemamount,itemminamount};
 console.log(sendData);
             // Create a request URL to send to the server
-            const requestURL = "http://192.168.1.71:3300/addnewingredient";
+            const requestURL = "http://localhost:3300/addnewingredient";
             const request = new Request(requestURL);
 
             // Send the request along with the data inside 'request body'
@@ -164,9 +168,11 @@ console.log(sendData);
                 mode: 'cors', 
                 body: JSON.stringify(sendData)
             });
-            // Now obtain the data from server.  Server sent a text so read it as text
-            const jsondata = await response.json();
-            let titleStr = "";
+            const status = await response.text();
+            if(status == 'success')
+               alert('successfully added new ingredient - '+ ingredient);
+            else
+               alert('failed to add new ingredient - '+ ingredient);
         }
         const handleRestockItem = async (event, nameStr) => {
             var e = document.getElementById("restock-menu-items");
@@ -178,7 +184,7 @@ console.log(sendData);
             const sendData = {ingredient,itemamount};
 console.log(sendData);
             // Create a request URL to send to the server
-            const requestURL = "http://192.168.1.71:3300/restockitem";
+            const requestURL = "http://localhost:3300/restockitem";
             const request = new Request(requestURL);
 
             // Send the request along with the data inside 'request body'
@@ -194,7 +200,7 @@ console.log(sendData);
             const jsondata = await response.json();
         }
         const handleRestock = async (event, nameStr) => {
-            const requestURL = "http://192.168.1.71:3300/restock";
+            const requestURL = "http://localhost:3300/restock";
 	        const request = new Request(requestURL);
 
 	        const response = await fetch(request, {
@@ -253,7 +259,7 @@ console.log(sendData);
                 const sendData = {startdate,enddate};
 
                 // Create a request URL to send to the server
-                const requestURL = "http://192.168.1.71:3300/sales";
+                const requestURL = "http://localhost:3300/sales";
                 const request = new Request(requestURL);
 
                 // Send the request along with the data inside 'request body'
@@ -320,7 +326,7 @@ console.log(sendData);
                 const sendData = {startdate,enddate};
 
                 // Create a request URL to send to the server
-                const requestURL = "http://192.168.1.71:3300/excess";
+                const requestURL = "http://localhost:3300/excess";
                 const request = new Request(requestURL);
 
                 // Send the request along with the data inside 'request body'
