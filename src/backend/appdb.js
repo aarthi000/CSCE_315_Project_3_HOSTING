@@ -295,6 +295,23 @@ app.get('/getingredientlist', (request,response)=> {
     client.end;
 });
 
+app.get('/getmenuitemlist', (request,response)=> {
+    var q = "select itemname from menu_items;"; 
+    inventory = [];
+    client.query(q, (err,result) => {
+        if(!err) {
+           var i = 0;
+           var data = result.rows;
+           data.forEach(row =>  { 
+                 inventory[i++] = row.itemname;
+           });
+console.log(inventory);
+           response.json(inventory);
+        }
+    });
+    client.end;
+});
+
 app.post('/addnewingredient', (request,response)=> {
     const b = request.body;
     var q = "INSERT into inventory (" + 
@@ -329,10 +346,11 @@ console.log(q);
     client.end;
 });
 
-app.post('/editprice', (request,response)=> {
+app.post('/editmenuitemprice', (request,response)=> {
     const b = request.body;
     var q = "UPDATE menu_items SET itemprice = " + b.itemprice + " WHERE "
                 + "itemname = " + "'" + b.itemname + "';";
+console.log(q);
     client.query(q, (err,result) => {
           if(!err) {
              response.send('success');

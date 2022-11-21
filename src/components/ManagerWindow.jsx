@@ -66,6 +66,30 @@ console.log(jsondata);
                 win.focus();
             }
         }
+        const handleEditMenuItem = async () => {
+            const requestURL = "http://192.168.1.71:3300/getmenuitemlist";
+	        const request = new Request(requestURL);
+
+	        const response = await fetch(request, {
+			    method: 'GET', 
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors', 
+            });
+            const jsondata = await response.json();
+            var select = document.getElementById("edit-menu-items"); 
+
+            for(var i = 1; i < jsondata.length; i++) {
+                var opt = jsondata[i];
+
+                var el = document.createElement("option");
+                el.text = opt;
+                el.value = opt;
+
+                select.add(el);
+           }
+        }
         const handleIngrList = async () => {
             const requestURL = "http://192.168.1.71:3300/getingredientlist";
 	        const request = new Request(requestURL);
@@ -89,6 +113,31 @@ console.log(jsondata);
 
                 select.add(el);
            }
+        }
+        const handleSetEditMenuItem = async (event, nameStr) => {
+            var e = document.getElementById("edit-menu-items");
+            var itemname = e.value;
+
+            e = document.getElementById("edit-item-price");
+            var itemprice = e.value;
+
+            const sendData = {itemname,itemprice};
+console.log(sendData);
+            // Create a request URL to send to the server
+            const requestURL = "http://192.168.1.71:3300/editmenuitemprice";
+            const request = new Request(requestURL);
+
+            // Send the request along with the data inside 'request body'
+            const response = await fetch(request, {
+                method: 'POST', 
+                headers: { 
+                        'Content-Type': 'application/json',
+                },
+                mode: 'cors', 
+                body: JSON.stringify(sendData)
+            });
+            // Now obtain the data from server.  Server sent a text so read it as text
+            const jsondata = await response.json();
         }
         const handleNewIngredient = async (event, nameStr) => {
             var e = document.getElementById("new-ingredient-name");
@@ -143,7 +192,6 @@ console.log(sendData);
             });
             // Now obtain the data from server.  Server sent a text so read it as text
             const jsondata = await response.json();
-            let titleStr = "";
         }
         const handleRestock = async (event, nameStr) => {
             const requestURL = "http://192.168.1.71:3300/restock";
@@ -348,20 +396,16 @@ console.log(sendData);
                         <div className='input-class'>
                             <form>
                                 <label>
-                                    <select name='edit-menu-items' id='edit-menu-items'>
-                                        <option value='temp1'>temp1</option>
-                                        <option value='temp2'>temp2</option>
-                                        <option value='temp3'>temp3</option>
-                                        <option value='temp4'>temp4</option>
+                                    <select name='edit-menu-items' id='edit-menu-items' onChange={handleEditMenuItem()}>
                                     </select>
                                     <br></br>
-                                    <input type="text" placeholder="Enter new menu item price" />
+                                    <input type="text" name='edit-item-price' id='edit-item-price' placeholder="Enter new menu item price" />
                                     <br></br>
                                 </label>
                             </form>
                         </div>
                         <div className='submit-class'>
-                            <button className='submit-btn'>+</button>
+                            <button onClick={event => handleSetEditMenuItem(event,'menu-item')} className='submit-btn'>+</button>
                         </div>
                     </div>
 
