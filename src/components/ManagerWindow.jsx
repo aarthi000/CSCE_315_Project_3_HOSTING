@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './ManagerWindow.css';
+import MOCK_DATA from './MOCK_DATA.json';
 import { Table } from './Table';
 
 class ManagerWindow extends Component {
@@ -9,7 +10,7 @@ class ManagerWindow extends Component {
 
     render() { 
         const handleAddons = async (event, nameStr) => {
-             let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
+             let timeinput = prompt("Enter Start Time and End Time (MM/DD/YY MM/DD/YY)");
              if (timeinput != null) {
                  // OK button is pressed so timeinput is not null
                  // split the input and get start date and end date
@@ -114,6 +115,51 @@ console.log(jsondata);
                 select.add(el);
            }
         }
+        const handleAddNewMenuItem = async (event, nameStr) => {
+            var e = document.getElementById("new-menu-item-name");
+            var itemname = e.value;
+
+            e = document.getElementById("new-menu-item-price");
+            var itemprice = e.value;
+
+            e = document.getElementById("new-menu-item-type");
+            var itemtype = e.value;
+
+            e = document.getElementById("new-menu-item-ingr");
+            var itemsmaparray = e.value.split(",");
+            var ingrdata   = [];
+            var i=0;
+            for (i=0; i < itemsmaparray.length; i++) {
+               var ingr = itemsmaparray[i].split(" ");
+               var ingrmap = {};
+               var ingramount = ingr[0];
+               var ingrname = ingr[1];
+               ingrmap['ingrname'] = ingrname;
+               ingrmap['ingramount'] = ingramount;
+               ingrdata.push(ingrmap);
+            }
+            const sendData = {itemname,itemprice,itemtype,ingrdata};
+            //console.log(sendData);
+            // Create a request URL to send to the server
+            const requestURL = "http://localhost:3300/addnewmenuitem";
+            const request = new Request(requestURL);
+
+            // Send the request along with the data inside 'request body'
+            const response = await fetch(request, {
+                method: 'POST', 
+                headers: { 
+                        'Content-Type': 'application/json',
+                },
+                mode: 'cors', 
+                body: JSON.stringify(sendData)
+            });
+            // Now obtain the data from server.  Server sent a text so read it as text
+            const status = await response.text();
+            if(status == 'success')
+               alert('successfully added new menu item - '+itemname+', price to ' + itemprice);
+            else
+               alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
+        }
         const handleSetEditMenuItem = async (event, nameStr) => {
             var e = document.getElementById("edit-menu-items");
             var itemname = e.value;
@@ -141,7 +187,7 @@ console.log(sendData);
             if(status == 'success')
                alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
             else
-               alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
+               alert('Failed to changed menu item - '+itemname+', price to ' + itemprice);
         }
         const handleNewIngredient = async (event, nameStr) => {
             var e = document.getElementById("new-ingredient-name");
@@ -314,7 +360,7 @@ console.log(sendData);
             // Read the input from propmpt window
             // It is a text field and user will enter '11/01/2022 11/09/2022'
 
-            let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
+            let timeinput = prompt("Enter Start Time and End Time (MM/DD/YY MM/DD/YY)");
             if (timeinput != null) {
                 // OK button is pressed so timeinput is not null
                 // split the input and get start date and end date
@@ -367,7 +413,7 @@ console.log(sendData);
               
         return (
             <section className='ManagerWindow'>
-                <div className='left-half'>
+                <div className='left-half' id='inventory-div' >
                     <h1>Inventory</h1>
                     <Table></Table>
                 </div>
@@ -384,17 +430,27 @@ console.log(sendData);
                         <div className='input-class'>
                             <form>
                                 <label>
-                                    <input type="text" placeholder="Enter menu item name" />
+                                    <input type="text" id="new-menu-item-name" placeholder="Enter menu item name" />
                                     <br></br>
-                                    <input type="text" placeholder="Enter menu item price" />
+                                    <input type="text" id="new-menu-item-price" placeholder="Enter menu item price" />
                                     <br></br>
-                                    <input type="text" placeholder="Enter menu item ingredients" />
+                                    <p class="textcolorwhite">Enter ingredients like (3 buns,4 onions,10 cheese):</p>
+                                    <input type="text" id="new-menu-item-ingr" placeholder="Enter menu item ingredients" />
                                     <br></br>
+                                    <p class="textcolorwhite">Menu Item Type</p>
+                                    <select name='new-menu-item-type' id='new-menu-item-type' >
+                                        <option>Sandwich</option>
+                                        <option>Side</option>
+                                        <option>Burger</option>
+                                        <option>Soup</option>
+                                        <option>Salad</option>
+                                        <option>Basket</option>
+                                    </select>
                                 </label>
                             </form>
                         </div>
                         <div className='submit-class'>
-                            <button className='submit-btn'>+</button>
+                            <button onClick={event => handleAddNewMenuItem(event,'menu-item')} className='submit-btn'>+</button>
                         </div>
                     </div> 
 

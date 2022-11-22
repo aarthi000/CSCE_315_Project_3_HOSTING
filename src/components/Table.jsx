@@ -5,7 +5,21 @@ import { COLUMNS } from './Columns';
 
 export const Table = () => {
     const columns = useMemo(() => COLUMNS, []);
-    const data = useMemo(() => MOCK_DATA, []);
+   /* 
+    const requestURL = "http://192.168.1.71:3300/inventory";
+    const request = new Request(requestURL);
+
+    const response = await fetch(request, {
+		method: 'GET', 
+                headers: { 
+                        'Content-Type': 'application/json',
+                },
+                mode: 'cors', 
+            });
+    const jsondata = await response.json();
+    //const data = useMemo( () => JSON.stringify(jsondata), []);
+   */ 
+    const data = useMemo( () => MOCK_DATA, []);
     
     const tableInstance = useTable({
         columns,

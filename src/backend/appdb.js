@@ -35,7 +35,7 @@ app.get('/restock', (request,response)=> {
               //                                ${row.minimumamount}` + '<br>';
               //                     }});
               response.json(inventory);
-              console.log(inventory);
+              //console.log(inventory);
           }
       });
       client.end;
@@ -68,9 +68,9 @@ app.post('/sales', (request,response)=> {
                      + endDay + "' AND ordermonth <= '" + endMonth + "';";
 
      salesdata = [];
-console.log(query);
-      client.query(query, (err,result) => {
-          if(!err) {
+     //console.log(query);
+     client.query(query, (err,result) => {
+         if(!err) {
               const data = result.rows;
               data.forEach(row =>  {
                              salesrow = {}
@@ -84,7 +84,7 @@ console.log(query);
                              salesrow["orderyear"]  = row.orderyear;
                              salesdata.push(salesrow);
               });
-console.log(salesdata);
+     //console.log(salesdata);
               response.json(salesdata);
           }
           else {
@@ -147,7 +147,7 @@ app.post('/excess', (request,response)=> {
                       response.send(err);
                   }
               });
-              console.log(endList);
+              //console.log(endList);
           }
           else {
               response.send(err);
@@ -314,6 +314,67 @@ console.log(inventory);
     client.end;
 });
 
+app.post('/addnewmenuitem', (request,response)=> {
+    const b = request.body;
+console.log(b);
+    var q = "INSERT into menu_items (" + 
+            "itemname, itemprice, itemtype) VALUES ('"
+                         + b.itemname + "',"
+                         + b.itemprice + ",'"
+                         + b.itemtype  + "');" 
+console.log(q);
+    client.query(q, (err,result) => {
+          if(!err) {
+             q = "select * from ingredient_map;"; 
+             //console.log(q);
+             client.query(q, (err,result) => {
+                if(!err) {
+                    const fields = result.fields.map(field => field.name);
+                    var ingrdata = b.ingrdata;
+                    var i = 0;
+                    insertq = "INSERT into ingredient_map (itemname,"; 
+                    valueq  = "VALUES (" + "'" + b.itemname + "'" +  ",";
+                    for (i = 1; i < fields.length; i++) {
+                        var j = 0;
+                        var val = 0.0;
+                        for (j = 0; j < ingrdata.length; j++) {
+                            val = 0.0;
+                            if(!fields[i].localeCompare(ingrdata[j].ingrname)) {
+                                val = ingrdata[j].ingramount; 
+                                break;
+                            }
+                        }
+                        insertq += fields[i];
+                        valueq  += val;
+                        //console.log(fields[i] + '=' + val);
+                        if ( i != fields.length-1) {
+                           insertq += ",";
+                           valueq += ",";
+                        }
+                    }
+                    insertq += ") ";
+                    valueq  += ");";
+                    q = insertq + valueq;
+                    //console.log(q);
+                    client.query(q, (err,result) => {
+                       if(!err)
+                           response.send('success');
+                       else
+                           response.send('failed');
+                    });
+                }
+                else
+                    response.send('failed');
+             });
+          }
+          else {
+             console.log(err);
+             response.send('failed');
+          }
+    });
+    client.end;
+});
+
 app.post('/addnewingredient', (request,response)=> {
     const b = request.body;
     var q = "INSERT into inventory (" + 
@@ -322,7 +383,7 @@ app.post('/addnewingredient', (request,response)=> {
                          + b.itemamount    + "," 
                          + 0.0    + "," 
                          + b.itemminamount + ");" 
-console.log(q);
+    //console.log(q);
     client.query(q, (err,result) => {
           if(!err) {
              response.send('success');
@@ -337,7 +398,7 @@ app.post('/restockitem', (request,response)=> {
     const b = request.body;
     var q = "update inventory set ingredientremaining=ingredientremaining+" + b.itemamount
                 + " where ingredient='" + b.ingredient + "';";
-console.log(q);
+    //console.log(q);
     client.query(q, (err,result) => {
           if(!err) {
              response.json(['success']);
@@ -352,7 +413,7 @@ app.post('/editmenuitemprice', (request,response)=> {
     const b = request.body;
     var q = "UPDATE menu_items SET itemprice = " + b.itemprice + " WHERE "
                 + "itemname = " + "'" + b.itemname + "';";
-console.log(q);
+    //console.log(q);
     client.query(q, (err,result) => {
           if(!err) {
              response.send('success');
@@ -378,11 +439,19 @@ app.get('/ingredientinstock', (request,response)=> {
 app.get('/inventory', (request,response)=> {
       client.query(`Select * from inventory`, (err,result) => {
           if(!err) {
+              inventory = [];
               const data = result.rows;
               var  retStr = '';
-              data.forEach(row =>  retStr += `${row.ingredient} ${row.ingredientremaining}
-                                              ${row.amountused} ${row.minimumamount}` + '<br>');
-              response.send(retStr);
+              data.forEach(row =>   { 
+                   jsondata = {}
+                   jsondata["ingredient"]    = row.ingredient;
+                   jsondata["amt_remaining"] = row.ingredientremaining;
+                   jsondata["amt_used"]      = row.amountused;
+                   jsondata["min_amt"]       = row.amountused;
+                   inventory.push(jsondata);
+              });
+      //console.log(inventory);
+              response.json(inventory);
           }
       });
       client.end;
