@@ -1,18 +1,14 @@
-export const COLUMNS = [
+export const RESTOCK_COLUMNS = [
     {
         Header: 'Ingredient',
         accessor: 'ingredient'
     },
     {
         Header: 'Amount Remaining',
-        accessor: 'amt_remaining'
-    },
-    {
-        Header: 'Amount Used',
-        accessor: 'amt_used'
+        accessor: 'ingredientremaining'
     },
     {
         Header: 'Minimum Amount',
-        accessor: 'min_amt'
+        accessor: 'minimumamount'
     }
 ]

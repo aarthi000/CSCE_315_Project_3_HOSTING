@@ -12,7 +12,18 @@ function Home() {
     function clickServer () {
         navigate("/server")
     }
-    function clickManager () {
+    async function clickManager () {
+        // Create a request URL to send to the server
+        const requestURL = "http://localhost:3300/inventory";
+        const request = new Request(requestURL);
+
+        await fetch(request, {
+    	      method: 'GET', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+        });
         navigate("/manager")
     }
 
