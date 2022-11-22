@@ -9,8 +9,8 @@ function Menu(props) {
         <main className = "width-2">
             <h2 className="sub-headers1">Menu Items</h2>
             <div className="row"></div>
-            {items.map((item) => (
-                <MenuItems key={item.id} item={item} onAdd={onAdd}></MenuItems>
+            {items?.map((item) => (
+                <MenuItems key={item?.id} item={item} onAdd={onAdd}></MenuItems>
             ))}
         </main>
     )
