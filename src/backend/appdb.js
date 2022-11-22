@@ -7,38 +7,44 @@ app.use(bodyParser.json());
 client.connect();
 
 app.listen(3300, () => {
-     console.log("Server is now listening at port 3300");
-   });
+    console.log("Server is now listening at port 3300");
+});
 
 app.use(function(request,response,next) {
-   response.header("Content-Type", "application/json");
-   response.header("Access-Control-Allow-Origin", "*");
-   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-   next();
+    response.header("Content-Type", "application/json");
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 
 app.get('/restock', (request,response)=> {
-      client.query(`Select * from inventory`, (err,result) => {
-          if(!err) {
-              const data = result.rows;
-              inventory = [];
+    var fs = require('fs');
+    client.query(`Select * from inventory`, (err,result) => {
+        if(!err) {
+            const data = result.rows;
+            inventory = [];
 
-              data.forEach(row =>  { if (row.ingredientremaining < row.minimumamount) {
-                                       jsondata = {};
-                                       jsondata["ingredientremaining"] = row.ingredientremaining;
-                                       jsondata["ingredient"]          = row.ingredient;
-                                       jsondata["minimumamount"]       = row.minimumamount;
-                                       inventory.push(jsondata);
-                                   }});
-              //data.forEach(row =>  { if (row.ingredientremaining < row.minimumamount) {
-              //                        retStr += `${row.ingredient} ${row.ingredientremaining}
-              //                                ${row.minimumamount}` + '<br>';
-              //                     }});
-              response.json(inventory);
-              //console.log(inventory);
-          }
-      });
-      client.end;
+            data.forEach(row => { if (row.ingredientremaining < row.minimumamount) {
+                                    jsondata = {};
+                                    jsondata["ingredientremaining"] = row.ingredientremaining;
+                                    jsondata["ingredient"]          = row.ingredient;
+                                    jsondata["minimumamount"]       = row.minimumamount;
+                                    inventory.push(jsondata);
+                                }});
+            //data.forEach(row =>  { if (row.ingredientremaining < row.minimumamount) {
+            //                        retStr += `${row.ingredient} ${row.ingredientremaining}
+            //                                ${row.minimumamount}` + '<br>';
+            //                     }});
+            response.json(inventory);
+            // console.log(inventory);
+            fs.writeFile("../components/ReportData.json", JSON.stringify(inventory), function(err) {
+                if (err) {
+                    throw err;
+                }
+            })
+        }
+    });
+    client.end;
 });
 
 app.post('/sales', (request,response)=> {
@@ -436,23 +442,33 @@ app.get('/ingredientinstock', (request,response)=> {
     });
     client.end;
 });
+
 app.get('/inventory', (request,response)=> {
-      client.query(`Select * from inventory`, (err,result) => {
-          if(!err) {
-              inventory = [];
-              const data = result.rows;
-              var  retStr = '';
-              data.forEach(row =>   { 
-                   jsondata = {}
-                   jsondata["ingredient"]    = row.ingredient;
-                   jsondata["amt_remaining"] = row.ingredientremaining;
-                   jsondata["amt_used"]      = row.amountused;
-                   jsondata["min_amt"]       = row.amountused;
-                   inventory.push(jsondata);
-              });
-      //console.log(inventory);
-              response.json(inventory);
-          }
-      });
-      client.end;
+    var fs = require('fs');
+    client.query(`Select * from inventory`, (err,result) => {
+        if(!err) {
+            const data = result.rows;
+            // var  retStr = '';
+            // data.forEach(row =>  retStr += `${row.ingredient} ${row.ingredientremaining}
+            //                                 ${row.amountused} ${row.minimumamount}` + '<br>');
+            // response.send(retStr);
+
+            inventory = [];
+            data.forEach(row => {   jsondata = {};
+                                    jsondata["ingredient"] = row.ingredient;
+                                    jsondata["ingredientremaining"] = row.ingredientremaining;
+                                    jsondata["amountused"] = row.amountused;
+                                    jsondata["minimumamount"] = row.minimumamount;
+                                    inventory.push(jsondata);
+                                });
+            
+            response.json(inventory);
+            fs.writeFile("../components/InventoryData.json", JSON.stringify(inventory), function(err) {
+                if (err) {
+                    throw err;
+                }
+            })
+        }
+    });
+    client.end;
 });
