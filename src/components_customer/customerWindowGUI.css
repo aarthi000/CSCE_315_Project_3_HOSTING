@@ -102,7 +102,7 @@ h3 {
     border-top: 3px solid #fdfdfd;
     border-bottom: 3px solid #fdfdfd;
     color: white; 
-    padding: 10px 80px; 
+    padding: 10px 103px; 
     cursor: pointer; 
     float: center; 
     font-weight : bold ;
@@ -207,5 +207,26 @@ background-color: #d49f00;
 .place-holder {
     color:#fdfdfd;
 }
+
+.display-item {
+    color:black;
+    font-family:'Optima', sans-serif;
+    font-size: 20px;
+}
+.display-price {
+    color:black;
+    font-family:'Optima', sans-serif;
+    font-size: 20px;
+}
+
+.delivery {
+    padding-bottom:30px;
+    padding-top:80px;
+    /* position: fixed; */
+}
+
+/* .order-summary {
+    position: fixed;
+} */
 
 

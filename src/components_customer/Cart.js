@@ -8,7 +8,7 @@ function Cart(props) {
     const itemsPrice = orderItems.reduce((a, c) => a + c.qty * c.itemprice, 0);
     return (
         <div class="cart-delivery">
-            {/* <div className="delivery">  
+            <div className="delivery">  
                 <h2 className="delivery_heading">Delivery Address</h2>
                 <form className ="form">
                     <label className="text-boxes">
@@ -21,12 +21,12 @@ function Cart(props) {
                     </label>
                 </form>
                 <button className='save-address-button'>Save Address</button>
-            </div> */}
+            </div>
             <div className="order-summary">
                 <div className="block1 width-1">
                     <h2 className="sub-headers">Order Summary</h2>
                     <div>
-                        {orderItems.length === 0 && <div>Cart is Empty</div>}
+                        {orderItems.length === 0 && <div className = "display-item">Cart is Empty</div>}
                     </div>
                     {orderItems.map((item) => (
                         <Row key={item.itemname}>
@@ -42,10 +42,12 @@ function Cart(props) {
                         <h2 className="display-item">Order Total: ${itemsPrice.toFixed(2)}</h2>
                     )}
                     <button className='customize_button'>Place Order</button>
+                    
                 </div>
             </div>  
             
         </div>
+        
     )
 }
 
