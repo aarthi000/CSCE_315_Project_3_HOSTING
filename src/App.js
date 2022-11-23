@@ -5,6 +5,7 @@ import Home from "./Home";
 import Customer from "./components_customer/customerWindowGUI"
 import ManagerWindow from "./components/ManagerWindow"
 import Restock from "./components/Restock"
+import Sales from "./components/Sales"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 			{/* <Route exact path="/server" element={<Server/>} /> */}
 			<Route exact path="/manager" element={<ManagerWindow/>} />
       <Route exact path="/restock" element={<Restock/>} />
+      <Route exact path="/sales" element={<Sales/>} />
 		</Routes>
       </Routers>
     </div>  

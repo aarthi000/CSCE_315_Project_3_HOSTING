@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useTable } from 'react-table';
 import { INVENTORY_COLUMNS } from './InventoryColumns';
 import { RESTOCK_COLUMNS } from './RestockColumns';
+import { SALES_COLUMNS } from './SalesColumns';
 import INVENTORY_DATA from './InventoryData.json';
 import REPORT_DATA from './ReportData.json';
 
@@ -15,9 +16,10 @@ export const Table = ({columnType, dataType}) => {
         case 'restock':
             columns = useMemo(() => RESTOCK_COLUMNS, []);
             break;
-        case 'excess':
-            break;
         case 'sales':
+            columns = useMemo(() => SALES_COLUMNS, []);
+            break;
+        case 'excess':
             break;
         case 'add-ons':
             break;

@@ -48,57 +48,81 @@ app.get('/restock', (request,response)=> {
 });
 
 app.post('/sales', (request,response)=> {
-      const b = request.body;
+    var fs = require('fs');
+    const b = request.body;
 
-                   //const queryObject = url.parse(request.url, true).query;
-                   //console.log(queryObject.startdate);
-                   //console.log(queryObject.enddate);
-                   //let starttime = '9/18/2022';
-                   //let endtime = '9/24/2022';
+                //const queryObject = url.parse(request.url, true).query;
+                //console.log(queryObject.startdate);
+                //console.log(queryObject.enddate);
+                //let starttime = '9/18/2022';
+                //let endtime = '9/24/2022';
 
-      let starttime = b.startdate;
-      let endtime   = b.enddate;
+    let starttime = b.startdate;
+    let endtime   = b.enddate;
 
-      let  startDateSplit = starttime.split("/");
-      let startMonth      = startDateSplit[0];
-      let startDay        = startDateSplit[1];
-      //let startYear       = startDateSplit[2];
+    let startDateSplit  = starttime.split("/");
+    let startMonth      = startDateSplit[0];
+    let startDay        = startDateSplit[1];
+    //let startYear       = startDateSplit[2];
 
-      let endDateSplit = endtime.split("/");
-      let endMonth     = endDateSplit[0];
-      let endDay       = endDateSplit[1];
-      //let endYear    = endDateSplit[2];
+    let endDateSplit = endtime.split("/");
+    let endMonth     = endDateSplit[0];
+    let endDay       = endDateSplit[1];
+    //let endYear    = endDateSplit[2];
 
-      let query = "SELECT * FROM order_history WHERE orderday >= '"
-                     + startDay + "' AND ordermonth >= '" + startMonth + "' AND orderday <= '"
-                     + endDay + "' AND ordermonth <= '" + endMonth + "';";
+    let query = "SELECT * FROM order_history WHERE orderday >= '"
+                + startDay + "' AND ordermonth >= '" + startMonth + "' AND orderday <= '"
+                + endDay + "' AND ordermonth <= '" + endMonth + "';";
 
-     salesdata = [];
-     //console.log(query);
-     client.query(query, (err,result) => {
-         if(!err) {
-              const data = result.rows;
-              data.forEach(row =>  {
-                             salesrow = {}
-                             salesrow["orderpk"]    = row.orderpk;
-                             salesrow["orderid"]    = row.orderid;
-                             salesrow["lineitem"]   = row.lineitem;
-                             salesrow["itemname"]   = row.itemname;
-                             salesrow["itemprice"]  = row.itemprice;
-                             salesrow["orderday"]   = row.orderday;
-                             salesrow["ordermonth"] = row.ordermonth;
-                             salesrow["orderyear"]  = row.orderyear;
-                             salesdata.push(salesrow);
-              });
-     //console.log(salesdata);
-              response.json(salesdata);
-          }
-          else {
-              response.send(err);
-          }
-      });
+    salesdata = [];
+    //console.log(query);
+    client.query(query, (err,result) => {
+        if(!err) {
+            const data = result.rows;
+            // data.forEach(row =>  {
+            //             salesrow = {}
+            //             salesrow["orderpk"]    = row.orderpk;
+            //             salesrow["orderid"]    = row.orderid;
+            //             salesrow["lineitem"]   = row.lineitem;
+            //             salesrow["itemname"]   = row.itemname;
+            //             salesrow["itemprice"]  = row.itemprice;
+            //             salesrow["orderday"]   = row.orderday;
+            //             salesrow["ordermonth"] = row.ordermonth;
+            //             salesrow["orderyear"]  = row.orderyear;
+            //             salesdata.push(salesrow);
+            // });
+            var itemSales = new Map();
+            data.forEach(row => {
+                        itemName = row.itemname;
+                        if (itemSales.has(itemName)) {
+                            itemSales.set(itemName, itemSales.get(itemName) + 1);
+                        } else {
+                            itemSales.set(itemName, 1);
+                        }       
+            });
 
-      client.end;
+            console.log(itemSales);
+
+            Array.from(itemSales.keys()).forEach(itemName => {
+                salesrow = {}
+                salesrow["itemname"] = itemName;
+                salesrow["amountsold"] = itemSales.get(itemName);
+                salesdata.push(salesrow);
+            });
+    // console.log(salesdata);
+            response.json(salesdata);
+            fs.writeFile("../components/ReportData.json", JSON.stringify(salesdata), function(err) {
+                if (err) {
+                    throw err;
+                }
+            })
+        }
+        else {
+            response.send(err);
+        }
+    });
+
+    client.end;
 });
 
 app.post('/excess', (request,response)=> {

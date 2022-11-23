@@ -323,43 +323,44 @@ console.log(sendData);
                 body: JSON.stringify(sendData)
             });
             // Now obtain the data from server.  Server sent a text so read it as text
-            const jsondata = await response.json();
-            let titleStr = "";
-            titleStr += "This report shows the order sales between ";
-            titleStr += startdate + " and " + enddate;
-            var i = 0;
-            var data = '<table border="1px solid black"> <th>OrderName</th> <th>Order ID</th> <th>LineItem</th> <th>ItemName</th> <th>ItemPrice</th> <th>OrderDay</th> <th>OrderMonth</th> <th>OrderYear</th>';
-            for (i=0; i < jsondata.length; i++) {
-                    data += '<tr>';
-                    data += '<td>' + jsondata[i].orderpk    + '</td>';
-                    data += '<td>' + jsondata[i].orderid    + '</td>';
-                    data += '<td>' + jsondata[i].lineitem   + '</td>';
-                    data += '<td>' + jsondata[i].itemname   + '</td>';
-                    data += '<td>' + jsondata[i].itemprice  + '</td>';
-                    data += '<td>' + jsondata[i].orderday   + '</td>';
-                    data += '<td>' + jsondata[i].ordermonth + '</td>';
-                    data += '<td>' + jsondata[i].orderyear  + '</td>';
-                    data += '</tr>';
-            }
-            data += '</table>';
-            const winHtml = `<!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>Restock Window</title>
-                        </head>
-                        <body>`
-                        + '<p>' + titleStr + '<br>' + data + '</p>' + 
-                        `</body>
-                        <div name"mytable">
-                        </div>
-                        </html>`;
+            // const jsondata = await response.json();
+            // let titleStr = "";
+            // titleStr += "This report shows the order sales between ";
+            // titleStr += startdate + " and " + enddate;
+            // var i = 0;
+            // var data = '<table border="1px solid black"> <th>OrderName</th> <th>Order ID</th> <th>LineItem</th> <th>ItemName</th> <th>ItemPrice</th> <th>OrderDay</th> <th>OrderMonth</th> <th>OrderYear</th>';
+            // for (i=0; i < jsondata.length; i++) {
+            //         data += '<tr>';
+            //         data += '<td>' + jsondata[i].orderpk    + '</td>';
+            //         data += '<td>' + jsondata[i].orderid    + '</td>';
+            //         data += '<td>' + jsondata[i].lineitem   + '</td>';
+            //         data += '<td>' + jsondata[i].itemname   + '</td>';
+            //         data += '<td>' + jsondata[i].itemprice  + '</td>';
+            //         data += '<td>' + jsondata[i].orderday   + '</td>';
+            //         data += '<td>' + jsondata[i].ordermonth + '</td>';
+            //         data += '<td>' + jsondata[i].orderyear  + '</td>';
+            //         data += '</tr>';
+            // }
+            // data += '</table>';
+            // const winHtml = `<!DOCTYPE html>
+            //             <html>
+            //             <head>
+            //                 <title>Restock Window</title>
+            //             </head>
+            //             <body>`
+            //             + '<p>' + titleStr + '<br>' + data + '</p>' + 
+            //             `</body>
+            //             <div name"mytable">
+            //             </div>
+            //             </html>`;
 
-            const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
+            // const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
 
-            const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
-            if (window.focus())
-                win.focus();
+            // const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
+            // if (window.focus())
+            //     win.focus();
         }
+        navigate("/sales");
     }
 
     const handleExcess = async (event, nameStr) => {
@@ -415,127 +416,127 @@ console.log(sendData);
                 win.focus();
         }
         // Client code to process 'Sales' when user clicks on 'sales' button
-        const handleSales = async (event, nameStr) => {
-            // Read the input from propmpt window
-            // It is a text field and user will enter '11/01/2022 11/09/2022'
+        // const handleSales = async (event, nameStr) => {
+        //     // Read the input from propmpt window
+        //     // It is a text field and user will enter '11/01/2022 11/09/2022'
 
-            let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
-            if (timeinput != null) {
-                // OK button is pressed so timeinput is not null
-                // split the input and get start date and end date
-                let  timeperiods = timeinput.split(" ");
-                var  startdate = timeperiods[0];
-                var  enddate = timeperiods[1];
+        //     let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
+        //     if (timeinput != null) {
+        //         // OK button is pressed so timeinput is not null
+        //         // split the input and get start date and end date
+        //         let  timeperiods = timeinput.split(" ");
+        //         var  startdate = timeperiods[0];
+        //         var  enddate = timeperiods[1];
 
-                // Create a JSON object 'sendData' (name: value) format
-                const sendData = {startdate,enddate};
+        //         // Create a JSON object 'sendData' (name: value) format
+        //         const sendData = {startdate,enddate};
 
-                // Create a request URL to send to the server
-                const requestURL = "http://localhost:3300/sales";
-                const request = new Request(requestURL);
+        //         // Create a request URL to send to the server
+        //         const requestURL = "http://localhost:3300/sales";
+        //         const request = new Request(requestURL);
 
-                // Send the request along with the data inside 'request body'
-                const response = await fetch(request, {
-                    method: 'POST', 
-                    headers: { 
-                        'Content-Type': 'application/json',
-                    },
-                    mode: 'cors', 
-                    body: JSON.stringify(sendData)
-                });
-                // Now obtain the data from server.  Server sent a text so read it as text
-                const jsondata = await response.json();
-                let titleStr = "";
-                titleStr += "This report shows the order sales between ";
-                titleStr += startdate + " and " + enddate;
-                var i = 0;
-                var data = '<table border="1px solid black"> <th>OrderName</th> <th>Order ID</th> <th>LineItem</th> <th>ItemName</th> <th>ItemPrice</th> <th>OrderDay</th> <th>OrderMonth</th> <th>OrderYear</th>';
-                for (i=0; i < jsondata.length; i++) {
-                        data += '<tr>';
-                        data += '<td>' + jsondata[i].orderpk    + '</td>';
-                        data += '<td>' + jsondata[i].orderid    + '</td>';
-                        data += '<td>' + jsondata[i].lineitem   + '</td>';
-                        data += '<td>' + jsondata[i].itemname   + '</td>';
-                        data += '<td>' + jsondata[i].itemprice  + '</td>';
-                        data += '<td>' + jsondata[i].orderday   + '</td>';
-                        data += '<td>' + jsondata[i].ordermonth + '</td>';
-                        data += '<td>' + jsondata[i].orderyear  + '</td>';
-                        data += '</tr>';
-                }
-                data += '</table>';
-                const winHtml = `<!DOCTYPE html>
-                            <html>
-                            <head>
-                                <title>Restock Window</title>
-                            </head>
-                            <body>`
-                            + '<p>' + titleStr + '<br>' + data + '</p>' + 
-                            `</body>
-                            <div name"mytable">
-                            </div>
-                            </html>`;
+        //         // Send the request along with the data inside 'request body'
+        //         const response = await fetch(request, {
+        //             method: 'POST', 
+        //             headers: { 
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             mode: 'cors', 
+        //             body: JSON.stringify(sendData)
+        //         });
+        //         // Now obtain the data from server.  Server sent a text so read it as text
+        //         const jsondata = await response.json();
+        //         let titleStr = "";
+        //         titleStr += "This report shows the order sales between ";
+        //         titleStr += startdate + " and " + enddate;
+        //         var i = 0;
+        //         var data = '<table border="1px solid black"> <th>OrderName</th> <th>Order ID</th> <th>LineItem</th> <th>ItemName</th> <th>ItemPrice</th> <th>OrderDay</th> <th>OrderMonth</th> <th>OrderYear</th>';
+        //         for (i=0; i < jsondata.length; i++) {
+        //                 data += '<tr>';
+        //                 data += '<td>' + jsondata[i].orderpk    + '</td>';
+        //                 data += '<td>' + jsondata[i].orderid    + '</td>';
+        //                 data += '<td>' + jsondata[i].lineitem   + '</td>';
+        //                 data += '<td>' + jsondata[i].itemname   + '</td>';
+        //                 data += '<td>' + jsondata[i].itemprice  + '</td>';
+        //                 data += '<td>' + jsondata[i].orderday   + '</td>';
+        //                 data += '<td>' + jsondata[i].ordermonth + '</td>';
+        //                 data += '<td>' + jsondata[i].orderyear  + '</td>';
+        //                 data += '</tr>';
+        //         }
+        //         data += '</table>';
+        //         const winHtml = `<!DOCTYPE html>
+        //                     <html>
+        //                     <head>
+        //                         <title>Restock Window</title>
+        //                     </head>
+        //                     <body>`
+        //                     + '<p>' + titleStr + '<br>' + data + '</p>' + 
+        //                     `</body>
+        //                     <div name"mytable">
+        //                     </div>
+        //                     </html>`;
 
-                const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
+        //         const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
 
-                const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
-                if (window.focus())
-                    win.focus();
-            }
-        }
-        const handleExcess = async (event, nameStr) => {
-            // Read the input from propmpt window
-            // It is a text field and user will enter '11/01/2022 11/09/2022'
+        //         const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
+        //         if (window.focus())
+        //             win.focus();
+        //     }
+        // }
+        // const handleExcess = async (event, nameStr) => {
+        //     // Read the input from propmpt window
+        //     // It is a text field and user will enter '11/01/2022 11/09/2022'
 
-            let timeinput = prompt("Enter Start Time and End Time (MM/DD/YY MM/DD/YY)");
-            if (timeinput != null) {
-                // OK button is pressed so timeinput is not null
-                // split the input and get start date and end date
-                let  timeperiods = timeinput.split(" ");
-                var  startdate = timeperiods[0];
-                var  enddate = timeperiods[1];
+        //     let timeinput = prompt("Enter Start Time and End Time (MM/DD/YY MM/DD/YY)");
+        //     if (timeinput != null) {
+        //         // OK button is pressed so timeinput is not null
+        //         // split the input and get start date and end date
+        //         let  timeperiods = timeinput.split(" ");
+        //         var  startdate = timeperiods[0];
+        //         var  enddate = timeperiods[1];
 
-                // Create a JSON object 'sendData' (name: value) format
-                const sendData = {startdate,enddate};
+        //         // Create a JSON object 'sendData' (name: value) format
+        //         const sendData = {startdate,enddate};
 
-                // Create a request URL to send to the server
-                const requestURL = "http://localhost:3300/excess";
-                const request = new Request(requestURL);
+        //         // Create a request URL to send to the server
+        //         const requestURL = "http://localhost:3300/excess";
+        //         const request = new Request(requestURL);
 
-                // Send the request along with the data inside 'request body'
-	            const response = await fetch(request, {
-			        method: 'POST', 
-                    headers: { 
-                        'Content-Type': 'application/json',
-                    },
-                    mode: 'cors', 
-                    body: JSON.stringify(sendData)
-                });
-                // Now obtain the data from server.  Server sent a text so read it as text
-                const recvData = await response.text();
-                let titleStr = "";
-                titleStr += "This report shows the excess data between ";
-                titleStr += startdate + " and " + enddate;
-                // Excess report will come as list of strings.
-                const winHtml = `<!DOCTYPE html>
-                            <html>
-                            <head>
-                                <title>Restock Window</title>
-                            </head>
-                            <body>`
-                            + '<p>' + titleStr + '<br>' +'<br>'+ recvData + '</p>' + 
-                            `</body>
-                            <div name"mytable">
-                            </div>
-                            </html>`;
+        //         // Send the request along with the data inside 'request body'
+	    //         const response = await fetch(request, {
+		// 	        method: 'POST', 
+        //             headers: { 
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             mode: 'cors', 
+        //             body: JSON.stringify(sendData)
+        //         });
+        //         // Now obtain the data from server.  Server sent a text so read it as text
+        //         const recvData = await response.text();
+        //         let titleStr = "";
+        //         titleStr += "This report shows the excess data between ";
+        //         titleStr += startdate + " and " + enddate;
+        //         // Excess report will come as list of strings.
+        //         const winHtml = `<!DOCTYPE html>
+        //                     <html>
+        //                     <head>
+        //                         <title>Restock Window</title>
+        //                     </head>
+        //                     <body>`
+        //                     + '<p>' + titleStr + '<br>' +'<br>'+ recvData + '</p>' + 
+        //                     `</body>
+        //                     <div name"mytable">
+        //                     </div>
+        //                     </html>`;
 
-                const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
+        //         const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
 
-                const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
-                if (window.focus())
-                    win.focus();
-            }
+        //         const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
+        //         if (window.focus())
+        //             win.focus();
+        //     }
 
-        }
+        // }
               
     }
 
@@ -550,7 +551,6 @@ console.log(sendData);
                     <button onClick={event => handleSales(event,'sales')} className="role-button">Sales</button>
                     <button onClick={event => handleExcess(event,'excess')} className="role-button">Excess</button>
                     <button onClick={event => handleRestock(event,'restock')} className="role-button">Restock</button>
-                    {/* <button onClick={event => handleRestock(event, 'restock')} className="role-button">Restock</button> */}
                     <button onClick={event => handleAddons(event,'addons')} className="role-button">Add-ons</button>
                 </div>
                     <h2>Add Menu Item</h2>
