@@ -4,7 +4,7 @@ import { BrowserRouter as Routers, Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import Customer from "./components_customer/customerWindowGUI"
 import ManagerWindow from "./components/ManagerWindow"
-
+import Restock from "./components/Restock"
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
 			<Route exact path="/customer" element={<Customer/>} />
 			{/* <Route exact path="/server" element={<Server/>} /> */}
 			<Route exact path="/manager" element={<ManagerWindow/>} />
+      <Route exact path="/restock" element={<Restock/>} />
 		</Routes>
       </Routers>
     </div>  
