@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {Fragment, useEffect, useState} from "react";
+
 import './customerWindowGUI.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -6,6 +7,30 @@ import Col from 'react-bootstrap/Col';
 function Cart(props) {
     const {orderItems, onAdd, onRemove} = props;
     const itemsPrice = orderItems.reduce((a, c) => a + c.qty * c.itemprice, 0);
+
+    
+    const sendOrder = async () => {
+        try{
+          const body = orderItems;
+          const response = await fetch ("http://localhost:4999/placeOrder",{
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(body)
+          });
+    
+        }catch (err){
+          console.error("Error in sendOrder in Cart.js -- see below msg:");
+          console.error(err.message);
+        }
+      }
+    
+
+    //   useEffect(()=> { //only for testing. need to comment out and actually call function properly!
+    //     console.log("f");
+    //     sendOrder();
+    //   }, []);
+
+
     return (
         <div class="cart-delivery">
             <div className="delivery">  
@@ -41,7 +66,7 @@ function Cart(props) {
                     {orderItems.length !== 0 && (
                         <h2 className="display-item">Order Total: ${itemsPrice.toFixed(2)}</h2>
                     )}
-                    <button className='customize_button'>Place Order</button>
+                    <button onClick={() => sendOrder()} className='customize_button'>Place Order</button>
                     
                 </div>
             </div>  
