@@ -27,8 +27,9 @@ function Customer(props) {
   useEffect(()=> {
     getMenuitems();
   }, []);
-  // console.log("menuitems");
   
+  
+
   const [orderItems, setOrderItems] = useState([]);
   const {items} = menuitems;
   //console.log(menuitems);
@@ -62,6 +63,8 @@ function Customer(props) {
           localStorage.setItem('orderItems', JSON.stringify(newItems));
       }
     };
+
+    
 
     useEffect(() => {
       setOrderItems(localStorage.getItem('orderItems') ? JSON.parse(localStorage.getItem('orderItems')):[]);
