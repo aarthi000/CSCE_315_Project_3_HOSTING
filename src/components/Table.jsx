@@ -3,6 +3,8 @@ import { useTable } from 'react-table';
 import { INVENTORY_COLUMNS } from './InventoryColumns';
 import { RESTOCK_COLUMNS } from './RestockColumns';
 import { SALES_COLUMNS } from './SalesColumns';
+import { EXCESS_COLUMNS } from './ExcessColumns';
+import { ADDONS_COLUMNS } from './AddonsColumns';
 import INVENTORY_DATA from './InventoryData.json';
 import REPORT_DATA from './ReportData.json';
 
@@ -20,8 +22,10 @@ export const Table = ({columnType, dataType}) => {
             columns = useMemo(() => SALES_COLUMNS, []);
             break;
         case 'excess':
+            columns = useMemo(() => EXCESS_COLUMNS, []);
             break;
-        case 'add-ons':
+        case 'addons':
+            columns = useMemo(() => ADDONS_COLUMNS, []);
             break;
     }
     switch(dataType) {

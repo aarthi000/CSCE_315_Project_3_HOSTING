@@ -63,6 +63,7 @@ console.log(jsondata);
             if (window.focus())
                 win.focus();
         }
+        navigate("/addons");
     }
 
     const handleEditMenuItem = async () => {
@@ -258,37 +259,6 @@ console.log(sendData);
                 },
                 mode: 'cors', 
         });
-        // const jsondata = await response.json();
-        // var i = 0;
-        // let titleStr = "";
-        // titleStr += "This Restock Report";
-        // var i = 0;
-        // var data = '<table border="1px solid black"> <th> Ingredient </th> <th> Ingredient Remaining </th>';
-        // for (i=0; i < jsondata.length; i++) {
-        //             data += '<tr>';
-        //             data += '<td>' + jsondata[i].ingredient + '</td>';
-        //             data += '<td>' + jsondata[i].ingredientremaining + '</td>';
-        //             data += '</tr>';
-        // }
-        // data += '</table>';
-
-        // const winHtml = `<!DOCTYPE html>
-        //                 <html>
-        //                 <head>
-        //                     <title>Restock Window</title>
-        //                 </head>
-        //                 <body>`
-        //                 + '<p>' + titleStr + '<br>' + data + '</p>' + 
-        //                 `</body>
-        //                 <div name"mytable">
-        //                 </div>
-        //                 </html>`;
-
-        // const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
-
-        // const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
-        // if (window.focus())
-        //     win.focus();
 
         navigate("/restock");
     }
@@ -322,43 +292,6 @@ console.log(sendData);
                 mode: 'cors', 
                 body: JSON.stringify(sendData)
             });
-            // Now obtain the data from server.  Server sent a text so read it as text
-            // const jsondata = await response.json();
-            // let titleStr = "";
-            // titleStr += "This report shows the order sales between ";
-            // titleStr += startdate + " and " + enddate;
-            // var i = 0;
-            // var data = '<table border="1px solid black"> <th>OrderName</th> <th>Order ID</th> <th>LineItem</th> <th>ItemName</th> <th>ItemPrice</th> <th>OrderDay</th> <th>OrderMonth</th> <th>OrderYear</th>';
-            // for (i=0; i < jsondata.length; i++) {
-            //         data += '<tr>';
-            //         data += '<td>' + jsondata[i].orderpk    + '</td>';
-            //         data += '<td>' + jsondata[i].orderid    + '</td>';
-            //         data += '<td>' + jsondata[i].lineitem   + '</td>';
-            //         data += '<td>' + jsondata[i].itemname   + '</td>';
-            //         data += '<td>' + jsondata[i].itemprice  + '</td>';
-            //         data += '<td>' + jsondata[i].orderday   + '</td>';
-            //         data += '<td>' + jsondata[i].ordermonth + '</td>';
-            //         data += '<td>' + jsondata[i].orderyear  + '</td>';
-            //         data += '</tr>';
-            // }
-            // data += '</table>';
-            // const winHtml = `<!DOCTYPE html>
-            //             <html>
-            //             <head>
-            //                 <title>Restock Window</title>
-            //             </head>
-            //             <body>`
-            //             + '<p>' + titleStr + '<br>' + data + '</p>' + 
-            //             `</body>
-            //             <div name"mytable">
-            //             </div>
-            //             </html>`;
-
-            // const winUrl = URL.createObjectURL( new Blob([winHtml], { type: "text/html" }));
-
-            // const win = window.open( winUrl, "win", `width=800,height=400,screenX=200,screenY=200`);
-            // if (window.focus())
-            //     win.focus();
         }
         navigate("/sales");
     }
@@ -537,7 +470,7 @@ console.log(sendData);
         //     }
 
         // }
-              
+        navigate("/excess");  
     }
 
     return (

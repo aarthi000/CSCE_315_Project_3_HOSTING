@@ -126,64 +126,75 @@ app.post('/sales', (request,response)=> {
 });
 
 app.post('/excess', (request,response)=> {
-      const b = request.body;
+    var fs = require('fs');
+    const b = request.body;
 
-      let timeRangeQueryStart = "SELECT * FROM inventory_history WHERE date = '" + b.startdate + "';";
-      let timeRangeQueryEnd = "SELECT * FROM inventory_history WHERE date = '" + b.enddate + "';";
-      const startTimeMap = new Map();
-      var query = {
-         text: timeRangeQueryStart,
-         rowMode: 'array'
-      };
-      client.query(query, (err,result) => {
-          if(!err) {
-              // Split the column names into array of strings
-              const fields = result.fields.map(field => field.name);
-              const data = result.rows;
-              data.forEach(row =>  {
-                  var i=0;
-                  // For each field, enter fieldname and value into Map
-                  for (i=1;i<fields.length;i++) {
-                      startTimeMap.set(fields[i],row[i]);
-                  }
-              });
-              var endList = []; 
-              query  =  {
-                 text: timeRangeQueryEnd,
-                 rowMode: 'array'
-              };
-              // Run time end query
-              client.query(query, (err,result) => {
-                  if(!err) {
-                      const fields = result.fields.map(field => field.name);
-                      const data = result.rows;
-                      i = 0;
-                      // For each field, just store value in an array
-                      data.forEach(row =>  { 
-                          for (i=1;i<fields.length;i++) {
-                              endList[i] = row[i];
-                          }
-                      });
-                      retStr = '';
-                      i = 1;
-                      // compare the values and determine the excess
-                      for (const [key, value] of startTimeMap) {
-                         if(endList[i++] > (0.9 * value ))
-                             retStr += key + '<br>';
-                      }
-                      response.send(retStr);
-                  }
-                  else {
-                      response.send(err);
-                  }
-              });
-              //console.log(endList);
-          }
-          else {
-              response.send(err);
-          }
-      });
-      client.end;
+    let timeRangeQueryStart = "SELECT * FROM inventory_history WHERE date = '" + b.startdate + "';";
+    let timeRangeQueryEnd = "SELECT * FROM inventory_history WHERE date = '" + b.enddate + "';";
+    const startTimeMap = new Map();
+    var query = {
+        text: timeRangeQueryStart,
+        rowMode: 'array'
+    };
+    client.query(query, (err,result) => {
+        if(!err) {
+            // Split the column names into array of strings
+            const fields = result.fields.map(field => field.name);
+            const data = result.rows;
+            data.forEach(row =>  {
+                var i=0;
+                // For each field, enter fieldname and value into Map
+                for (i=1;i<fields.length;i++) {
+                    startTimeMap.set(fields[i],row[i]);
+                }
+            });
+            var endList = []; 
+            query  =  {
+                text: timeRangeQueryEnd,
+                rowMode: 'array'
+            };
+            // Run time end query
+            client.query(query, (err,result) => {
+                if(!err) {
+                    const fields = result.fields.map(field => field.name);
+                    const data = result.rows;
+                    i = 0;
+                    // For each field, just store value in an array
+                    data.forEach(row =>  { 
+                        for (i=1;i<fields.length;i++) {
+                            endList[i] = row[i];
+                        }
+                    });
+                    retStr = '';
+                    i = 1;
+                    excessData = [];
+                    // compare the values and determine the excess
+                    for (const [key, value] of startTimeMap) {
+                        if(endList[i++] > (0.9 * value )) {
+                            retStr += key + '<br>';
+                            excessRow = {}
+                            excessRow["itemName"] = key;
+                            excessData.push(excessRow);
+                        } 
+                    }
+                    response.json(excessData);
+                    fs.writeFile("../components/ReportData.json", JSON.stringify(excessData), function(err) {
+                        if (err) {
+                            throw err;
+                        }
+                    })
+                }
+                else {
+                    response.send(err);
+                }
+            });
+            //console.log(endList);
+        }
+        else {
+            response.send(err);
+        }
+    });
+    client.end;
 });
 
 var getDaysArray = function(start, end) {
@@ -226,51 +237,57 @@ var getDates = function(b) {
 };
 
 app.post('/addonsreport',(request,response)=> {
-      const b = request.body;
-      daylist2 = getDates(b);
+    var fs = require('fs');
+    const b = request.body;
+    daylist2 = getDates(b);
 
-      const query = {
-         text: "select * from AddOns_History;",
-         rowMode: 'array'
-      };
-      client.query(query, (err,result) => {
-          if(!err) {
-             const data = result.rows;
-             const fields = result.fields.map(field => field.name);
-             var addonMap = new Map();
-             report = [];
-             data.forEach(row => { 
-                 var i=0;
-                 var index=-1;
-                 if (daylist2.includes(row[0])) {
-                     for (i=1;i<fields.length;i++) {
-                         jsondata = {};
-                         let val = addonMap.get(fields[i]);
-                         jsondata['addonname'] = fields[i];
-                         if (val == null) {
-                              jsondata['addonamount'] = row[i];
-                             //addonMap.set(fields[i],row[i]);
-                         }
-                         else {
-                              jsondata['addonamount'] = row[i] + val;
-                             //addonMap.set(fields[i],row[i]+val);
-                         }
-                         report.push(jsondata);
-                     }
-                 }
-             });
-             //for (const [key, value] of addonMap) {
-             //    var addon = key;
-             //    var amount = value;
-             //    titleStr += "<br>" + addon + "             " + amount;
-             //}
-             response.json(report);
-          }
-          else {
-              console.log(err);
-          }
-      });
-      client.end;
+    const query = {
+        text: "select * from AddOns_History;",
+        rowMode: 'array'
+    };
+    client.query(query, (err,result) => {
+        if(!err) {
+            const data = result.rows;
+            const fields = result.fields.map(field => field.name);
+            var addonMap = new Map();
+            report = [];
+            data.forEach(row => { 
+                var i=0;
+                var index=-1;
+                if (daylist2.includes(row[0])) {
+                    for (i=1;i<fields.length;i++) {
+                        jsondata = {};
+                        let val = addonMap.get(fields[i]);
+                        jsondata['addonname'] = fields[i];
+                        if (val == null) {
+                            jsondata['addonamount'] = row[i];
+                            //addonMap.set(fields[i],row[i]);
+                        }
+                        else {
+                            jsondata['addonamount'] = row[i] + val;
+                            //addonMap.set(fields[i],row[i]+val);
+                        }
+                        report.push(jsondata);
+                    }
+                }
+            });
+            //for (const [key, value] of addonMap) {
+            //    var addon = key;
+            //    var amount = value;
+            //    titleStr += "<br>" + addon + "             " + amount;
+            //}
+            response.json(report);
+            fs.writeFile("../components/ReportData.json", JSON.stringify(report), function(err) {
+                if (err) {
+                    throw err;
+                }
+            })
+        }
+        else {
+            console.log(err);
+        }
+    });
+    client.end;
 });
 
 app.post('/changeminimum', (request,response)=> {

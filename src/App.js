@@ -6,6 +6,8 @@ import Customer from "./components_customer/customerWindowGUI"
 import ManagerWindow from "./components/ManagerWindow"
 import Restock from "./components/Restock"
 import Sales from "./components/Sales"
+import Excess from "./components/Excess"
+import Addons from "./components/Addons"
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
 			<Route exact path="/manager" element={<ManagerWindow/>} />
       <Route exact path="/restock" element={<Restock/>} />
       <Route exact path="/sales" element={<Sales/>} />
+      <Route exact path="/excess" element={<Excess/>} />
+      <Route exact path="/addons" element={<Addons/>} />
 		</Routes>
       </Routers>
     </div>  
