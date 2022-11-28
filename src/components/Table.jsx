@@ -7,6 +7,7 @@ import { EXCESS_COLUMNS } from './ExcessColumns';
 import { ADDONS_COLUMNS } from './AddonsColumns';
 import INVENTORY_DATA from './InventoryData.json';
 import REPORT_DATA from './ReportData.json';
+import "./Table.css";
 
 export const Table = ({columnType, dataType}) => {
     var columns;

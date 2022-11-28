@@ -7,10 +7,12 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "body-parser": "^1.20.1",
+    "bootstrap": "^5.2.3",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jwt-decode": "^3.1.2",
     "node": "^19.1.0",
+    "nodemon": "^2.0.20",
     "pg": "^8.8.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
@@ -25,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "nodemon ./src/backend/customer_backend/customerAPI & nodemon ./src/backend/appdb & npm start"
   },
   "browserslist": {
     "production": [
