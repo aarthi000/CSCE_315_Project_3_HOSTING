@@ -9,7 +9,7 @@ import INVENTORY_DATA from './InventoryData.json';
 import REPORT_DATA from './ReportData.json';
 import "./Table.css";
 
-export const Table = ({columnType, dataType}) => {
+export const Table = ({ columnType, dataType }) => {
     var columns;
     var data;
     switch(columnType) {

@@ -2,7 +2,7 @@ body {
     background-color: #5A0625;
 }
 
-.ManagerWindow {
+/* .ManagerWindow {
     display: table;
     width: 100%;
     height: 100%;
@@ -14,6 +14,23 @@ body {
     vertical-align: top;
     width: 50%;
     padding: 1rem;
+} */
+
+.split {
+    width: 100%;
+    height: 100%;
+}
+
+.left {
+    float: left;
+    width: 50%;
+    /* background-color: bisque; */
+}
+
+.right {
+    float: right;
+    width: 50%;
+    /* background-color: beige; */
 }
 
 .report-btn-group button {
@@ -30,7 +47,6 @@ body {
     color: white; 
     padding: 10px 30px; 
     cursor: pointer; 
-    float: center; 
 }
 
 /* Clear floats (clearfix hack) */
@@ -39,7 +55,6 @@ body {
     clear: both;
     display: table;
 }
-
 .report-btn-group button:hover {
     background-color: #d49f00;
 } */
@@ -56,11 +71,11 @@ body {
     font-weight : bold ;
     font-size: 14px;
     color: white;
-    text-shadow: 2px 2px #5A0625; 
-    }
+    text-shadow: none; 
+}
 
-h1 {
-    color: white;
+.report-btn-group {
+    text-align: center;
 }
 
 .textcolorwhite {
@@ -70,6 +85,7 @@ h1 {
 h2 {
     color: white;
     margin-bottom: 0;
+    margin-top: 15px;
     text-align: center;
 }
 
@@ -96,14 +112,14 @@ input, select {
 
 .input-class {
     /* background-color: #d49f00; */
-    width: 70%;
+    width: 80%;
     vertical-align: top;
     text-align: right;
 }
 
 .submit-class {
     /* background-color: #f5bf1a; */
-    width: 30%;
+    width: 20%;
     vertical-align: middle;
     text-align: left;
 }
@@ -128,7 +144,11 @@ input, select {
     background-color: white;
     
 }
-
 .right-half {
     background-color: black;
 } */
+
+.table {
+    width: 90%;
+    margin: auto;
+}
