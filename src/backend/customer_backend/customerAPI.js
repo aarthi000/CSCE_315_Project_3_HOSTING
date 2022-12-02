@@ -39,6 +39,24 @@ app.get("/menuitems_list", async(req,res) => {
     }
 });
 
+// get employee for oauth
+app.get("/getemployee", async(req,res) => {
+    try{
+        var employees = await pool.query("SELECT * from employee");
+        var rows = employees.rows;
+        console.log("working !!!");
+        console.log(rows);
+
+        res.json(rows);
+
+        
+    }catch (err){
+        console.error("getEmployee isn't working in customerAPI")
+    }
+});
+
+
+
 async function getIngredients(menuitem) {
     var response = await pool.query(
       "SELECT * FROM ingredient_map WHERE itemname = '" + menuitem + "'"
@@ -47,6 +65,10 @@ async function getIngredients(menuitem) {
     delete data.itemname;
     return data;
   }
+
+
+
+
 
 app.post("/placeOrder", async (req, res) => {
     try {;

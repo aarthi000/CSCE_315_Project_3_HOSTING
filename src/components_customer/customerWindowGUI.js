@@ -3,6 +3,7 @@ import './customerWindowGUI.css';
 import Cart from './Cart';
 import Menu from './Menu';
 import Header from './Header';
+import Addon from './addon';
 import React, {Fragment, useEffect, useState} from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -14,7 +15,7 @@ function Customer(props) {
 
   const getMenuitems = async () => {
     try{
-      const response = await fetch ("http://localhost:4999/menuitems_list");
+      const response = await fetch ("https://revs-api.onrender.com/menuitems_list");
       const jsonData = await response.json();
       setMenuitems(jsonData);
 
@@ -31,8 +32,10 @@ function Customer(props) {
   
 
   const [orderItems, setOrderItems] = useState([]);
+  
   const {items} = menuitems;
-  //console.log(menuitems);
+  console.log("menuitems")
+  console.log(menuitems);
 
   const onAdd = (item) => {
     const exist = orderItems.find(x => x.id === item.id);
@@ -73,10 +76,10 @@ function Customer(props) {
     // <div className="Customer Customer-header">
     <Container col>
         <Header></Header>
-        <Row>
+        <div className="row-format">
             <Menu onAdd={onAdd} items={items}></Menu>
             <Cart onAdd={onAdd} onRemove={onRemove} orderItems={orderItems}></Cart>
-          </Row>
+          </div>
     </Container>
 
   );

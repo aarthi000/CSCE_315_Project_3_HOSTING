@@ -6,6 +6,7 @@ import Customer from "./components_customer/customerWindowGUI"
 import ManagerWindow from "./components/ManagerWindow"
 import Manager from "./components/ManagerWindowGUI"
 import Report from "./components/Report"
+import LoginManager from "./login/managerLogin"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route exact path="/sales" element={<Report header={'Sales Report'} type={'sales'} />} />
       <Route exact path="/excess" element={<Report header={'Excess Report'} type={'excess'} />} />
       <Route exact path="/addons" element={<Report header={'Add-ons Report'} type={'addons'} />} />
+      <Route exact path="/loginManager" element={<LoginManager/>} /> 
 		</Routes>
       </Routers>
     </div>  
