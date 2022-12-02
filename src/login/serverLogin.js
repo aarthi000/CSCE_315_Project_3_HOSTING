@@ -6,7 +6,7 @@ import { useRef, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import employeeData from "./employeeData";
 
-function LoginManager() {
+function LoginServer() {
 
 	const [user, setUser] = useState({});
 
@@ -40,7 +40,7 @@ function LoginManager() {
   /*global google*/
   google.accounts.id.initialize({
     client_id: "150015526860-t3v7iu43ajjcu4mehrv7cqsip7q234qd.apps.googleusercontent.com",
-    callback: clickManager
+    callback: clickServer
   });
   
   google.accounts.id.renderButton(
@@ -51,7 +51,7 @@ function LoginManager() {
 
   const navigate = useNavigate();
 
-  function clickManager (response) {
+  function clickServer (response) {
     console.log("Encoded JWT ID Token: " + response.credential);
     var userObject = jwt_decode(response.credential);
     console.log(userObject);
@@ -60,7 +60,7 @@ function LoginManager() {
     document.getElementById("signInDiv").hidden = true;
     for (let i = 0; i < employees.length; i++) {
       if ((userObject.given_name == employees[i]["employeename"]) && (employees[i]["jobtitle"] == "Manager")) {
-        navigate("/manager");
+        navigate("/server");
         return;
       }
     }
@@ -82,8 +82,8 @@ function LoginManager() {
     for (let i = 0; i < employees.length; i++) {
       console.log("EmployeeName")
       // console.log(employees[i]["employeename"]);
-      if ((username == employees[i]["employeename"]) && (employees[i]["jobtitle"] == "Manager") && (password == "manager1234")) {
-        navigate("/manager");
+      if ((username == employees[i]["employeename"]) && (employees[i]["jobtitle"] == "Server") && (password == "server1234")) {
+        navigate("/server");
         return;
       }
     }
@@ -97,9 +97,9 @@ function LoginManager() {
   return (
     <div className="page">
       <div className="cover">
-        <h2 className="man-title">Manager Login</h2>
+        <h2 className="man-title">Server Login</h2>
         <h1 className="man-title">Username</h1>
-        <input type="text" className="login-cred" id="usernameCred" placeholder="Username (Manager Name)"/>
+        <input type="text" className="login-cred" id="usernameCred" placeholder="Username (Server Name)"/>
         <h1 className="man-title">Password</h1>
         <input type="password" className="login-cred" id="passwordCred" placeholder="Password"/>
         <button onClick={() => LoginForm()} className="customize_button">Login</button>
@@ -113,4 +113,4 @@ function LoginManager() {
   )
 }
 
-export default LoginManager;
+export default LoginServer;

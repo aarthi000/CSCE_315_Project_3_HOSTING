@@ -13,7 +13,7 @@ function Home() {
         navigate("/customer")
     }
     function clickServer () {
-        navigate("/server")
+        navigate("/loginServer")
     }
     function clickManager () {
       navigate("/loginManager");

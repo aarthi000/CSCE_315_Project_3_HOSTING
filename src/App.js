@@ -3,9 +3,11 @@ import './App.css';
 import { BrowserRouter as Routers, Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import Customer from "./components_customer/customerWindowGUI"
+import Server from "./components_server/serverWindowGUI";
 import Manager from "./components/ManagerWindowGUI"
 import Report from "./components/Report"
 import LoginManager from "./login/managerLogin"
+import LoginServer from "./login/serverLogin";
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
 		<Routes>
 			<Route exact path="/" element={<Home/>} />
 			<Route exact path="/customer" element={<Customer/>} />
-			{/* <Route exact path="/server" element={<Server/>} /> */}
+      <Route exact path="/loginServer" element={<LoginServer/>} /> 
+			<Route exact path="/server" element={<Server/>} />
 			{/* <Route exact path="/manager" element={<ManagerWindow/>} /> */}
       <Route exact path="/manager" element={<Manager/>} />
       <Route exact path="/restock" element={<Report header={'Restock Report'} type={'restock'} />} />

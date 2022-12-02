@@ -1,0 +1,46 @@
+.popup {
+    position: fixed;
+    /* top: 50; */
+    /* left: 0; */
+    width: 100%;
+    background-color: rgb(223, 206, 206);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:200px;
+    overflow-y: scroll;
+    position: relative;
+    margin-top: 20px;
+    max-height: 2000px;
+}
+
+.popup-inner {
+    /* position: relative; */
+    width: 700px;
+    max-width: 940px;
+    background-color: rgb(223, 206, 206);
+    padding-top: 20px;
+    max-height: 2000px;
+    height:200px;
+    
+}
+
+.popup-inner .close-btn {
+    position: absolute;
+    top: 16px;
+    right:16px;
+}
+
+.item-name-addon {
+    color:rgb(18, 16, 16);
+}
+
+.sub-headers2 {
+    font-size: 25px;
+    color:#5A0625;
+}
+
+.col {
+    justify-content: center;
+    align-items: center;
+}
