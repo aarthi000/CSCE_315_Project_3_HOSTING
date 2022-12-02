@@ -4,32 +4,37 @@ import '../Home.css';
 import { useNavigate } from "react-router-dom";
 import { useRef, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
+import employeeData from "./employeeData";
 
 function LoginManager() {
 
 	const [user, setUser] = useState({});
 
-  const[employees, setEmployees] = useState([]);
+  // const[employees, setEmployees] = useState([]);
 
-  const getEmployeeCred = async () => {
-    try{
-      console.log("working 1");
-      var response = await fetch ("http://localhost:4999/getemployee");
-      console.log("working 2");
+  const {employees} = employeeData; /// change this to addonitems
+  console.log("EMPLOYEES");
+  console.log(employees);
 
-      var jsonData = await response.json();
-      console.log("working 3");
+  // const getEmployeeCred = async () => {
+  //   try{
+  //     console.log("working 1");
+  //     var response = await fetch ("http://localhost:4999/getemployee");
+  //     console.log("working 2");
 
-      setEmployees(jsonData);
-      console.log("working 4");
-      // console.log(jsonData);
+  //     var jsonData = await response.json();
+  //     console.log("working 3");
+
+  //     setEmployees(jsonData);
+  //     console.log("working 4");
+  //     console.log(jsonData);
 
 
-    }catch (err){
-      console.error("Error in getEmployeeCred");
-      console.error(err.message);
-    }
-  }
+  //   }catch (err){
+  //     console.error("Error in getEmployeeCred");
+  //     console.error(err.message);
+  //   }
+  // }
 
   useEffect(() => {
   /*global google*/
@@ -50,22 +55,19 @@ function LoginManager() {
     console.log("Encoded JWT ID Token: " + response.credential);
     var userObject = jwt_decode(response.credential);
     // console.log(userObject);
-    getEmployeeCred();
+    // getEmployeeCred();
     setUser(userObject);
     document.getElementById("signInDiv").hidden = true;
-    console.log("EMPLOYEES");
-    console.log(employees);
-    
-    // for (let i = 0; i < 5; i++) {
-    //   console.log("EmployeeName")
-    //   console.log(employees[i][1]);
-    //   if ((userObject.given_name == employees[i][1]) /*&& (employees[i][2] == "Manager")*/) {
-    //     navigate("/manager");
-    //     return;
-    //   }
-    // }
-    // alert("You do not have access, please use authorized login!");
-    // navigate("/")
+    for (let i = 0; i < employees.length; i++) {
+      console.log("EmployeeName")
+      // console.log(employees[i]["employeename"]);
+      if ((userObject.given_name == employees[i]["employeename"]) && (employees[i]["jobtitle"] == "Manager")) {
+        navigate("/manager");
+        return;
+      }
+    }
+    alert("You do not have access, please use authorized login!");
+    navigate("/")
   }
   
 
@@ -79,13 +81,16 @@ function LoginManager() {
     var username = document.getElementById("usernameCred").value; 
     var password = document.getElementById("passwordCred").value; 
 
-    if (username == "Harshi" && password == "rev1234") {
-      navigate("/manager");
+    for (let i = 0; i < employees.length; i++) {
+      console.log("EmployeeName")
+      // console.log(employees[i]["employeename"]);
+      if ((username == employees[i]["employeename"]) && (employees[i]["jobtitle"] == "Manager") && (password == "manager1234")) {
+        navigate("/manager");
+        return;
+      }
     }
-    else {
-      alert("You do not have access, please use authorized email!");
-      navigate("/")
-    }
+    alert("You do not have access, please use authorized login!");
+    navigate("/")
     
   }
 

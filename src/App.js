@@ -6,6 +6,8 @@ import Customer from "./components_customer/customerWindowGUI"
 import ManagerWindow from "./components/ManagerWindow"
 import Manager from "./components/ManagerWindowGUI"
 import Report from "./components/Report"
+import Restock from "./components/Restock"
+import Sales from "./components/Sales"
 import LoginManager from "./login/managerLogin"
 
 function App() {
