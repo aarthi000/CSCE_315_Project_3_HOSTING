@@ -9,6 +9,7 @@ import Restock from "./components/Restock"
 import Sales from "./components/Sales"
 import Excess from "./components/Excess"
 import Addons from "./components/Addons"
+import LoginManager from "./login/managerLogin"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route exact path="/sales" element={<Sales/>} />
       <Route exact path="/excess" element={<Excess/>} />
       <Route exact path="/addons" element={<Addons/>} />
+      <Route exact path="/loginManager" element={<LoginManager/>} /> 
 		</Routes>
       </Routers>
     </div>  
