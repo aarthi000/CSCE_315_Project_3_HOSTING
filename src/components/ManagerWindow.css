@@ -2,6 +2,10 @@ body {
     background-color: #5A0625;
 }
 
+.ManagerWindow {
+    padding-bottom: 50px;
+}
+
 /* .ManagerWindow {
     display: table;
     width: 100%;
@@ -151,4 +155,11 @@ input, select {
 .table {
     width: 90%;
     margin: auto;
+    padding-bottom: 50px;
+}
+
+.table-report {
+    width: 70%;
+    margin: auto;
+    padding-bottom: 50px;
 }

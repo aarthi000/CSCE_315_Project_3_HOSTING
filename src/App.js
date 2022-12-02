@@ -5,10 +5,7 @@ import Home from "./Home";
 import Customer from "./components_customer/customerWindowGUI"
 import ManagerWindow from "./components/ManagerWindow"
 import Manager from "./components/ManagerWindowGUI"
-import Restock from "./components/Restock"
-import Sales from "./components/Sales"
-import Excess from "./components/Excess"
-import Addons from "./components/Addons"
+import Report from "./components/Report"
 
 function App() {
   return (
@@ -20,10 +17,10 @@ function App() {
 			{/* <Route exact path="/server" element={<Server/>} /> */}
 			{/* <Route exact path="/manager" element={<ManagerWindow/>} /> */}
       <Route exact path="/manager" element={<Manager/>} />
-      <Route exact path="/restock" element={<Restock/>} />
-      <Route exact path="/sales" element={<Sales/>} />
-      <Route exact path="/excess" element={<Excess/>} />
-      <Route exact path="/addons" element={<Addons/>} />
+      <Route exact path="/restock" element={<Report header={'Restock Report'} type={'restock'} />} />
+      <Route exact path="/sales" element={<Report header={'Sales Report'} type={'sales'} />} />
+      <Route exact path="/excess" element={<Report header={'Excess Report'} type={'excess'} />} />
+      <Route exact path="/addons" element={<Report header={'Add-ons Report'} type={'addons'} />} />
 		</Routes>
       </Routers>
     </div>  
