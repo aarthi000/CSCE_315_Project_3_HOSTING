@@ -87,7 +87,7 @@ app.post("/placeOrder", async (req, res) => {
             }
         }
 
-        console.log(menuitems);
+        // console.log(menuitems);
         //updating db
             //check if empty list
         if (menuitems.length == 0 || itemprices.length == 0 || menuitems.length != itemprices.length){
@@ -183,6 +183,16 @@ app.post("/placeOrder", async (req, res) => {
     }
 });
 
+//get menu items for display
+app.get("/lastOrder", async(req,res) => {
+    try{
+        var menuitems = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_totals");
+        var rows = menuitems.rows[0];
+        res.json(rows);
+    }catch (err){
+        console.error("Error in customerAPI: /lastOrder")
+    }
+});
 
 
 

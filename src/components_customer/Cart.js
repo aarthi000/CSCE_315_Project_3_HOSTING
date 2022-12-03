@@ -12,12 +12,12 @@ function Cart(props) {
     const sendOrder = async () => {
         try{
           const body = orderItems;
-          const response = await fetch (/*"http://localhost:4999/placeOrder"*/"https://revs-api.onrender.com/placeOrder",{
+          const response = await fetch ("http://localhost:4999/placeOrder",{
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body),
           });
-    
+
         }catch (err){
           console.error("Error in sendOrder in Cart.js -- see below msg:");
           console.error(err.message);
@@ -26,13 +26,38 @@ function Cart(props) {
         if(localStorage.length === 0)
             sOutput.innerHTML = "";
       }
+  
+      const[orderid, setOrderid] = useState([]);
 
-    
+  const getOrderid = async () => {
+    try{
 
-    //   useEffect(()=> { //only for testing. need to comment out and actually call function properly!
-    //     console.log("f");
-    //     sendOrder();
-    //   }, []);
+      const response = await fetch ("http://localhost:4999/lastOrder");
+
+      const jsonData = await response.json();
+      setOrderid(jsonData.max_orderids + 1);
+      // console.log("Type:");
+      // console.log(typeof jsonData.max_orderids);
+      // console.log("Data:");
+      // console.log(jsonData.max_orderids);
+
+
+
+
+    }catch (err){
+      console.error("i will kms fr:  see error message below");
+      console.error(err.message);
+    }
+  }
+  
+  
+  
+  useEffect(()=> {
+  }, []);
+  
+//   var orderid_int= orderid.max_orderids;
+// var orderid_int= orderid.max_orderids;
+
 
 
     return (
@@ -72,7 +97,8 @@ function Cart(props) {
                     {orderItems.length !== 0 && (
                         <h2 className="display-item">Order Total: ${itemsPrice.toFixed(2)}</h2>
                     )}
-                    <button onClick={() => sendOrder()} className='customize_button'>Place Order</button>
+                    <button onClick={() => {sendOrder(); getOrderid();}} className='customize_button'>Place Order</button>
+                    <div> {orderid} </div>
                     
                 </div>
             </div>  

@@ -34,8 +34,8 @@ function Popup(props) {
 
   const [addonOrderItems, setAddonOrderItems] = useState([]);
   const {items} = addonsData; /// change this to addonitems
-  console.log("items");
-  console.log(items);
+  // console.log("items");
+  // console.log(items);
 
   const addonAdd = (item) => {
     const exist = addonOrderItems.find(x => x.id === item.id);

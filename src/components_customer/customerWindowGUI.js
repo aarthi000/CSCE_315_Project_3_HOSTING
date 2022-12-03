@@ -15,7 +15,8 @@ function Customer(props) {
 
   const getMenuitems = async () => {
     try{
-      const response = await fetch ("https://revs-api.onrender.com/menuitems_list");
+      // const response = await fetch ("https://revs-api.onrender.com/menuitems_list");
+      const response = await fetch ("http://localhost:4999/menuitems_list");
       const jsonData = await response.json();
       setMenuitems(jsonData);
 
@@ -29,13 +30,11 @@ function Customer(props) {
     getMenuitems();
   }, []);
   
-  
-
   const [orderItems, setOrderItems] = useState([]);
   
   const {items} = menuitems;
-  console.log("menuitems")
-  console.log(menuitems);
+  // console.log("menuitems")
+  // console.log(menuitems);
 
   const onAdd = (item) => {
     const exist = orderItems.find(x => x.id === item.id);
