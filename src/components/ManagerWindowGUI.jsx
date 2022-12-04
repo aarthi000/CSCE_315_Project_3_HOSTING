@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 function Manager() {
     // render() { 
     const navigate = useNavigate();
+    var savedIngrList = [];
 
     const handleAddons = async (event, nameStr) => {
         let timeinput = prompt("Enter Start Time and End Time (YYYY-MM-DD YYYY-MM-DD)");
@@ -74,7 +75,15 @@ function Manager() {
             },
             mode: 'cors', 
         });
+console.log(savedIngrList);
         const jsondata = await response.json();
+        if(savedIngrList.length != 0  && jsondata.length != 0) {
+            if (savedIngrList.sort().join(',') == jsondata.sort().join(','))
+               return;
+        }
+        else
+            savedIngrList = JSON.parse(JSON.stringify(jsondata));
+
         //var select = document.getElementById("restock-menu-items"); 
         var select = document.getElementById(menuname);
 

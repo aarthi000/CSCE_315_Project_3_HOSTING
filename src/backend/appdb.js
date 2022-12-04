@@ -187,24 +187,40 @@ app.post('/excess', (request,response)=> {
                             endTimeMap.set(fields[i],0);
                         }
                     }
-                    var i = 1;
-                    excessData = [];
-                    // compare the values and determine the excess
-                    for (const [key, startvalue] of startTimeMap) {
-                        endval = endTimeMap.get(key);
-                        if((startvalue - endval) < (0.1) * startvalue) {
-                            excessRow = {};
-                            excessRow["itemname"] = key;
-                            excessData.push(excessRow);
-                        } 
-                    } 
+                    currentValueMap = new Map();
+                    client.query(`Select ingredient,ingredientremaining  from inventory`, 
+                                   (err,result) => {
+                        if(!err) {
+                             const data = result.rows;
+                             inventory = [];
+                             data.forEach(row => {  
+                                    currentValueMap.set( row.ingredient, row.ingredientremaining);
+                                });
+                             var i = 1;
+                             excessData = [];
+                             // compare the values and determine the excess
+                             for (const [key, startvalue] of startTimeMap) {
+                                 endval = endTimeMap.get(key);
+                                 currVal = currentValueMap.get(key);
+                                 if((startvalue - endval) < (0.1) * currVal) {
+                                     excessRow = {};
+                                     excessRow["itemname"] = key;
+                                     excessData.push(excessRow);
+                                 } 
+                             } 
 console.log(excessData);
-                    response.json(excessData);
-                    fs.writeFile("../components/ReportData.json", JSON.stringify(excessData), function(err) {
-                        if (err) {
-                            throw err;
+                             response.json(excessData);
+                             fs.writeFile("../components/ReportData.json", 
+                                  JSON.stringify(excessData), function(err) {
+                                 if (err) {
+                                     throw err;
+                                 }
+                             });
                         }
-                    })
+                        else {
+                          console.log(err);
+                        }
+                    });
                 }
                 else {
                     response.send(err);
