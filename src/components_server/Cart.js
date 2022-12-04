@@ -3,6 +3,7 @@ import './serverWindowGUI.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import addonOrderItems from "./customizePopup"
+import ServerMap from "./googleMaps/googleMaps";
 
 function Cart(props) {
     const {orderItems, onAdd, onRemove} = props;
@@ -51,6 +52,7 @@ function Cart(props) {
                 </form>
                 <div className="save-add-div"><button className='save-address-button'>Save Address</button></div>
             </div> */}
+            <ServerMap></ServerMap>
             <div className="order-summary">
                 <div className="block1 width-1">
                     <h2 className="sub-headers">Order Summary</h2>

@@ -15,7 +15,7 @@ function Server(props) {
 
   const getMenuitems = async () => {
     try{
-      const response = await fetch ("https://revs-api.onrender.com/menuitems_list");
+      const response = await fetch (/*"https://revs-api.onrender.com/menuitems_list"*/"http://localhost:4999/menuitems_list");
       const jsonData = await response.json();
       setMenuitems(jsonData);
 
