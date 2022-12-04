@@ -174,13 +174,13 @@ input, select {
     background-color: #f5bf1a;
     border: 1px solid #5A0625; 
     color: white; 
-    padding: 7px 80px; 
     cursor: pointer; 
     float: center; 
   }
 
 .save-add-div {
-    padding-left: 80px;
+    padding-left: 60px;
+    padding-right: 80px;
 }
   
 .save-address-button:not(:last-child) {

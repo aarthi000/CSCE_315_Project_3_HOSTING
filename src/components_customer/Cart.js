@@ -24,7 +24,7 @@ function Cart(props) {
         }
         localStorage.clear();
         if(localStorage.length === 0)
-            sOutput.innerHTML = "";
+            sOutput.innerHTML = "";   
       }
   
       const[orderid, setOrderid] = useState([]);
@@ -48,6 +48,11 @@ function Cart(props) {
       console.error("i will kms fr:  see error message below");
       console.error(err.message);
     }
+  }
+
+  function orderPlaced() {
+    alert("Thank you for your order, we will notify you when it is ready!")
+    window.location.reload() 
   }
   
   
@@ -97,7 +102,7 @@ function Cart(props) {
                     {orderItems.length !== 0 && (
                         <h2 className="display-item">Order Total: ${itemsPrice.toFixed(2)}</h2>
                     )}
-                    <button onClick={() => {sendOrder(); getOrderid();}} className='customize_button'>Place Order</button>
+                    <button onClick={() => {sendOrder(); getOrderid();orderPlaced();}} className='customize_button'>Place Order</button>
                     <div> {orderid} </div>
                     
                 </div>

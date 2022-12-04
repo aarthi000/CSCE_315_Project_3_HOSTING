@@ -227,7 +227,7 @@ function Popup(props) {
         <div className="popup">
             <div className="popup-inner">
                 {/* <button onClick={() => props.setTrigger(false)} className="close-btn">Close</button> */}
-                <button onClick={() => itemInStock("Classic Burger")} className="close-btn">Close</button>
+                <button onClick={() => {itemInStock("Classic Burger"); props.setTrigger(false);}} className="close-btn">Close</button>
 
                 {props.children}
                 <Container col>

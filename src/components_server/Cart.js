@@ -28,6 +28,11 @@ function Cart(props) {
             sOutput.innerHTML = "";
       }
 
+      function orderPlaced() {
+        alert("Order has been placed successfully!")
+        window.location.reload() 
+      }
+
     
 
     //   useEffect(()=> { //only for testing. need to comment out and actually call function properly!
@@ -74,7 +79,7 @@ function Cart(props) {
                     {orderItems.length !== 0 && (
                         <h2 className="display-item">Order Total: ${itemsPrice.toFixed(2)}</h2>
                     )}
-                    <button onClick={() => sendOrder()} className='customize_button'>Place Order</button>
+                    <button onClick={() => {sendOrder(); orderPlaced();}} className='customize_button'>Place Order</button>
                     
                 </div>
             </div>  
