@@ -125,13 +125,29 @@ app.post('/sales', (request,response)=> {
     client.end;
 });
 
+var getTodaysDate = function() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = today.getMonth() + 1;
+    const dd = today.getDate();
+    const formattedToday = yyyy + '-' + mm + '-' + dd;
+    return formattedToday;
+
+};
+
 app.post('/excess', (request,response)=> {
     var fs = require('fs');
     const b = request.body;
+    var enddate = getTodaysDate();
 
-    let timeRangeQueryStart = "SELECT * FROM inventory_history WHERE date = '" + b.startdate + "';";
-    let timeRangeQueryEnd = "SELECT * FROM inventory_history WHERE date = '" + b.enddate + "';";
+    // startdate = 9/3/22
+    // end date = 9/6/22, 12/02/22
+
+    let timeRangeQueryStart = "SELECT * FROM inventory_history_copy WHERE date = '" + b.startdate + "';";
+    let timeRangeQueryEnd = "SELECT * FROM inventory_history_copy WHERE date = '" + enddate + "';";
+
     const startTimeMap = new Map();
+    const endTimeMap = new Map();
     var query = {
         text: timeRangeQueryStart,
         rowMode: 'array'
@@ -148,7 +164,6 @@ app.post('/excess', (request,response)=> {
                     startTimeMap.set(fields[i],row[i]);
                 }
             });
-            var endList = []; 
             query  =  {
                 text: timeRangeQueryEnd,
                 rowMode: 'array'
@@ -158,25 +173,32 @@ app.post('/excess', (request,response)=> {
                 if(!err) {
                     const fields = result.fields.map(field => field.name);
                     const data = result.rows;
-                    i = 0;
-                    // For each field, just store value in an array
-                    data.forEach(row =>  { 
+                    data.forEach(row =>  {
+                        var i=0;
+                        // For each field, enter fieldname and value into Map
                         for (i=1;i<fields.length;i++) {
-                            endList[i] = row[i];
+                            endTimeMap.set(fields[i],row[i]);
                         }
                     });
-                    retStr = '';
-                    i = 1;
+                    if (endTimeMap.size == 0) {
+                        var i=0;
+                        // For each field, enter fieldname and value into Map
+                        for (i=1;i<fields.length;i++) {
+                            endTimeMap.set(fields[i],0);
+                        }
+                    }
+                    var i = 1;
                     excessData = [];
                     // compare the values and determine the excess
-                    for (const [key, value] of startTimeMap) {
-                        if(endList[i++] > (0.9 * value )) {
-                            retStr += key + '<br>';
-                            excessRow = {}
-                            excessRow["itemName"] = key;
+                    for (const [key, startvalue] of startTimeMap) {
+                        endval = endTimeMap.get(key);
+                        if((startvalue - endval) < (0.1) * startvalue) {
+                            excessRow = {};
+                            excessRow["itemname"] = key;
                             excessData.push(excessRow);
                         } 
-                    }
+                    } 
+console.log(excessData);
                     response.json(excessData);
                     fs.writeFile("../components/ReportData.json", JSON.stringify(excessData), function(err) {
                         if (err) {
@@ -206,43 +228,14 @@ var getDaysArray = function(start, end) {
     return arr;
 };
 
-var getDates = function(b) {
-      let starttime = b.startdate;
-      let endtime   = b.enddate;
-
-      let startDateSplit  = starttime.split("/");
-      let startMonth      = startDateSplit[0];
-      let startDay        = startDateSplit[1];
-      let startYear       = startDateSplit[2];
-
-      let endDateSplit = endtime.split("/");
-      let endMonth     = endDateSplit[0];
-      let endDay       = endDateSplit[1];
-      let endYear      = endDateSplit[2];
-      let startStr = startYear+"-"+startMonth+"-"+startDay;
-      let endStr   = endYear  +"-"+endMonth  +"-"+endDay;
-
-      //var daylist = getDaysArray( "2018-05-01","2018-05-08");
-      var daylist = getDaysArray( startStr, endStr);
-      var daylist2 = [];
-      for(i=0;i<daylist.length;i++) {
-          daylist2[i] = daylist[i].split('T')[0];  
-          daylistSplit = daylist2[i].split("-");
-          var month = parseInt(daylistSplit[1]);
-          var day  = parseInt(daylistSplit[2]);
-          var year = daylistSplit[0]-2000;
-          daylist2[i] = month+"/"+day+"/"+year;
-      }
-      return daylist2;
-};
-
 app.post('/addonsreport',(request,response)=> {
     var fs = require('fs');
+    // startdate: 2022-09-09
     const b = request.body;
-    daylist2 = getDates(b);
 
     const query = {
-        text: "select * from AddOns_History;",
+        text: "select * from AddOns_History_copy where date >= '" +  
+                      b.startdate + "' and date <= '" + b.enddate + "';",
         rowMode: 'array'
     };
     client.query(query, (err,result) => {
@@ -253,29 +246,27 @@ app.post('/addonsreport',(request,response)=> {
             report = [];
             data.forEach(row => { 
                 var i=0;
-                var index=-1;
-                if (daylist2.includes(row[0])) {
-                    for (i=1;i<fields.length;i++) {
-                        jsondata = {};
-                        let val = addonMap.get(fields[i]);
-                        jsondata['addonname'] = fields[i];
-                        if (val == null) {
-                            jsondata['addonamount'] = row[i];
-                            //addonMap.set(fields[i],row[i]);
-                        }
-                        else {
-                            jsondata['addonamount'] = row[i] + val;
-                            //addonMap.set(fields[i],row[i]+val);
-                        }
-                        report.push(jsondata);
+                for (i=1;i<fields.length;i++) {
+                    jsondata = {};
+                    let val = addonMap.get(fields[i]);
+                    if (val == null) {
+                            addonMap.set(fields[i],row[i]);
+                    }
+                    else {
+                            addonMap.set(fields[i],row[i]+val);
                     }
                 }
             });
-            //for (const [key, value] of addonMap) {
-            //    var addon = key;
-            //    var amount = value;
-            //    titleStr += "<br>" + addon + "             " + amount;
-            //}
+            for (i=1;i<fields.length;i++) {
+                jsondata = {};
+                let val = addonMap.get(fields[i]);
+                jsondata['addonname'] = fields[i];
+                if (val == null)
+                    val = 0;
+                jsondata['addonamount'] = val;
+                report.push(jsondata);
+            }
+console.log(report);
             response.json(report);
             fs.writeFile("../components/ReportData.json", JSON.stringify(report), function(err) {
                 if (err) {
@@ -290,15 +281,19 @@ app.post('/addonsreport',(request,response)=> {
     client.end;
 });
 
-app.post('/changeminimum', (request,response)=> {
+app.post('/editminimumvalue', (request,response)=> {
       const b = request.body;
       var query = "update inventory set minimumamount=" + b.minimumvalue
                 + " where ingredient='" + b.ingredient + "';";
+console.log(query);
       client.query(query, (err,result) => {
           if(!err) {
+              console.log("Edited minimum value successfully");
+              response.send('success');
           }
           else {
               console.log(err);
+              response.send('failed');
           }
       });
       client.end;
@@ -306,7 +301,7 @@ app.post('/changeminimum', (request,response)=> {
 
 app.post('/updateaddons', (request,response)=> {
       const b = request.body;
-      var query = "select * from addons_history where date= '" + b.date + "';";
+      var query = "select * from addons_history_copy where date= '" + b.date + "';";
 
       client.query(query, (err,result) => {
           if(!err) {
@@ -316,7 +311,7 @@ app.post('/updateaddons', (request,response)=> {
               console.log(err);
           }
       });
-      query = "update addons_history set " + b.ingredient + "=" + b.ingredient + "+" + 1 + " where date='"
+      query = "update addons_history_copy set " + b.ingredient + "=" + b.ingredient + "+" + 1 + " where date='"
                 + date
                 + "';";
       client.query(query, (err,result) => {
@@ -333,12 +328,20 @@ app.post('/updateaddons', (request,response)=> {
 });
 
 app.get('/getingredientlist', (request,response)=> {
-    var q = "select * from ingredient_map;"; 
+    var q = "select ingredient from inventory;"; 
     inventory = [];
     client.query(q, (err,result) => {
         if(!err) {
-           const fields = result.fields.map(field => field.name);
-           response.json(fields);
+           var i = 0;
+           var data = result.rows;
+           data.forEach(row =>  { 
+                 inventory[i++] = row.ingredient;
+           });
+           response.json(inventory);
+        }
+        else {
+              console.log(err);
+              response.send('failed');
         }
     });
     client.end;
@@ -354,8 +357,12 @@ app.get('/getmenuitemlist', (request,response)=> {
            data.forEach(row =>  { 
                  inventory[i++] = row.itemname;
            });
-console.log(inventory);
+//console.log(inventory);
            response.json(inventory);
+        }
+        else {
+           console.log(err);
+           response.send('failed');
         }
     });
     client.end;
@@ -363,13 +370,13 @@ console.log(inventory);
 
 app.post('/addnewmenuitem', (request,response)=> {
     const b = request.body;
-console.log(b);
+//console.log(b);
     var q = "INSERT into menu_items (" + 
             "itemname, itemprice, itemtype) VALUES ('"
                          + b.itemname + "',"
                          + b.itemprice + ",'"
                          + b.itemtype  + "');" 
-console.log(q);
+//console.log(q);
     client.query(q, (err,result) => {
           if(!err) {
              q = "select * from ingredient_map;"; 
@@ -483,6 +490,9 @@ app.get('/ingredientinstock', (request,response)=> {
     });
     client.end;
 });
+
+var getinventory = function() {
+}
 
 app.get('/inventory', (request,response)=> {
     var fs = require('fs');

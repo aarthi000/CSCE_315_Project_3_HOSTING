@@ -11,7 +11,7 @@ function Manager() {
     const navigate = useNavigate();
 
     const handleAddons = async (event, nameStr) => {
-        let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
+        let timeinput = prompt("Enter Start Time and End Time (YYYY-MM-DD YYYY-MM-DD)");
         if (timeinput != null) {
             // OK button is pressed so timeinput is not null
             // split the input and get start date and end date
@@ -63,7 +63,7 @@ function Manager() {
         }
     }
 
-    const handleIngrList = async () => {
+    const handleIngrList = async (menuname) => {
         const requestURL = "http://localhost:3300/getingredientlist";
         const request = new Request(requestURL);
 
@@ -75,7 +75,8 @@ function Manager() {
             mode: 'cors', 
         });
         const jsondata = await response.json();
-        var select = document.getElementById("restock-menu-items"); 
+        //var select = document.getElementById("restock-menu-items"); 
+        var select = document.getElementById(menuname);
 
         for(var i = 1; i < jsondata.length; i++) {
             var opt = jsondata[i];
@@ -221,6 +222,32 @@ console.log(sendData);
         const jsondata = await response.json();
     }
 
+    const handleEditMinimumValue = async (event, nameStr) => {
+        var e = document.getElementById("editmin-menu-items");
+
+        var ingredient = e.value;
+        e = document.getElementById("editmin-item-amount");
+
+        var minimumvalue = e.value;
+        const sendData = {ingredient,minimumvalue};
+console.log(sendData);
+        // Create a request URL to send to the server
+        const requestURL = "http://localhost:3300/editminimumvalue";
+        const request = new Request(requestURL);
+
+        // Send the request along with the data inside 'request body'
+        const response = await fetch(request, {
+            method: 'POST', 
+            headers: { 
+                    'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+            body: JSON.stringify(sendData)
+        });
+        // Now obtain the data from server.  Server sent a text so read it as text
+        const jsondata = await response.json();
+    }
+
     const handleRestock = async (event, nameStr) => {
         const requestURL = "http://localhost:3300/restock";
         const request = new Request(requestURL);
@@ -274,16 +301,15 @@ console.log(sendData);
         // Read the input from propmpt window
         // It is a text field and user will enter '11/01/2022 11/09/2022'
 
-        let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
+        let timeinput = prompt("Enter Start Time (YYYY-MM-DD)");
         if (timeinput != null) {
             // OK button is pressed so timeinput is not null
             // split the input and get start date and end date
             let  timeperiods = timeinput.split(" ");
             var  startdate = timeperiods[0];
-            var  enddate = timeperiods[1];
 
             // Create a JSON object 'sendData' (name: value) format
-            const sendData = {startdate,enddate};
+            const sendData = {startdate};
 
             // Create a request URL to send to the server
             const requestURL = "http://localhost:3300/excess";
@@ -372,7 +398,7 @@ console.log(sendData);
                     <div className='input-class'>
                         <form>
                             <label>
-                                <select name='restock-menu-items' id='restock-menu-items' onChange={handleIngrList()}>
+                                <select name='restock-menu-items' id='restock-menu-items' onChange={handleIngrList('restock-menu-items')}>
                                 </select>
                                 <br></br>
                                 <input type="text" id="restock-item-amount" placeholder="Enter ingredient quantity" />
@@ -385,6 +411,23 @@ console.log(sendData);
                     </div>
                 </div>
 
+                <h2>Edit Minimum Value</h2>
+                <div className='edit-minimum-value'>
+                    <div className='input-class'>
+                        <form>
+                            <label>
+                                <select name='editmin-menu-items' id='editmin-menu-items' onChange={handleIngrList('editmin-menu-items')}>
+                                </select>
+                                <br></br>
+                                <input type="text" id="editmin-item-amount" placeholder="Enter Minimum Value" />
+                                <br></br>
+                            </label>
+                        </form>
+                    </div>
+                    <div className='submit-class'>
+                        <button onClick={event => handleEditMinimumValue(event,'edit-minimum-value')} className='submit-btn'>+</button>
+                    </div>
+                </div>
                 <h2>Add Ingredient</h2>
                 <div className='add-ingredient'>
                     <div className='input-class'>
