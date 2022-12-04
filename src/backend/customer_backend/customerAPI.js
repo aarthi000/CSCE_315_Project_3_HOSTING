@@ -245,8 +245,26 @@ app.get("/ingredients_list", async(req,res) => {
             };
         }
         var retval = {items};
-        console.log(retval);
         res.json(retval);
+    }catch (err){
+        console.error("Error in customerAPI: /ingredients_list")
+    }
+});
+
+app.get("/ingredients_map", async(req,res) => {
+    try{
+        var map = await pool.query("select * from ingredient_map");
+        var data = map.rows;
+        res.json(data);
+    }catch (err){
+        console.error("Error in customerAPI: /ingredients_list")
+    }
+});
+
+app.get("/inventory_customer", async(req,res) => {
+    try{
+        var data = await pool.query("select * from inventory");
+        res.json(data.rows);
     }catch (err){
         console.error("Error in customerAPI: /ingredients_list")
     }

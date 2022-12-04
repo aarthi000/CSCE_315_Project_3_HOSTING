@@ -10,27 +10,9 @@ import Row from 'react-bootstrap/Row';
 import addonsData from './tempAddons'
 
 
+
 function Popup(props) {
-    //const[addonitems, setAddonItems] = useState([]);
 
-////////
-//   const getMenuitems = async () => {
-//     try{
-//       const response = await fetch ("http://localhost:4999/menuitems_list");
-//       const jsonData = await response.json();
-//       setAddonItems(jsonData);
-
-//     }catch (err){
-//       console.error("i will kms fr:  see error message below");
-//       console.error(err.message);
-//     }
-//   }
-
-//   useEffect(()=> {
-//     getMenuitems();
-//   }, []);
-  
-///////
   const[ingredientsList, setIngredientsList] = useState([]);
 
   const getIngredientsList = async () => {
@@ -41,13 +23,75 @@ function Popup(props) {
       setIngredientsList(jsonData);
 
     }catch (err){
-      console.error("error in getAllAddOns in customizePop.js");
+      console.error("error in getIngredientsList in customizePop.js");
       console.error(err.message);
     }
-  }
+  };
+  const[ingredients_map, setIngredients_Map] = useState([]);
+
+  const getIngredientsMap = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/ingredients_map");
+      const response = await fetch ("http://localhost:4999/ingredients_map");
+      const jsonData = await response.json();
+      setIngredients_Map(jsonData);
+
+    }catch (err){
+      console.error("error in getIngredientsMap in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+  const[inventory, setInventory] = useState([]);
+
+  const getInventory = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/inventory_customer");
+      const response = await fetch ("http://localhost:4999/inventory_customer");
+      const jsonData = await response.json();
+      setInventory(jsonData);
+
+    }catch (err){
+      console.error("error in getInventory in customizePop.js");
+      console.error(err.message);
+    }
+  };
+  
+  const addonInMenuItem = async (_addon, _menuitem) => {
+    try{
+      await getIngredientsMap();
+      var data = await ingredients_map;
+      for (var i = 0 ; i < data.length; i++){
+          if (data[i].itemname == _menuitem){
+              var item = data[i];
+              for (var key of Object.keys(item)){
+                  if (item[_addon] == 0){
+                      console.log(_addon + " is not in " + _menuitem);
+                      return false;
+                  }else{
+                      console.log(_addon + " is in " + _menuitem);
+                      return true;
+                  }
+              }
+          }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+
+  //ingredint in stock
+  //ingredient > 0
+  //menu item in stock 
+ 
+
   
   useEffect(()=> {
     getIngredientsList();
+    getIngredientsMap();
+    getInventory();
   }, []);
 
   const [addonOrderItems, setAddonOrderItems] = useState([]);
@@ -70,7 +114,6 @@ function Popup(props) {
 
 
   
-  
 
   const addonAdd = (item) => {
     const exist = addonOrderItems.find(x => x.id === item.id);
@@ -85,8 +128,8 @@ function Popup(props) {
       setAddonOrderItems(newItems);
       localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
     } 
-    console.log("ADDONS-ADD");
-    console.log(addonOrderItems);
+    // console.log("ADDONS-ADD");
+    // console.log(addonOrderItems);
 
     };
 
@@ -102,8 +145,8 @@ function Popup(props) {
             setAddonOrderItems(newItems);  
           localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
       }
-      console.log("ADDONS-REMOVE");
-      console.log(addonOrderItems);
+      // console.log("ADDONS-REMOVE");
+      // console.log(addonOrderItems);
     };
 
     useEffect(() => {
@@ -115,6 +158,7 @@ function Popup(props) {
         <div className="popup">
             <div className="popup-inner">
                 <button onClick={() => props.setTrigger(false)} className="close-btn">Close</button>
+
                 {props.children}
                 <Container col>
                     <Row>

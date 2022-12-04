@@ -7,7 +7,6 @@ import {useState} from 'react';
 
 export default function AddonItems(props) {
     const {item, addonAdd, addonRemove} = props;
-    console.log('hello');
     return (
         
         <div className="item-block">
