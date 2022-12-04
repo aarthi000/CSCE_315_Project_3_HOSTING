@@ -31,11 +31,46 @@ function Popup(props) {
 //   }, []);
   
 ///////
+  const[ingredientsList, setIngredientsList] = useState([]);
+
+  const getIngredientsList = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/ingredients_list");
+      const response = await fetch ("http://localhost:4999/ingredients_list");
+      const jsonData = await response.json();
+      setIngredientsList(jsonData);
+
+    }catch (err){
+      console.error("error in getAllAddOns in customizePop.js");
+      console.error(err.message);
+    }
+  }
+  
+  useEffect(()=> {
+    getIngredientsList();
+  }, []);
 
   const [addonOrderItems, setAddonOrderItems] = useState([]);
-  const {items} = addonsData; /// change this to addonitems
-  // console.log("items");
-  // console.log(items);
+  const {items} = ingredientsList; 
+
+  const[allAddOns, setAllAddOns] = useState([]);
+
+  const getAllAddOns = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/addons");
+      const response = await fetch ("http://localhost:4999/addons");
+      const jsonData = await response.json();
+      setAllAddOns(jsonData);
+
+    }catch (err){
+      console.error("error in getAllAddOns in customizePop.js");
+      console.error(err.message);
+    }
+  }
+
+
+  
+  
 
   const addonAdd = (item) => {
     const exist = addonOrderItems.find(x => x.id === item.id);
@@ -72,6 +107,7 @@ function Popup(props) {
     };
 
     useEffect(() => {
+        getIngredientsList();
         setAddonOrderItems(localStorage.getItem('addonOrderItems') ? JSON.parse(localStorage.getItem('addonOrderItems')):[]);
     },[])
 
