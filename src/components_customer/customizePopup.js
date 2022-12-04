@@ -56,6 +56,8 @@ function Popup(props) {
       console.error(err.message);
     }
   };
+
+
   
   const addonInMenuItem = async (_addon, _menuitem) => {
     try{
@@ -81,9 +83,76 @@ function Popup(props) {
     }
   };
 
+  const ingredientInStock = async (ingred, numRequired) => {
+    try{
+      await getInventory();  
+      var data = await inventory;    
+      for (var i = 0; i < data.length; i++){
+        if (data[i].ingredient == ingred){
+          var numLeft = data[i].ingredientremaining;
+          if (numLeft < numRequired) {
+            console.log(ingred + " not in stock for required amount: " + numRequired);
+            return false;
+          }
+          else{
+            console.log(ingred + " IS in stock for required amount: " + numRequired);
+            return true;
+          }
+        }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
 
-  //ingredint in stock
-  //ingredient > 0
+  const isIngredientEmpty = async (ingred) => {
+    try{
+      var inStock = await ingredientInStock(ingred, 1);
+      if (inStock){
+        console.log(ingred + " has a stock greater than 0");
+        return true;
+      }
+      else{
+        console.log(ingred + " does not have a stock greater than 0");
+        return false;
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+  const itemInStock = async (menuitem) => {
+    try{
+      await getIngredientsMap;
+      var map = await ingredients_map;
+      
+      for (var i = 0; i < map.length; i++){    
+        if (map[i].itemname == menuitem){
+          var ingredients = map[i];
+          for (var key of Object.keys(ingredients)) {
+            if (ingredients[key] != 0 && key != 'itemname') {
+                var inStock = await ingredientInStock(key, ingredients[key]);   
+              if (!inStock) {
+                console.log(menuitem + " is not in stock because " + key + " is not in stock");
+                return false;
+              }
+            }
+          }
+          console.log(menuitem + " IS in stock");
+          return true;
+        }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+
+  //ingredient against a certain required value DONE
+  //ingredient > 0 DONE
   //menu item in stock 
  
 
@@ -157,7 +226,8 @@ function Popup(props) {
     return (props.trigger) ? (
         <div className="popup">
             <div className="popup-inner">
-                <button onClick={() => props.setTrigger(false)} className="close-btn">Close</button>
+                {/* <button onClick={() => props.setTrigger(false)} className="close-btn">Close</button> */}
+                <button onClick={() => itemInStock("Classic Burger")} className="close-btn">Close</button>
 
                 {props.children}
                 <Container col>

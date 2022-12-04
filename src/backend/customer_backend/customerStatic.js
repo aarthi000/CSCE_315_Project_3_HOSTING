@@ -21,34 +21,51 @@ async function getIngredients(menuitem) {
   return data;
 }
 
-async function ingredientInStock(ingredient, numRequired) {
-  var response = await pool.query(
-    "SELECT ingredientremaining FROM inventory WHERE ingredient = '" +
-      ingredient +
-      "'"
-  );
-  var data = response.rows;
-  var numLeft = data[0].ingredientremaining;
+async function ingredientInStock(ingred, numRequired) {
+  var response = await pool.query("select * from inventory");
+  var inventory = response.rows;
 
-  if (numLeft < numRequired) {
-    return false;
-  }
-
-  return true;
-}
-
-async function itemInStock(menuitem) {
-  var ingredients = await getIngredients(menuitem);
-  for (var key of Object.keys(ingredients)) {
-    // console.log(key + " -> " + ingredients[key])
-    if (ingredients[key] != 0) {
-        var inStock = await ingredientInStock(key, ingredients[key]);   
-      if (!inStock) {
+  //for api
+  for (var i = 0; i < inventory.length; i++){
+    if (inventory[i].ingredient == ingred){
+      var numLeft = inventory[i].ingredientremaining;
+      if (numLeft < numRequired) {
+        console.log(ingred + " not in stock for required amount: " + numRequired);
         return false;
+      }
+      else{
+        console.log(ingred + " IS in stock for required amount: " + numRequired);
+        return true;
       }
     }
   }
-  return true;
+}
+
+
+async function itemInStock(menuitem) {
+
+  // var ingredients = await getIngredients(menuitem);
+  var data = await pool.query("select * from inventory");
+  var data1 = await pool.query("select * from ingredient_map");
+
+  var map = data1.rows;
+  for (var i = 0; i < map.length; i++){    
+    if (map[i].itemname == menuitem){
+      ingredients = map[i];
+      for (var key of Object.keys(ingredients)) {
+        if (ingredients[key] != 0 && key != 'itemname') {
+            var inStock = await ingredientInStock(key, ingredients[key]);   
+          if (!inStock) {
+            console.log(menuitem + " is not in stock because " + key + " is not in stock");
+            return false;
+          }
+        }
+      }
+      console.log(menuitem + " IS in stock");
+      return true;
+    }
+  }
+
 }
 
 /*
@@ -243,4 +260,4 @@ async function removeLastOrder(){
 // removeOrder(10070); //chose a different number/, this has already been used
 
 
-removeLastOrder();
+// removeLastOrder();

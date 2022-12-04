@@ -264,7 +264,9 @@ app.get("/ingredients_map", async(req,res) => {
 app.get("/inventory_customer", async(req,res) => {
     try{
         var data = await pool.query("select * from inventory");
+        
         res.json(data.rows);
+
     }catch (err){
         console.error("Error in customerAPI: /ingredients_list")
     }
