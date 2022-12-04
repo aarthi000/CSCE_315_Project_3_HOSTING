@@ -41,20 +41,31 @@ async function ingredientInStock(ingred, numRequired) {
   }
 }
 
-ingredientInStock("rawchicken", 10);
 
 async function itemInStock(menuitem) {
-  var ingredients = await getIngredients(menuitem);
-  for (var key of Object.keys(ingredients)) {
-    // console.log(key + " -> " + ingredients[key])
-    if (ingredients[key] != 0) {
-        var inStock = await ingredientInStock(key, ingredients[key]);   
-      if (!inStock) {
-        return false;
+
+  // var ingredients = await getIngredients(menuitem);
+  var data = await pool.query("select * from inventory");
+  var data1 = await pool.query("select * from ingredient_map");
+
+  var map = data1.rows;
+  for (var i = 0; i < map.length; i++){    
+    if (map[i].itemname == menuitem){
+      ingredients = map[i];
+      for (var key of Object.keys(ingredients)) {
+        if (ingredients[key] != 0 && key != 'itemname') {
+            var inStock = await ingredientInStock(key, ingredients[key]);   
+          if (!inStock) {
+            console.log(menuitem + " is not in stock because " + key + " is not in stock");
+            return false;
+          }
+        }
       }
+      console.log(menuitem + " IS in stock");
+      return true;
     }
   }
-  return true;
+
 }
 
 /*
@@ -249,4 +260,4 @@ async function removeLastOrder(){
 // removeOrder(10070); //chose a different number/, this has already been used
 
 
-removeLastOrder();
+// removeLastOrder();
