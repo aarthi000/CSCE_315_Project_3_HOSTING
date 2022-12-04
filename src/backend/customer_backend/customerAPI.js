@@ -68,8 +68,6 @@ async function getIngredients(menuitem) {
 
 
 
-
-
 app.post("/placeOrder", async (req, res) => {
     try {;
         console.log("Started API req");
@@ -87,7 +85,7 @@ app.post("/placeOrder", async (req, res) => {
             }
         }
 
-        console.log(menuitems);
+        // console.log(menuitems);
         //updating db
             //check if empty list
         if (menuitems.length == 0 || itemprices.length == 0 || menuitems.length != itemprices.length){
@@ -183,7 +181,91 @@ app.post("/placeOrder", async (req, res) => {
     }
 });
 
+//get menu items for display
+app.get("/lastOrder", async(req,res) => {
+    try{
+        var menuitems = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_totals");
+        var rows = menuitems.rows[0];
+        res.json(rows);
+    }catch (err){
+        console.error("Error in customerAPI: /lastOrder")
+    }
+});
+
+//get all ingredients in specified format for addons customize window
+app.get("/addons", async(req,res) => {
+    try{
+        var addons = await pool.query("select * from ingredient_map");
+        var data = addons.rows        
+        var all = [];
+
+        for (var i = 0; i < data.length; i++){
+            var rows = data[i];
+            var items = [];
+            var ingredients = {items};
+
+            var j = 0; 
+            for (var key of Object.keys(rows)){
+                if (rows[key] != 0 && key != 'itemname'){
+                    items[j] = {
+                        id: j + 1,
+                        itemname: key
+                    };
+                    j++
+                }
+            }
+            all[i] = {menuitem: rows.itemname, ingredients};
+        }
+        
+        // for (var k = 0; k < all.length; k++){ //getting a specific item
+        //     if (all[k].menuitem == 'Grilled Cheese'){
+        //         console.log(all[k].ingredients);
+        //     }
+        // }
+
+        res.json(all);
 
 
+        
+    }catch (err){
+        console.error("Error in customerAPI: /addons")
+    }
+});
 
 
+app.get("/ingredients_list", async(req,res) => {
+    try{
+        var addons = await pool.query("select * from inventory");
+        var data = addons.rows        
+        var items = [];
+        for (var i = 0 ; i < data.length; i++){
+            items[i] = {
+                id: i+1,
+                itemname: data[i].ingredient
+            };
+        }
+        var retval = {items};
+        res.json(retval);
+    }catch (err){
+        console.error("Error in customerAPI: /ingredients_list")
+    }
+});
+
+app.get("/ingredients_map", async(req,res) => {
+    try{
+        var map = await pool.query("select * from ingredient_map");
+        var data = map.rows;
+        res.json(data);
+    }catch (err){
+        console.error("Error in customerAPI: /ingredients_list")
+    }
+});
+
+app.get("/inventory_customer", async(req,res) => {
+    try{
+        var data = await pool.query("select * from inventory");
+        res.json(data.rows);
+    }catch (err){
+        console.error("Error in customerAPI: /ingredients_list")
+    }
+});
