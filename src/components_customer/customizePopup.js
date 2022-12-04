@@ -68,10 +68,10 @@ function Popup(props) {
               var item = data[i];
               for (var key of Object.keys(item)){
                   if (item[_addon] == 0){
-                      console.log(_addon + " is not in " + _menuitem);
+                      // console.log(_addon + " is not in " + _menuitem);
                       return false;
                   }else{
-                      console.log(_addon + " is in " + _menuitem);
+                      // console.log(_addon + " is in " + _menuitem);
                       return true;
                   }
               }
@@ -91,11 +91,11 @@ function Popup(props) {
         if (data[i].ingredient == ingred){
           var numLeft = data[i].ingredientremaining;
           if (numLeft < numRequired) {
-            console.log(ingred + " not in stock for required amount: " + numRequired);
+            // console.log(ingred + " not in stock for required amount: " + numRequired);
             return false;
           }
           else{
-            console.log(ingred + " IS in stock for required amount: " + numRequired);
+            // console.log(ingred + " IS in stock for required amount: " + numRequired);
             return true;
           }
         }
@@ -110,11 +110,11 @@ function Popup(props) {
     try{
       var inStock = await ingredientInStock(ingred, 1);
       if (inStock){
-        console.log(ingred + " has a stock greater than 0");
+        // console.log(ingred + " has a stock greater than 0");
         return true;
       }
       else{
-        console.log(ingred + " does not have a stock greater than 0");
+        // console.log(ingred + " does not have a stock greater than 0");
         return false;
       }
     }catch (err){
@@ -135,12 +135,12 @@ function Popup(props) {
             if (ingredients[key] != 0 && key != 'itemname') {
                 var inStock = await ingredientInStock(key, ingredients[key]);   
               if (!inStock) {
-                console.log(menuitem + " is not in stock because " + key + " is not in stock");
+                // console.log(menuitem + " is not in stock because " + key + " is not in stock");
                 return false;
               }
             }
           }
-          console.log(menuitem + " IS in stock");
+          // console.log(menuitem + " IS in stock");
           return true;
         }
       }
@@ -184,7 +184,15 @@ function Popup(props) {
 
   
 
-  const addonAdd = (item) => {
+   
+  // const addonAdd = (item) => 
+  const addonAdd = async (item) => {
+    var inStock = await isIngredientEmpty(item.itemname);
+    // console.log(inStock);
+    if (inStock){
+      alert(item.itemname + " is out of stock. Please order something else.");
+      return;
+    }
     const exist = addonOrderItems.find(x => x.id === item.id);
     if (exist) {
       const newItems = addonOrderItems.map((x) => 
