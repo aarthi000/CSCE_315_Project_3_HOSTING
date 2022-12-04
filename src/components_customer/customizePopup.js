@@ -56,6 +56,8 @@ function Popup(props) {
       console.error(err.message);
     }
   };
+
+
   
   const addonInMenuItem = async (_addon, _menuitem) => {
     try{
@@ -81,8 +83,30 @@ function Popup(props) {
     }
   };
 
+  const ingredientInStock = async (ingred, numRequired) => {
+    try{
+      await getInventory();  
+      var data = await inventory;    
+      for (var i = 0; i < data.length; i++){
+        if (data[i].ingredient == ingred){
+          var numLeft = data[i].ingredientremaining;
+          if (numLeft < numRequired) {
+            console.log(ingred + " not in stock for required amount: " + numRequired);
+            return false;
+          }
+          else{
+            console.log(ingred + " IS in stock for required amount: " + numRequired);
+            return true;
+          }
+        }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
 
-  //ingredint in stock
+  //ingredient against a certain required value
   //ingredient > 0
   //menu item in stock 
  
@@ -158,6 +182,7 @@ function Popup(props) {
         <div className="popup">
             <div className="popup-inner">
                 <button onClick={() => props.setTrigger(false)} className="close-btn">Close</button>
+                {/* <button onClick={() => ingredientInStock("chocolateicecreamscoop", 20)} className="close-btn">Close</button> */}
 
                 {props.children}
                 <Container col>

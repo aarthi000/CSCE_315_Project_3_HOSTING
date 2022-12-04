@@ -21,21 +21,27 @@ async function getIngredients(menuitem) {
   return data;
 }
 
-async function ingredientInStock(ingredient, numRequired) {
-  var response = await pool.query(
-    "SELECT ingredientremaining FROM inventory WHERE ingredient = '" +
-      ingredient +
-      "'"
-  );
-  var data = response.rows;
-  var numLeft = data[0].ingredientremaining;
+async function ingredientInStock(ingred, numRequired) {
+  var response = await pool.query("select * from inventory");
+  var inventory = response.rows;
 
-  if (numLeft < numRequired) {
-    return false;
+  //for api
+  for (var i = 0; i < inventory.length; i++){
+    if (inventory[i].ingredient == ingred){
+      var numLeft = inventory[i].ingredientremaining;
+      if (numLeft < numRequired) {
+        console.log(ingred + " not in stock for required amount: " + numRequired);
+        return false;
+      }
+      else{
+        console.log(ingred + " IS in stock for required amount: " + numRequired);
+        return true;
+      }
+    }
   }
-
-  return true;
 }
+
+ingredientInStock("rawchicken", 10);
 
 async function itemInStock(menuitem) {
   var ingredients = await getIngredients(menuitem);
