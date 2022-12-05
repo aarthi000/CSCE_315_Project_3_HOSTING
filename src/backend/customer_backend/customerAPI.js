@@ -35,7 +35,7 @@ app.get("/menuitems_list", async(req,res) => {
 
         
     }catch (err){
-        console.error("haha isnt working loser")
+        console.error("/error in menuitems_list in customerAPI")
     }
 });
 

@@ -55,6 +55,7 @@ function Cart(props) {
     window.location.reload() 
   }
   
+      
   
   
   useEffect(()=> {
@@ -91,7 +92,7 @@ function Cart(props) {
                         <Row key={item.itemname}>
                             <div className="display-item">{item.itemname}</div>
                             <div className='order-sum-button'>
-                                <button onClick = {() => onAdd(item)} className="qty-btn">+</button>
+                                <button onClick = {() => {onAdd(item); itemInStock(item.itemname)}} className="qty-btn">+</button>
                                 <button onClick = {() => onRemove(item)} className="qty-btn">-</button>
                             </div>
                             

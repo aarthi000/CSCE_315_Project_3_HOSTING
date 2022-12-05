@@ -68,10 +68,10 @@ function Popup(props) {
               var item = data[i];
               for (var key of Object.keys(item)){
                   if (item[_addon] == 0){
-                      console.log(_addon + " is not in " + _menuitem);
+                      // console.log(_addon + " is not in " + _menuitem);
                       return false;
                   }else{
-                      console.log(_addon + " is in " + _menuitem);
+                      // console.log(_addon + " is in " + _menuitem);
                       return true;
                   }
               }
@@ -91,11 +91,11 @@ function Popup(props) {
         if (data[i].ingredient == ingred){
           var numLeft = data[i].ingredientremaining;
           if (numLeft < numRequired) {
-            console.log(ingred + " not in stock for required amount: " + numRequired);
+            // console.log(ingred + " not in stock for required amount: " + numRequired);
             return false;
           }
           else{
-            console.log(ingred + " IS in stock for required amount: " + numRequired);
+            // console.log(ingred + " IS in stock for required amount: " + numRequired);
             return true;
           }
         }
@@ -110,12 +110,12 @@ function Popup(props) {
     try{
       var inStock = await ingredientInStock(ingred, 1);
       if (inStock){
-        console.log(ingred + " has a stock greater than 0");
-        return true;
+        // console.log(ingred + " has a stock greater than 0");
+        return false;
       }
       else{
-        console.log(ingred + " does not have a stock greater than 0");
-        return false;
+        // console.log(ingred + " does not have a stock greater than 0");
+        return true;
       }
     }catch (err){
       console.error("error in addonInMenuItem in customizePop.js");
@@ -135,12 +135,12 @@ function Popup(props) {
             if (ingredients[key] != 0 && key != 'itemname') {
                 var inStock = await ingredientInStock(key, ingredients[key]);   
               if (!inStock) {
-                console.log(menuitem + " is not in stock because " + key + " is not in stock");
+                // console.log(menuitem + " is not in stock because " + key + " is not in stock");
                 return false;
               }
             }
           }
-          console.log(menuitem + " IS in stock");
+          // console.log(menuitem + " IS in stock");
           return true;
         }
       }
@@ -184,7 +184,15 @@ function Popup(props) {
 
   
 
-  const addonAdd = (item) => {
+   
+  // const addonAdd = (item) => 
+  const addonAdd = async (item) => {
+    var inStock = await ingredientInStock(item.itemname, 0);
+    console.log(inStock);
+    if (!inStock){
+      alert(item.itemname + " is out of stock. Please order something else.");
+      return;
+    }
     const exist = addonOrderItems.find(x => x.id === item.id);
     if (exist) {
       const newItems = addonOrderItems.map((x) => 
@@ -202,22 +210,6 @@ function Popup(props) {
 
     };
 
-    const addonRemove = (item) => {
-      const exist = addonOrderItems.find(x => x.id === item.id);
-      if (!exist) {
-        const newItems = [...addonOrderItems, {...item, qty: -1}];
-        setAddonOrderItems(newItems);
-        localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
-      } else {
-          const newItems = addonOrderItems.map((x) => 
-            x.id === item.id ? {...exist, qty: exist.qty - 1} : x);
-            setAddonOrderItems(newItems);  
-          localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
-      }
-      // console.log("ADDONS-REMOVE");
-      // console.log(addonOrderItems);
-    };
-
     useEffect(() => {
         getIngredientsList();
         setAddonOrderItems(localStorage.getItem('addonOrderItems') ? JSON.parse(localStorage.getItem('addonOrderItems')):[]);
@@ -233,7 +225,7 @@ function Popup(props) {
                 <Container col>
                     <Row>
                         <h2 className="sub-headers2">Add-On Items</h2>
-                        <Addon items={items} addonAdd={addonAdd} addonRemove={addonRemove}></Addon>
+                        <Addon items={items} addonAdd={addonAdd}></Addon>
                         {/* <Cart addonOrderItems={addonOrderItems}></Cart> */}
                     </Row>
                 </Container>
