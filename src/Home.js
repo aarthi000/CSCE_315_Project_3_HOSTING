@@ -13,10 +13,12 @@ function Home() {
         navigate("/customer")
     }
     function clickServer () {
-        navigate("/loginServer")
+        // navigate("/loginServer")
+        navigate("/server")
     }
     function clickManager () {
-      navigate("/loginManager");
+      // navigate("/loginManager");
+      navigate("/manager")
     }
 
     return (
