@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './ManagerWindow.css';
 import { Table } from './Table';
 import { useNavigate } from "react-router-dom";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 function Manager() {
-    // render() { 
+    const [status, setStatus] = useState("Operation failed");
+
+    const [open, setOpen] = useState(false);
+    const closeModal = () => setOpen(false);
+
     const navigate = useNavigate();
     var savedIngrList = [];
 
@@ -75,26 +78,33 @@ function Manager() {
             },
             mode: 'cors', 
         });
-console.log(savedIngrList);
         const jsondata = await response.json();
+/*
         if(savedIngrList.length != 0  && jsondata.length != 0) {
             if (savedIngrList.sort().join(',') == jsondata.sort().join(','))
                return;
         }
         else
             savedIngrList = JSON.parse(JSON.stringify(jsondata));
+*/
 
-        //var select = document.getElementById("restock-menu-items"); 
         var select = document.getElementById(menuname);
+        var options = select.options;
+
+        var values = [];
+        for (var k = 0; k < options.length; k++) 
+            values.push(options[k].value);
 
         for(var i = 1; i < jsondata.length; i++) {
             var opt = jsondata[i];
 
-            var el = document.createElement("option");
-            el.text = opt;
-            el.value = opt;
+            if (values.length == 0 || !values.includes(opt )) {
+               var el = document.createElement("option");
+               el.text = opt;
+               el.value = opt;
 
-            select.add(el);
+               select.add(el);
+            }
         }
     }
 
@@ -138,11 +148,46 @@ console.log(savedIngrList);
         });
         // Now obtain the data from server.  Server sent a text so read it as text
         const status = await response.text();
-        if(status == 'success')
-            alert('successfully added new menu item - '+itemname+', price to ' + itemprice);
-        else
-            alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
+        if(status == 'success') {
+            // alert('successfully added new menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Successfully added new menu item");
+        } else {
+            // alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Failed to add new menu item");
+        }
     }
+
+    const handleDeleteIngredient = async () => {
+
+        const requestURL = "http://localhost:3300/deleteingredient";
+        const request = new Request(requestURL);
+
+        var e = document.getElementById("delete-ingredient-items");
+        var ingredient = e.value;
+
+        if(confirm("Are you sure you want to delete ingredient '" + ingredient + "'?") != true)
+        {
+            setStatus("Operation canceled");
+           return;
+        }
+        const sendData = {ingredient};
+console.log(sendData);
+        const response = await fetch(request, {
+            method: 'POST', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+            body: JSON.stringify(sendData)
+        });
+        const status = await response.text();
+        if(status == 'success') {
+            setStatus("Successfully deleted ingredient");
+        } else {
+            setStatus("Failed to delete ingredient");
+        }
+    }
+
     const handleSetEditMenuItem = async (event, nameStr) => {
         var e = document.getElementById("edit-menu-items");
         var itemname = e.value;
@@ -167,10 +212,13 @@ console.log(sendData);
         });
         // Now obtain the data from server.  Server sent a text so read it as text
         const status = await response.text();
-        if(status == 'success')
-            alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
-        else
-            alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
+        if(status == 'success') {
+            // alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Successfully edited menu item");
+        } else {
+            // alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Failed to edit menu item");
+        }
     }
 
     const handleNewIngredient = async (event, nameStr) => {
@@ -199,13 +247,29 @@ console.log(sendData);
             body: JSON.stringify(sendData)
         });
         const status = await response.text();
-        if(status == 'success')
-            alert('successfully added new ingredient - '+ ingredient);
-        else
-            alert('failed to add new ingredient - '+ ingredient);
+        if(status == 'success') {
+            // alert('successfully added new ingredient - '+ ingredient);
+            setStatus("Successfully added new ingredient");
+        } else {
+            // alert('failed to add new ingredient - '+ ingredient);
+            setStatus("Failed to add new ingredient");
+        }
+
+        // Create a request URL to send to the server
+        const requestURLInv = "http://localhost:3300/inventory";
+        const requestInv = new Request(requestURLInv);
+
+        await fetch(requestInv, {
+    	      method: 'GET', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+        });
     }
 
     const handleRestockItem = async (event, nameStr) => {
+alert('restock called');
         var e = document.getElementById("restock-menu-items");
 
         var ingredient = e.value;
@@ -228,7 +292,27 @@ console.log(sendData);
             body: JSON.stringify(sendData)
         });
         // Now obtain the data from server.  Server sent a text so read it as text
-        const jsondata = await response.json();
+        // const jsondata = await response.json();
+        const status = await response.text();
+        if(status == '["success"]') {
+            // alert('successfully added new ingredient - '+ ingredient);
+            setStatus("Successfully restocked menu item");
+        } else {
+            // alert('failed to add new ingredient - '+ ingredient);
+            setStatus("Failed to restock menu item");
+        }
+
+        // Create a request URL to send to the server
+        const requestURLInv = "http://localhost:3300/inventory";
+        const requestInv = new Request(requestURLInv);
+
+        await fetch(requestInv, {
+    	      method: 'GET', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+        });
     }
 
     const handleEditMinimumValue = async (event, nameStr) => {
@@ -254,7 +338,27 @@ console.log(sendData);
             body: JSON.stringify(sendData)
         });
         // Now obtain the data from server.  Server sent a text so read it as text
-        const jsondata = await response.json();
+        // const jsondata = await response.json();
+        const status = await response.text();
+        if(status == 'success') {
+            // alert('successfully added new ingredient - '+ ingredient);
+            setStatus("Successfully edited minimum value");
+        } else {
+            // alert('failed to add new ingredient - '+ ingredient);
+            setStatus("Failed to edit minimum value");
+        }
+
+        // Create a request URL to send to the server
+        const requestURLInv = "http://localhost:3300/inventory";
+        const requestInv = new Request(requestURLInv);
+
+        await fetch(requestInv, {
+    	      method: 'GET', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+        });
     }
 
     const handleRestock = async (event, nameStr) => {
@@ -348,6 +452,10 @@ console.log(sendData);
                 </div>
             </div>
             <div className='split right'>
+                <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                    <span>{status}</span>
+                </Popup>
+
                 <div className="report-btn-group">
                     <button onClick={event => handleSales(event,'sales')} className="role-button">Sales</button>
                     <button onClick={event => handleExcess(event,'excess')} className="role-button">Excess</button>
@@ -380,7 +488,23 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleAddNewMenuItem(event,'menu-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleAddNewMenuItem(event,'menu-item')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleAddNewMenuItem(event,'menu-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        {/* <button onClick={event => handleAddNewMenuItem(event,'menu-item')} className='submit-btn'>+</button> */}
                     </div>
                 </div> 
 
@@ -398,7 +522,24 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleSetEditMenuItem(event,'menu-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleSetEditMenuItem(event,'menu-item')} className='submit-btn'>+</button>} modal>
+                            {event => handleSetEditMenuItem(event,'menu-item')}
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleSetEditMenuItem(event,'menu-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        {/* <button onClick={event => handleSetEditMenuItem(event,'menu-item')} className='submit-btn'>+</button> */}
                     </div>
                 </div>
 
@@ -416,7 +557,23 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleRestockItem(event,'restock-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleRestockItem(event,'restock-item')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleRestockItem(event,'restock-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        {/* <button onClick={event => handleRestockItem(event,'restock-item')} className='submit-btn'>+</button> */}
                     </div>
                 </div>
 
@@ -428,13 +585,29 @@ console.log(sendData);
                                 <select name='editmin-menu-items' id='editmin-menu-items' onChange={handleIngrList('editmin-menu-items')}>
                                 </select>
                                 <br></br>
-                                <input type="text" id="editmin-item-amount" placeholder="Enter Minimum Value" />
+                                <input type="text" id="editmin-item-amount" placeholder="Enter minimum value" />
                                 <br></br>
                             </label>
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleEditMinimumValue(event,'edit-minimum-value')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleEditMinimumValue(event,'edit-minimum-value')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleEditMinimumValue(event,'edit-minimum-value');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+                        
+                        {/* <button onClick={event => handleEditMinimumValue(event,'edit-minimum-value')} className='submit-btn'>+</button> */}
                     </div>
                 </div>
                 <h2>Add Ingredient</h2>
@@ -452,7 +625,42 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleNewIngredient(event,'restock-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+
+                        {/* <button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button> */}
+                    </div>
+                </div>
+                <h2>Delete Ingredient</h2>
+                <div className='delete-ingredient'>
+                    <div className='input-class'>
+                        <form>
+                            <label>
+                                <select name='delete-ingredient-items' id='delete-ingredient-items' onChange={handleIngrList('delete-ingredient-items')}>
+                                </select>
+                                <br></br>
+                            </label>
+                        </form>
+                    </div>
+                    <div className='submit-class'>
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleDeleteIngredient(event,'delete-ingredient');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
                     </div>
                 </div>
             </div>

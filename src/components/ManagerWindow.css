@@ -75,7 +75,7 @@ body {
     font-weight : bold ;
     font-size: 14px;
     color: white;
-    text-shadow: none; 
+    /* text-shadow: none;  */
 }
 
 .report-btn-group {
@@ -103,7 +103,7 @@ input, select {
     outline: none;
 }
 
-.add-menu-item, .edit-price, .restock-ingredient, .add-ingredient, .edit-minimum-value {
+.add-menu-item, .edit-price, .restock-ingredient, .add-ingredient, .edit-minimum-value, .delete-ingredient {
     display: table;
     width: 100%;
     height: 100%;
@@ -115,7 +115,6 @@ input, select {
 }
 
 .input-class {
-    /* background-color: #d49f00; */
     width: 80%;
     vertical-align: top;
     text-align: right;

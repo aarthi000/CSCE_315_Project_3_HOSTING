@@ -464,6 +464,58 @@ app.post('/addnewingredient', (request,response)=> {
     client.end;
 });
 
+app.post('/deleteingredient', (request,response)=> {
+    const b = request.body;
+    var query =  "Select "+ b.ingredient+" from ingredient_map;";
+    // Check if the ingredient is used
+    client.query(query, (err,result) => {
+        if(!err) {
+            var ingredientUsed = 0;
+            // If any of this ingredient value is not 0.0, then we will not remove
+            // and return with 'failed' status
+            var data = result.rows;
+            data.forEach(row => { 
+console.log(row);
+                  if(row != 0.0)
+                     ++ingredientUsed;
+            });
+            if(ingredientUsed == 0) {
+                // ingredient is not used by any menu item
+                // now drop this column from ingredient map
+                query = "ALTER table ingredient_map drop column "+ ingredient+";";
+                client.query(query, (err,result) => {
+                    if(!err) {
+                       // now drop this entry from the inventory table
+                        query = "DELETE from inventory where ingredient='"+ ingredient +"';";
+                        client.query(query, (err,result) => {
+                            if(!err) {
+                               response.send('success');
+                            }
+                            else {
+                                console.log('ingredient could not be removed from ingredient map');
+                                response.send('failed');
+                            }
+                        });
+                    }
+                    else {
+                        console.log('ingredient could not be removed from ingredient map');
+                        response.send('failed');
+                    }
+                });
+            }
+            else {
+                console.log('ingredient is used');
+                response.send('failed');
+            }
+        }
+        else {
+            console.log('Failed to run query select ingredient form ingredient map');
+            response.send('failed');
+        }
+    });
+    client.end;
+});
+
 app.post('/restockitem', (request,response)=> {
     const b = request.body;
     var q = "update inventory set ingredientremaining=ingredientremaining+" + b.itemamount
