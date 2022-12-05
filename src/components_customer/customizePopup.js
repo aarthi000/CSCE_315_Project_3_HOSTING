@@ -111,11 +111,11 @@ function Popup(props) {
       var inStock = await ingredientInStock(ingred, 1);
       if (inStock){
         // console.log(ingred + " has a stock greater than 0");
-        return true;
+        return false;
       }
       else{
         // console.log(ingred + " does not have a stock greater than 0");
-        return false;
+        return true;
       }
     }catch (err){
       console.error("error in addonInMenuItem in customizePop.js");
@@ -187,9 +187,9 @@ function Popup(props) {
    
   // const addonAdd = (item) => 
   const addonAdd = async (item) => {
-    var inStock = await isIngredientEmpty(item.itemname);
-    // console.log(inStock);
-    if (inStock){
+    var inStock = await ingredientInStock(item.itemname, 0);
+    console.log(inStock);
+    if (!inStock){
       alert(item.itemname + " is out of stock. Please order something else.");
       return;
     }
