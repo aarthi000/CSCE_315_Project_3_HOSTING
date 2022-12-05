@@ -3,7 +3,6 @@ import './serverWindowGUI.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import addonOrderItems from "./customizePopup"
-import ServerMap from "./googleMaps/googleMaps";
 
 function Cart(props) {
     const {orderItems, onAdd, onRemove} = props;
@@ -43,7 +42,6 @@ function Cart(props) {
 
     return (
         <div class="cart-delivery">
-            <ServerMap></ServerMap>
             <div className="order-summary">
                 <div className="block1 width-1">
                     <h2 className="sub-headers">Order Summary</h2>
