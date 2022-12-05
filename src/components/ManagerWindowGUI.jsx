@@ -78,26 +78,33 @@ function Manager() {
             },
             mode: 'cors', 
         });
-console.log(savedIngrList);
         const jsondata = await response.json();
+/*
         if(savedIngrList.length != 0  && jsondata.length != 0) {
             if (savedIngrList.sort().join(',') == jsondata.sort().join(','))
                return;
         }
         else
             savedIngrList = JSON.parse(JSON.stringify(jsondata));
+*/
 
-        //var select = document.getElementById("restock-menu-items"); 
         var select = document.getElementById(menuname);
+        var options = select.options;
+
+        var values = [];
+        for (var k = 0; k < options.length; k++) 
+            values.push(options[k].value);
 
         for(var i = 1; i < jsondata.length; i++) {
             var opt = jsondata[i];
 
-            var el = document.createElement("option");
-            el.text = opt;
-            el.value = opt;
+            if (values.length == 0 || !values.includes(opt )) {
+               var el = document.createElement("option");
+               el.text = opt;
+               el.value = opt;
 
-            select.add(el);
+               select.add(el);
+            }
         }
     }
 
@@ -147,6 +154,37 @@ console.log(savedIngrList);
         } else {
             // alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
             setStatus("Failed to add new menu item");
+        }
+    }
+
+    const handleDeleteIngredient = async () => {
+
+        const requestURL = "http://localhost:3300/deleteingredient";
+        const request = new Request(requestURL);
+
+        var e = document.getElementById("delete-ingredient-items");
+        var ingredient = e.value;
+
+        if(confirm("Are you sure you want to delete ingredient '" + ingredient + "'?") != true)
+        {
+            setStatus("Operation canceled");
+           return;
+        }
+        const sendData = {ingredient};
+console.log(sendData);
+        const response = await fetch(request, {
+            method: 'POST', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+            body: JSON.stringify(sendData)
+        });
+        const status = await response.text();
+        if(status == 'success') {
+            setStatus("Successfully deleted ingredient");
+        } else {
+            setStatus("Failed to delete ingredient");
         }
     }
 
@@ -231,6 +269,7 @@ console.log(sendData);
     }
 
     const handleRestockItem = async (event, nameStr) => {
+alert('restock called');
         var e = document.getElementById("restock-menu-items");
 
         var ingredient = e.value;
@@ -600,6 +639,28 @@ console.log(sendData);
                         </button>
 
                         {/* <button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button> */}
+                    </div>
+                </div>
+                <h2>Delete Ingredient</h2>
+                <div className='delete-ingredient'>
+                    <div className='input-class'>
+                        <form>
+                            <label>
+                                <select name='delete-ingredient-items' id='delete-ingredient-items' onChange={handleIngrList('delete-ingredient-items')}>
+                                </select>
+                                <br></br>
+                            </label>
+                        </form>
+                    </div>
+                    <div className='submit-class'>
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleDeleteIngredient(event,'delete-ingredient');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
                     </div>
                 </div>
             </div>
