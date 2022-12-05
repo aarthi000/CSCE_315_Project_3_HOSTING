@@ -3,6 +3,8 @@ const cors = require("cors");
 const pool = require("./connection1");
 const bodyParser = require("body-parser");
 const app = express();
+const PORT = process.env.PORT || 4999;
+
 
 
 //middleware
@@ -11,8 +13,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 
-app.listen(4999, () => {
-    console.log("customerAPI.js is now listening at port 4999");
+app.listen(PORT, () => {
+    console.log(`customerAPI.js is now listening at port ${PORT}`);
 });
 
 

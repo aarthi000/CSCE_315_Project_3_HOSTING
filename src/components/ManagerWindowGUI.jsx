@@ -2,8 +2,8 @@ import React, { Component, useState } from 'react';
 import './ManagerWindow.css';
 import { Table } from './Table';
 import { useNavigate } from "react-router-dom";
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+// import Popup from 'reactjs-popup';
+// import 'reactjs-popup/dist/index.css';
 
 function Manager() {
     const [status, setStatus] = useState("Operation failed");
@@ -149,11 +149,11 @@ function Manager() {
         // Now obtain the data from server.  Server sent a text so read it as text
         const status = await response.text();
         if(status == 'success') {
-            // alert('successfully added new menu item - '+itemname+', price to ' + itemprice);
-            setStatus("Successfully added new menu item");
+            alert('successfully added new menu item - '+itemname+', price to ' + itemprice);
+            // setStatus("Successfully added new menu item");
         } else {
-            // alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
-            setStatus("Failed to add new menu item");
+            alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
+            // setStatus("Failed to add new menu item");
         }
     }
 
@@ -213,11 +213,11 @@ console.log(sendData);
         // Now obtain the data from server.  Server sent a text so read it as text
         const status = await response.text();
         if(status == 'success') {
-            // alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
-            setStatus("Successfully edited menu item");
+            alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
+            // setStatus("Successfully edited menu item");
         } else {
-            // alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
-            setStatus("Failed to edit menu item");
+            alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
+            // setStatus("Failed to edit menu item");
         }
     }
 
@@ -248,11 +248,11 @@ console.log(sendData);
         });
         const status = await response.text();
         if(status == 'success') {
-            // alert('successfully added new ingredient - '+ ingredient);
-            setStatus("Successfully added new ingredient");
+            alert('successfully added new ingredient - '+ ingredient);
+            // setStatus("Successfully added new ingredient");
         } else {
-            // alert('failed to add new ingredient - '+ ingredient);
-            setStatus("Failed to add new ingredient");
+            alert('failed to add new ingredient - '+ ingredient);
+            // setStatus("Failed to add new ingredient");
         }
 
         // Create a request URL to send to the server
@@ -295,11 +295,11 @@ console.log(sendData);
         // const jsondata = await response.json();
         const status = await response.text();
         if(status == '["success"]') {
-            // alert('successfully added new ingredient - '+ ingredient);
-            setStatus("Successfully restocked menu item");
+            alert('successfully added new ingredient - '+ ingredient);
+            // setStatus("Successfully restocked menu item");
         } else {
-            // alert('failed to add new ingredient - '+ ingredient);
-            setStatus("Failed to restock menu item");
+            alert('failed to add new ingredient - '+ ingredient);
+            // setStatus("Failed to restock menu item");
         }
 
         // Create a request URL to send to the server
@@ -341,11 +341,11 @@ console.log(sendData);
         // const jsondata = await response.json();
         const status = await response.text();
         if(status == 'success') {
-            // alert('successfully added new ingredient - '+ ingredient);
-            setStatus("Successfully edited minimum value");
+            alert('successfully added new ingredient - '+ ingredient);
+            // setStatus("Successfully edited minimum value");
         } else {
-            // alert('failed to add new ingredient - '+ ingredient);
-            setStatus("Failed to edit minimum value");
+            alert('failed to add new ingredient - '+ ingredient);
+            // setStatus("Failed to edit minimum value");
         }
 
         // Create a request URL to send to the server
@@ -452,9 +452,9 @@ console.log(sendData);
                 </div>
             </div>
             <div className='split right'>
-                <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
                     <span>{status}</span>
-                </Popup>
+                </Popup> */}
 
                 <div className="report-btn-group">
                     <button onClick={event => handleSales(event,'sales')} className="role-button">Sales</button>

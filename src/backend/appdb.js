@@ -1,13 +1,15 @@
 const client = require('./connection.js');
 const express = require('express');
 const app = express();
+const PORT = process.env.PORT || 3300;
+
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 client.connect();
 
-app.listen(3300, () => {
-    console.log("Server is now listening at port 3300");
+app.listen(PORT, () => {
+    console.log(`appdb.js is now listening at port ${PORT}`);
 });
 
 app.use(function(request,response,next) {
