@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './ManagerWindow.css';
 import { Table } from './Table';
 import { useNavigate } from "react-router-dom";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 function Manager() {
-    // render() { 
+    const [status, setStatus] = useState("Operation failed");
+
+    const [open, setOpen] = useState(false);
+    const closeModal = () => setOpen(false);
+
     const navigate = useNavigate();
     var savedIngrList = [];
 
@@ -138,11 +141,15 @@ console.log(savedIngrList);
         });
         // Now obtain the data from server.  Server sent a text so read it as text
         const status = await response.text();
-        if(status == 'success')
-            alert('successfully added new menu item - '+itemname+', price to ' + itemprice);
-        else
-            alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
+        if(status == 'success') {
+            // alert('successfully added new menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Successfully added new menu item");
+        } else {
+            // alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Failed to add new menu item");
+        }
     }
+
     const handleSetEditMenuItem = async (event, nameStr) => {
         var e = document.getElementById("edit-menu-items");
         var itemname = e.value;
@@ -167,10 +174,13 @@ console.log(sendData);
         });
         // Now obtain the data from server.  Server sent a text so read it as text
         const status = await response.text();
-        if(status == 'success')
-            alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
-        else
-            alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
+        if(status == 'success') {
+            // alert('successfully changed menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Successfully edited menu item");
+        } else {
+            // alert('Failed to change menu item - '+itemname+', price to ' + itemprice);
+            setStatus("Failed to edit menu item");
+        }
     }
 
     const handleNewIngredient = async (event, nameStr) => {
@@ -199,10 +209,13 @@ console.log(sendData);
             body: JSON.stringify(sendData)
         });
         const status = await response.text();
-        if(status == 'success')
-            alert('successfully added new ingredient - '+ ingredient);
-        else
-            alert('failed to add new ingredient - '+ ingredient);
+        if(status == 'success') {
+            // alert('successfully added new ingredient - '+ ingredient);
+            setStatus("Successfully added new ingredient");
+        } else {
+            // alert('failed to add new ingredient - '+ ingredient);
+            setStatus("Failed to add new ingredient");
+        }
     }
 
     const handleRestockItem = async (event, nameStr) => {
@@ -228,7 +241,15 @@ console.log(sendData);
             body: JSON.stringify(sendData)
         });
         // Now obtain the data from server.  Server sent a text so read it as text
-        const jsondata = await response.json();
+        // const jsondata = await response.json();
+        const status = await response.text();
+        if(status == '["success"]') {
+            // alert('successfully added new ingredient - '+ ingredient);
+            setStatus("Successfully restocked menu item");
+        } else {
+            // alert('failed to add new ingredient - '+ ingredient);
+            setStatus("Failed to restock menu item");
+        }
     }
 
     const handleEditMinimumValue = async (event, nameStr) => {
@@ -254,7 +275,15 @@ console.log(sendData);
             body: JSON.stringify(sendData)
         });
         // Now obtain the data from server.  Server sent a text so read it as text
-        const jsondata = await response.json();
+        // const jsondata = await response.json();
+        const status = await response.text();
+        if(status == 'success') {
+            // alert('successfully added new ingredient - '+ ingredient);
+            setStatus("Successfully edited minimum value");
+        } else {
+            // alert('failed to add new ingredient - '+ ingredient);
+            setStatus("Failed to edit minimum value");
+        }
     }
 
     const handleRestock = async (event, nameStr) => {
@@ -348,6 +377,10 @@ console.log(sendData);
                 </div>
             </div>
             <div className='split right'>
+                <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                    <span>{status}</span>
+                </Popup>
+
                 <div className="report-btn-group">
                     <button onClick={event => handleSales(event,'sales')} className="role-button">Sales</button>
                     <button onClick={event => handleExcess(event,'excess')} className="role-button">Excess</button>
@@ -380,7 +413,23 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleAddNewMenuItem(event,'menu-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleAddNewMenuItem(event,'menu-item')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleAddNewMenuItem(event,'menu-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        {/* <button onClick={event => handleAddNewMenuItem(event,'menu-item')} className='submit-btn'>+</button> */}
                     </div>
                 </div> 
 
@@ -398,7 +447,24 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleSetEditMenuItem(event,'menu-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleSetEditMenuItem(event,'menu-item')} className='submit-btn'>+</button>} modal>
+                            {event => handleSetEditMenuItem(event,'menu-item')}
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleSetEditMenuItem(event,'menu-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        {/* <button onClick={event => handleSetEditMenuItem(event,'menu-item')} className='submit-btn'>+</button> */}
                     </div>
                 </div>
 
@@ -416,7 +482,23 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleRestockItem(event,'restock-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleRestockItem(event,'restock-item')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleRestockItem(event,'restock-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        {/* <button onClick={event => handleRestockItem(event,'restock-item')} className='submit-btn'>+</button> */}
                     </div>
                 </div>
 
@@ -434,7 +516,23 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleEditMinimumValue(event,'edit-minimum-value')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleEditMinimumValue(event,'edit-minimum-value')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleEditMinimumValue(event,'edit-minimum-value');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+                        {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                            <span>{status}</span>
+                        </Popup> */}
+                        
+                        {/* <button onClick={event => handleEditMinimumValue(event,'edit-minimum-value')} className='submit-btn'>+</button> */}
                     </div>
                 </div>
                 <h2>Add Ingredient</h2>
@@ -452,7 +550,20 @@ console.log(sendData);
                         </form>
                     </div>
                     <div className='submit-class'>
-                        <button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button>
+                        {/* <Popup trigger={<button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button>} modal>
+                            <span>{status}</span>
+                        </Popup> */}
+
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleNewIngredient(event,'restock-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
+
+                        {/* <button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button> */}
                     </div>
                 </div>
             </div>
