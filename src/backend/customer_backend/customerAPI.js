@@ -268,6 +268,22 @@ app.get("/inventory_customer", async(req,res) => {
         res.json(data.rows);
 
     }catch (err){
-        console.error("Error in customerAPI: /ingredients_list")
+        console.error("Error in customerAPI: /inventory_customer")
+        console.error(err.message)
+
+        
+    }
+});
+
+app.get("/coordinates", async(req,res) => {
+    try{
+        var data = await pool.query("SELECT MAX(orderid) as max_orderids FROM coordinates");
+        var orderid = data.rows[0].max_orderids;
+        var coordinates = await pool.query("SELECT * from coordinates where orderid = " + orderid);
+        res.json(coordinates.rows);
+
+    }catch (err){
+        console.error("Error in customerAPI: /coordinates")
+        console.error(err.message)
     }
 });

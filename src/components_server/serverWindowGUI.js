@@ -34,8 +34,6 @@ function Server(props) {
   const [orderItems, setOrderItems] = useState([]);
   
   const {items} = menuitems;
-  console.log("menuitems")
-  console.log(menuitems);
 
   const onAdd = (item) => {
     const exist = orderItems.find(x => x.id === item.id);

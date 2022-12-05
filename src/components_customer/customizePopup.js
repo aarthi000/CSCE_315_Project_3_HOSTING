@@ -188,7 +188,7 @@ function Popup(props) {
   // const addonAdd = (item) => 
   const addonAdd = async (item) => {
     var inStock = await ingredientInStock(item.itemname, 0);
-    console.log(inStock);
+    // console.log(inStock);
     if (!inStock){
       alert(item.itemname + " is out of stock. Please order something else.");
       return;
@@ -219,7 +219,7 @@ function Popup(props) {
         <div className="popup">
             <div className="popup-inner">
                 {/* <button onClick={() => props.setTrigger(false)} className="close-btn">Close</button> */}
-                <button onClick={() => {itemInStock("Classic Burger"); props.setTrigger(false);}} className="close-btn">Close</button>
+                <button onClick={() => props.setTrigger(false)} className="close-btn">Close</button>
 
                 {props.children}
                 <Container col>

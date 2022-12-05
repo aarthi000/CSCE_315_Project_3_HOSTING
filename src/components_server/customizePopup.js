@@ -34,8 +34,6 @@ function Popup(props) {
 
   const [addonOrderItems, setAddonOrderItems] = useState([]);
   const {items} = addonsData; /// change this to addonitems
-  console.log("items");
-  console.log(items);
 
   const addonAdd = (item) => {
     const exist = addonOrderItems.find(x => x.id === item.id);
@@ -50,8 +48,8 @@ function Popup(props) {
       setAddonOrderItems(newItems);
       localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
     } 
-    console.log("ADDONS-ADD");
-    console.log(addonOrderItems);
+    // console.log("ADDONS-ADD");
+    // console.log(addonOrderItems);
 
     };
 
@@ -67,8 +65,8 @@ function Popup(props) {
             setAddonOrderItems(newItems);  
           localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
       }
-      console.log("ADDONS-REMOVE");
-      console.log(addonOrderItems);
+      // console.log("ADDONS-REMOVE");
+      // console.log(addonOrderItems);
     };
 
     useEffect(() => {
