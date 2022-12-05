@@ -216,6 +216,18 @@ console.log(sendData);
             // alert('failed to add new ingredient - '+ ingredient);
             setStatus("Failed to add new ingredient");
         }
+
+        // Create a request URL to send to the server
+        const requestURLInv = "http://localhost:3300/inventory";
+        const requestInv = new Request(requestURLInv);
+
+        await fetch(requestInv, {
+    	      method: 'GET', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+        });
     }
 
     const handleRestockItem = async (event, nameStr) => {
@@ -250,6 +262,18 @@ console.log(sendData);
             // alert('failed to add new ingredient - '+ ingredient);
             setStatus("Failed to restock menu item");
         }
+
+        // Create a request URL to send to the server
+        const requestURLInv = "http://localhost:3300/inventory";
+        const requestInv = new Request(requestURLInv);
+
+        await fetch(requestInv, {
+    	      method: 'GET', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+        });
     }
 
     const handleEditMinimumValue = async (event, nameStr) => {
@@ -284,6 +308,18 @@ console.log(sendData);
             // alert('failed to add new ingredient - '+ ingredient);
             setStatus("Failed to edit minimum value");
         }
+
+        // Create a request URL to send to the server
+        const requestURLInv = "http://localhost:3300/inventory";
+        const requestInv = new Request(requestURLInv);
+
+        await fetch(requestInv, {
+    	      method: 'GET', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+        });
     }
 
     const handleRestock = async (event, nameStr) => {
@@ -510,7 +546,7 @@ console.log(sendData);
                                 <select name='editmin-menu-items' id='editmin-menu-items' onChange={handleIngrList('editmin-menu-items')}>
                                 </select>
                                 <br></br>
-                                <input type="text" id="editmin-item-amount" placeholder="Enter Minimum Value" />
+                                <input type="text" id="editmin-item-amount" placeholder="Enter minimum value" />
                                 <br></br>
                             </label>
                         </form>
