@@ -210,22 +210,6 @@ function Popup(props) {
 
     };
 
-    const addonRemove = (item) => {
-      const exist = addonOrderItems.find(x => x.id === item.id);
-      if (!exist) {
-        const newItems = [...addonOrderItems, {...item, qty: -1}];
-        setAddonOrderItems(newItems);
-        localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
-      } else {
-          const newItems = addonOrderItems.map((x) => 
-            x.id === item.id ? {...exist, qty: exist.qty - 1} : x);
-            setAddonOrderItems(newItems);  
-          localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
-      }
-      // console.log("ADDONS-REMOVE");
-      // console.log(addonOrderItems);
-    };
-
     useEffect(() => {
         getIngredientsList();
         setAddonOrderItems(localStorage.getItem('addonOrderItems') ? JSON.parse(localStorage.getItem('addonOrderItems')):[]);
@@ -241,7 +225,7 @@ function Popup(props) {
                 <Container col>
                     <Row>
                         <h2 className="sub-headers2">Add-On Items</h2>
-                        <Addon items={items} addonAdd={addonAdd} addonRemove={addonRemove}></Addon>
+                        <Addon items={items} addonAdd={addonAdd}></Addon>
                         {/* <Cart addonOrderItems={addonOrderItems}></Cart> */}
                     </Row>
                 </Container>

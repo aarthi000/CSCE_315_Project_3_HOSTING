@@ -20,7 +20,7 @@ function Map() {
         <h2 className="delivery_heading">Delivery Address</h2>
         <div className="map-inner">
             <GoogleMap zoom={10} center={center} mapContainerClassName="map-container">
-                <MarkerF position={center} />
+                <MarkerF position={center} label={{text:"Rev's American Grill"}}/>
                 <MarkerF position={mar} />
             </GoogleMap>
         </div>    
