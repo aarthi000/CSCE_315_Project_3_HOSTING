@@ -17,8 +17,8 @@ function Popup(props) {
 
   const getIngredientsList = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/ingredients_list");
-      const response = await fetch ("http://localhost:4999/ingredients_list");
+      const response = await fetch ("https://rev-api-customer.onrender.com/ingredients_list");
+      // const response = await fetch ("http://localhost:4999/ingredients_list");
       const jsonData = await response.json();
       setIngredientsList(jsonData);
 
@@ -31,8 +31,8 @@ function Popup(props) {
 
   const getIngredientsMap = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/ingredients_map");
-      const response = await fetch ("http://localhost:4999/ingredients_map");
+      const response = await fetch ("https://rev-api-customer.onrender.com/ingredients_map");
+      // const response = await fetch ("http://localhost:4999/ingredients_map");
       const jsonData = await response.json();
       setIngredients_Map(jsonData);
 
@@ -46,8 +46,8 @@ function Popup(props) {
 
   const getInventory = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/inventory_customer");
-      const response = await fetch ("http://localhost:4999/inventory_customer");
+      const response = await fetch ("https://rev-api-customer.onrender.com/inventory_customer");
+      // const response = await fetch ("http://localhost:4999/inventory_customer");
       const jsonData = await response.json();
       setInventory(jsonData);
 
@@ -170,8 +170,8 @@ function Popup(props) {
 
   const getAllAddOns = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/addons");
-      const response = await fetch ("http://localhost:4999/addons");
+      const response = await fetch ("https://rev-api-customer.onrender.com/addons");
+      // const response = await fetch ("http://localhost:4999/addons");
       const jsonData = await response.json();
       setAllAddOns(jsonData);
 

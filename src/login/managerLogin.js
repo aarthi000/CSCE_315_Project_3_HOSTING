@@ -61,16 +61,16 @@ function LoginManager() {
     for (let i = 0; i < employees.length; i++) {
       if ((userObject.given_name == employees[i]["employeename"]) && (employees[i]["jobtitle"] == "Manager")) {
         // Create a request URL to send to the server
-        const requestURL = "http://localhost:3300/inventory";
-        const request = new Request(requestURL);
+        // const requestURL = "http://localhost:3300/inventory";
+        // const request = new Request(requestURL);
 
-        await fetch(request, {
-    	      method: 'GET', 
-            headers: { 
-                'Content-Type': 'application/json',
-            },
-            mode: 'cors', 
-        });
+        // await fetch(request, {
+    	  //     method: 'GET', 
+        //     headers: { 
+        //         'Content-Type': 'application/json',
+        //     },
+        //     mode: 'cors', 
+        // });
         navigate("/manager");
         return;
       }

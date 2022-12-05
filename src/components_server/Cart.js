@@ -12,7 +12,7 @@ function Cart(props) {
     const sendOrder = async () => {
         try{
           const body = orderItems;
-          const response = await fetch (/*"http://localhost:4999/placeOrder"*/"https://revs-api.onrender.com/placeOrder",{
+          const response = await fetch (/*"http://localhost:4999/placeOrder"*/"https://rev-api-customer.onrender.com/placeOrder",{
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body),
