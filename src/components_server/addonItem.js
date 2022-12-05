@@ -6,7 +6,7 @@ import {useState} from 'react';
 /* import getMenuitems from '../appdb';*/
 
 export default function AddonItems(props) {
-    const {item, addonAdd, addonRemove} = props;
+    const {item, addonAdd} = props;
     console.log('hello');
     return (
         
@@ -17,7 +17,7 @@ export default function AddonItems(props) {
                 </Row>
                 <main>
                 <button onClick={() => addonAdd(item)} className='customize_button1'>+</button>
-                <button onClick={() => addonRemove(item)} className='customize_button1'>-</button>
+                {/* <button onClick={() => addonRemove(item)} className='customize_button1'>-</button> */}
                 </main>
             </div>
         </div>

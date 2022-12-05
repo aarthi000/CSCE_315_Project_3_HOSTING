@@ -83,7 +83,7 @@ function Popup(props) {
                 <Container col>
                     <Row>
                         <h2 className="sub-headers2">Add-On Items</h2>
-                        <Addon items={items} addonAdd={addonAdd} addonRemove={addonRemove}></Addon>
+                        <Addon items={items} addonAdd={addonAdd}></Addon>
                         {/* <Cart addonOrderItems={addonOrderItems}></Cart> */}
                     </Row>
                 </Container>
