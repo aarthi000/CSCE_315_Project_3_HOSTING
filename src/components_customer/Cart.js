@@ -6,20 +6,20 @@ import CustomerMap from "./googleMaps/googleMaps";
 
 function Cart(props) {
 
-  const removeOrder = async () => {
-    try{
-      // const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
-      const response = await fetch ("http://localhost:4999/removeLastOrder");
-      await alert("Order remove successful!");
+  // const removeOrder = async () => {
+  //   try{
+  //     // const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
+  //     const response = await fetch ("http://localhost:4999/removeLastOrder");
+  //     await alert("Order remove successful!");
       
 
-    }catch (err){
-      await alert("Order remove not successful due to past menuitem in order that no longer exists!");
+  //   }catch (err){
+  //     await alert("Order remove not successful due to past menuitem in order that no longer exists!");
 
-      console.error("Error in removeOrder() ");
-      console.error(err.message);
-    }
-  }
+  //     console.error("Error in removeOrder() ");
+  //     console.error(err.message);
+  //   }
+  // }
     const {orderItems, onAdd, onRemove} = props;
     
     const itemsPrice = orderItems.reduce((a, c) => a + c.qty * c.itemprice, 0);

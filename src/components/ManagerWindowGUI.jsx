@@ -26,8 +26,8 @@ function Manager() {
             // Create a JSON object 'sendData' (name: value) format
             const sendData = {startdate,enddate};
 
-            // const requestURL = "http://localhost:3300/addonsreport";
-            const requestURL = "https://rev-api-manager.onrender.com/addonsreport";
+            const requestURL = "http://localhost:3300/addonsreport";
+            // const requestURL = "https://rev-api-manager.onrender.com/addonsreport";
 
             const request = new Request(requestURL);
 
@@ -386,8 +386,8 @@ console.log(sendData);
     }
 
     const handleRestock = async (event, nameStr) => {
-        // const requestURL = "http://localhost:3300/restock";
-        const requestURL = "https://rev-api-manager.onrender.com/restock";
+        const requestURL = "http://localhost:3300/restock";
+        // const requestURL = "https://rev-api-manager.onrender.com/restock";
 
         const request = new Request(requestURL);
 
@@ -419,8 +419,8 @@ console.log(sendData);
             const sendData = {startdate,enddate};
 
             // Create a request URL to send to the server
-            // const requestURL = "http://localhost:3300/sales";
-            const requestURL = "https://rev-api-manager.onrender.com/sales";
+            const requestURL = "http://localhost:3300/sales";
+            // const requestURL = "https://rev-api-manager.onrender.com/sales";
 
             const request = new Request(requestURL);
 
@@ -453,8 +453,8 @@ console.log(sendData);
             const sendData = {startdate};
 
             // Create a request URL to send to the server
-            // const requestURL = "http://localhost:3300/excess";
-            const requestURL = "https://rev-api-manager.onrender.com/excess";
+            const requestURL = "http://localhost:3300/excess";
+            // const requestURL = "https://rev-api-manager.onrender.com/excess";
 
             const request = new Request(requestURL);
 
