@@ -289,3 +289,75 @@ app.get("/coordinates", async(req,res) => {
         console.error(err.message)
     }
 });
+
+
+app.get("/removeLastOrder", async(req,res) => {
+    try{
+        console.log("Newwwww");
+        var data1 = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_history");
+        var data2 = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_totals");
+        var orderid1 = data1.rows[0].max_orderids;
+        var orderid2 = data1.rows[0].max_orderids;
+        var orderID;
+        if (orderid1 != orderid2){ //if max orderids in both tables aren't matching, return
+            console.log("Error in /removeLastOrder in customerAPI.js: max orderIDs are not matching in order_history and order_totals");
+            return;
+        }
+        else{
+            orderID = orderid1;
+        }
+
+        var history_response = await pool.query(  //uncomment me!
+            "select * from order_history where orderid = " + orderID
+        );
+  
+        var menuitems = history_response.rows;
+
+        //figure out what items were ordered, store in array
+        var itemsOrdered = [];
+        for (var i = 0; i < menuitems.length; i++){
+            itemsOrdered.push(menuitems[i].itemname);
+        }
+        if (itemsOrdered.length == 0){
+            console.log("Order doesn't exist or has already been deleted");
+            return;
+        }
+
+        
+        // delete from order_history 
+        await pool.query(  //uncomment me!
+            "delete from order_history where orderid = " + orderID
+        );
+
+        // delete from order totals
+        await pool.query(  //uncomment me!
+            "delete from order_totals where orderid = " + orderID
+        );
+
+    for (var i = 0; i < itemsOrdered.length; i++){
+        var ingredients = await getIngredients(itemsOrdered[i]);
+        for (var key of Object.keys(ingredients)) {
+            if (ingredients[key] != 0) {
+                var updateUsed = "update inventory set amountused=amountused-" + ingredients[key]
+                            + " where ingredient='" + key + "';";
+                var updateRemaining = "update inventory set ingredientremaining=ingredientremaining+"
+                            + ingredients[key] + " where ingredient='" + key + "';";
+                
+                await pool.query(  //uncomment me!
+                    updateUsed
+                );
+
+                await pool.query(  //uncomment me!
+                    updateRemaining
+                );
+            }
+        }
+    }
+
+        res.json(orderID);
+
+    }catch (err){
+        console.error("Error in customerAPI: /removeLastOrder")
+        console.error(err.message)
+    }
+});

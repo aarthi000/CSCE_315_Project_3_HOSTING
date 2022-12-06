@@ -168,8 +168,9 @@ async function removeOrder(orderID){
     var history_response = await pool.query(  //uncomment me!
       "select * from order_history where orderid = " + orderID
     );
-    
+
     var menuitems = history_response.rows;
+    // console.log(menuitems);
 
     //figure out what items were ordered, store in array
     var itemsOrdered = [];
