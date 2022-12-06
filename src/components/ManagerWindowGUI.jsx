@@ -474,6 +474,7 @@ console.log(sendData);
 
     return (
         <section className='ManagerWindow'>
+            <h2 className="welcome">Welcome Manager!</h2>
             <br></br>
             <div className='split left'>
                 <h2>Inventory</h2>

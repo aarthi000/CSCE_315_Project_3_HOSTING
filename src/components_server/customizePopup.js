@@ -11,31 +11,167 @@ import addonsData from './tempAddons'
 
 
 function Popup(props) {
-    //const[addonitems, setAddonItems] = useState([]);
+    const[ingredientsList, setIngredientsList] = useState([]);
 
-////////
-//   const getMenuitems = async () => {
-//     try{
-//       const response = await fetch ("http://localhost:4999/menuitems_list");
-//       const jsonData = await response.json();
-//       setAddonItems(jsonData);
+  const getIngredientsList = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/ingredients_list");
+      const response = await fetch ("http://localhost:4999/ingredients_list");
+      const jsonData = await response.json();
+      setIngredientsList(jsonData);
 
-//     }catch (err){
-//       console.error("i will kms fr:  see error message below");
-//       console.error(err.message);
-//     }
-//   }
+    }catch (err){
+      console.error("error in getIngredientsList in customizePop.js");
+      console.error(err.message);
+    }
+  };
+  const[ingredients_map, setIngredients_Map] = useState([]);
+  const getIngredientsMap = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/ingredients_map");
+      const response = await fetch ("http://localhost:4999/ingredients_map");
+      const jsonData = await response.json();
+     
+	 setIngredients_Map(jsonData);
 
-//   useEffect(()=> {
-//     getMenuitems();
-//   }, []);
+ }catch (err){
+      console.error("error in getIngredientsMap in customizePop.js");
+      console.error(err.message);
+    }
+  };
+  const[inventory, setInventory] = useState([]);
+ const getInventory = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/inventory_customer");
+      const response = await fetch ("http://localhost:4999/inventory_customer");
+      const jsonData = await response.json();
+      setInventory(jsonData);
+
+    }catch (err){
+      console.error("error in getInventory in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+
+ const addonInMenuItem = async (_addon, _menuitem) => {
+    try{
+      await getIngredientsMap();
+      var data = await ingredients_map;
+      for (var i = 0 ; i < data.length; i++){
+          if (data[i].itemname == _menuitem){
+              var item = data[i];
+              for (var key of Object.keys(item)){
+                  if (item[_addon] == 0){
+                      // console.log(_addon + " is not in " + _menuitem);
+                      return false;
+                  }else{
+                      // console.log(_addon + " is in " + _menuitem);
+                      return true;
+                  }
+              }
+          }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
   
-///////
+};
+  const ingredientInStock = async (ingred, numRequired) => {
+    try{
+      await getInventory();  
+      var data = await inventory;    
+      for (var i = 0; i < data.length; i++){
+        if (data[i].ingredient == ingred){
+          var numLeft = data[i].ingredientremaining;
+          if (numLeft < numRequired) {
+            // console.log(ingred + " not in stock for required amount: " + numRequired);
+            return false;
+          }
+          else{
+            // console.log(ingred + " IS in stock for required amount: " + numRequired);
+            return true;
+          }
+        }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+  const isIngredientEmpty = async (ingred) => {
+    try{
+      var inStock = await ingredientInStock(ingred, 1);
+      if (inStock){
+        // console.log(ingred + " has a stock greater than 0");
+        return false;
+      }
+      else{
+        // console.log(ingred + " does not have a stock greater than 0");
+        return true;
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+  const itemInStock = async (menuitem) => {
+    try{
+      await getIngredientsMap;
+      var map = await ingredients_map;
+      
+      for (var i = 0; i < map.length; i++){    
+        if (map[i].itemname == menuitem){
+          var ingredients = map[i];
+          for (var key of Object.keys(ingredients)) {
+            if (ingredients[key] != 0 && key != 'itemname') {
+                var inStock = await ingredientInStock(key, ingredients[key]);   
+              if (!inStock) {
+                // console.log(menuitem + " is not in stock because " + key + " is not in stock");
+                return false;
+              }
+            }
+          }
+          // console.log(menuitem + " IS in stock");
+          return true;
+        }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+  
+ useEffect(()=> {
+    getIngredientsList();
+    getIngredientsMap();
+    getInventory();
+  }, []);
 
   const [addonOrderItems, setAddonOrderItems] = useState([]);
-  const {items} = addonsData; /// change this to addonitems
+ const {items} = ingredientsList; 
+const[allAddOns, setAllAddOns] = useState([]);
+ const getAllAddOns = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/addons");
+      const response = await fetch ("http://localhost:4999/addons");
+      const jsonData = await response.json();
+      setAllAddOns(jsonData);
 
-  const addonAdd = (item) => {
+    }catch (err){
+      console.error("error in getAllAddOns in customizePop.js");
+      console.error(err.message);
+    }
+  }
+ // const addonAdd = (item) => 
+  const addonAdd = async (item) => {
+    var inStock = await ingredientInStock(item.itemname, 0);
+    // console.log(inStock);
+    if (!inStock){
+      alert(item.itemname + " is out of stock. Please order something else.");
+      return;
+    }
     const exist = addonOrderItems.find(x => x.id === item.id);
     if (exist) {
       const newItems = addonOrderItems.map((x) => 
@@ -53,23 +189,9 @@ function Popup(props) {
 
     };
 
-    const addonRemove = (item) => {
-      const exist = addonOrderItems.find(x => x.id === item.id);
-      if (!exist) {
-        const newItems = [...addonOrderItems, {...item, qty: -1}];
-        setAddonOrderItems(newItems);
-        localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
-      } else {
-          const newItems = addonOrderItems.map((x) => 
-            x.id === item.id ? {...exist, qty: exist.qty - 1} : x);
-            setAddonOrderItems(newItems);  
-          localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
-      }
-      // console.log("ADDONS-REMOVE");
-      // console.log(addonOrderItems);
-    };
 
     useEffect(() => {
+        getIngredientsList();
         setAddonOrderItems(localStorage.getItem('addonOrderItems') ? JSON.parse(localStorage.getItem('addonOrderItems')):[]);
     },[])
 

@@ -2,26 +2,24 @@ import React, {Fragment, useEffect, useState} from "react";
 import './customerWindowGUI.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import addonOrderItems from "./customizePopup"
-import Customer from "./googleMaps/googleMaps";
 import CustomerMap from "./googleMaps/googleMaps";
 
 function Cart(props) {
 
-  const removeOrder = async () => {
-    try{
-      // const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
-      const response = await fetch ("http://localhost:4999/removeLastOrder");
-      await alert("Order remove successful!");
+  // const removeOrder = async () => {
+  //   try{
+  //     // const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
+  //     const response = await fetch ("http://localhost:4999/removeLastOrder");
+  //     await alert("Order remove successful!");
       
 
-    }catch (err){
-      await alert("Order remove not successful due to past menuitem in order that no longer exists!");
+  //   }catch (err){
+  //     await alert("Order remove not successful due to past menuitem in order that no longer exists!");
 
-      console.error("Error in removeOrder() ");
-      console.error(err.message);
-    }
-  }
+  //     console.error("Error in removeOrder() ");
+  //     console.error(err.message);
+  //   }
+  // }
     const {orderItems, onAdd, onRemove} = props;
     
     const itemsPrice = orderItems.reduce((a, c) => a + c.qty * c.itemprice, 0);
@@ -87,23 +85,8 @@ function Cart(props) {
 
 
     return (
-        <div class="cart-delivery">
-            {/* <div className="delivery">  
-                <h2 className="delivery_heading">Delivery Address</h2>
-                <form className ="form">
-                    <label className="text-boxes">
-                        <input type="text" placeholder="12345 Main St." />
-                        <br></br>
-                        <input type="text" placeholder="Dallas, TX" />
-                        <br></br>
-                        <input type="text" placeholder="73628" />
-                        <br></br>
-                    </label>
-                </form>
-                <div className="save-add-div"><button className='save-address-button'>Save Address</button></div>
-            </div> */}
-            <CustomerMap></CustomerMap>
-            <div className="order-summary">
+            <div className="order-summary1">
+              <CustomerMap></CustomerMap>
                 <div className="block1 width-1">
                     <h2 className="sub-headers">Order Summary</h2>
                     <div>
@@ -131,7 +114,6 @@ function Cart(props) {
                 </div>
             </div>  
             
-        </div>
         
     )
 }

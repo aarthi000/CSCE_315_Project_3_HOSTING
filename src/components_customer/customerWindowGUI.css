@@ -80,7 +80,6 @@ h3 {
     padding: 1rem;
     padding-left: 20rem;
     padding-right: 20rem;
-    padding-bottom: 30px;
 }
 
 .item-block {
@@ -91,6 +90,7 @@ h3 {
     color: white;
     width: 100%;    
     padding-top: 20px;
+    font-size: 30px;
 }
 
 .row.center {
@@ -236,15 +236,6 @@ background-color: #d49f00;
     padding-bottom: 20px;
 }
 
-.delivery {
-    padding-bottom:30px;
-    /* position: fixed; */
-}
-
-/* .order-summary {
-    position: fixed;
-} */
-
 .row-format {
     display: flex;
     justify-content: space-between;
@@ -281,8 +272,7 @@ background-color: #d49f00;
     font-weight: 500;
 }
 
-.form {
-    padding-bottom: 10px;
-    padding-left: 70px;
-    padding-top: 10px;
+.order-summary1 {
+    padding-top: 50px;
 }
+

@@ -242,9 +242,9 @@ background-color: #d49f00;
     /* position: fixed; */
 }
 
-/* .order-summary {
-    position: fixed;
-} */
+.order-summary {
+    padding-top: 105px;
+}
 
 .row-format {
     display: flex;

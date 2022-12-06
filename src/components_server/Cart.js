@@ -26,7 +26,24 @@ function Cart(props) {
         if(localStorage.length === 0)
             sOutput.innerHTML = "";
       }
+	const[orderid, setOrderid] = useState([]);
 
+const getOrderid = async () => {
+    try{
+
+      const response = await fetch ("http://localhost:4999/lastOrder");
+
+      const jsonData = await response.json();
+      setOrderid(jsonData.max_orderids + 1);
+      // console.log("Type:");
+      // console.log(typeof jsonData.max_orderids);
+      // console.log("Data:");
+      // console.log(jsonData.max_orderids);
+    }catch (err){
+      console.error("i will kms fr:  see error message below");
+      console.error(err.message);
+    }
+  }
       function orderPlaced() {
         alert("Order has been placed successfully!")
         window.location.reload() 
@@ -41,7 +58,6 @@ function Cart(props) {
 
 
     return (
-        <div class="cart-delivery">
             <div className="order-summary">
                 <div className="block1 width-1">
                     <h2 className="sub-headers">Order Summary</h2>
@@ -63,12 +79,10 @@ function Cart(props) {
                     {orderItems.length !== 0 && (
                         <h2 className="display-item">Order Total: ${itemsPrice.toFixed(2)}</h2>
                     )}
-                    <button onClick={() => {sendOrder(); orderPlaced();}} className='customize_button'>Place Order</button>
+                    <button onClick={() => {sendOrder(); getOrderid(); orderPlaced();}} className='customize_button'>Place Order</button>
                     
                 </div>
             </div>  
-            
-        </div>
         
     )
 }

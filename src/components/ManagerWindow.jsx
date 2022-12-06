@@ -19,9 +19,7 @@ function ManagerWindow() {
             // Create a JSON object 'sendData' (name: value) format
             const sendData = {startdate,enddate};
 
-            // const requestURL = "http://localhost:3300/addonsreport";
-            const requestURL = "https://rev-api-manager.onrender.com/addonsreport";
-
+            const requestURL = "http://localhost:3300/addonsreport";
             const request = new Request(requestURL);
 
             const response = await fetch(request, {
@@ -38,9 +36,7 @@ function ManagerWindow() {
     }
 
     const handleEditMenuItem = async () => {
-        // const requestURL = "http://localhost:3300/getmenuitemlist";
-        const requestURL = "https://rev-api-manager.onrender.com/getmenuitemlist";
-
+        const requestURL = "http://localhost:3300/getmenuitemlist";
         const request = new Request(requestURL);
 
         const response = await fetch(request, {
@@ -65,9 +61,7 @@ function ManagerWindow() {
     }
 
     const handleIngrList = async () => {
-        // const requestURL = "http://localhost:3300/getingredientlist";
-        const requestURL = "https://rev-api-manager.onrender.com/getingredientlist";
-
+        const requestURL = "http://localhost:3300/getingredientlist";
         const request = new Request(requestURL);
 
         const response = await fetch(request, {
@@ -117,9 +111,7 @@ function ManagerWindow() {
         const sendData = {itemname,itemprice,itemtype,ingrdata};
         //console.log(sendData);
         // Create a request URL to send to the server
-        // const requestURL = "http://localhost:3300/addnewmenuitem";
-        const requestURL = "https://rev-api-manager.onrender.com/addnewmenuitem";
-
+        const requestURL = "http://localhost:3300/addnewmenuitem";
         const request = new Request(requestURL);
 
         // Send the request along with the data inside 'request body'
@@ -146,11 +138,9 @@ function ManagerWindow() {
         var itemprice = e.value;
 
         const sendData = {itemname,itemprice};
-console.log(sendData);
+        console.log(sendData);
         // Create a request URL to send to the server
-        // const requestURL = "http://localhost:3300/editmenuitemprice";
-        const requestURL = "https://rev-api-manager.onrender.com/editmenuitemprice";
-
+        const requestURL = "http://localhost:3300/editmenuitemprice";
         const request = new Request(requestURL);
 
         // Send the request along with the data inside 'request body'
@@ -183,9 +173,7 @@ console.log(sendData);
         const sendData = {ingredient,itemamount,itemminamount};
 console.log(sendData);
         // Create a request URL to send to the server
-        // const requestURL = "http://localhost:3300/addnewingredient";
-        const requestURL = "https://rev-api-manager.onrender.com/addnewingredient";
-
+        const requestURL = "http://localhost:3300/addnewingredient";
         const request = new Request(requestURL);
 
         // Send the request along with the data inside 'request body'
@@ -214,9 +202,7 @@ console.log(sendData);
         const sendData = {ingredient,itemamount};
 console.log(sendData);
         // Create a request URL to send to the server
-        // const requestURL = "http://localhost:3300/restockitem";
-        const requestURL = "https://rev-api-manager.onrender.com/restockitem";
-
+        const requestURL = "http://localhost:3300/restockitem";
         const request = new Request(requestURL);
 
         // Send the request along with the data inside 'request body'
@@ -233,9 +219,7 @@ console.log(sendData);
     }
 
     const handleRestock = async (event, nameStr) => {
-        // const requestURL = "http://localhost:3300/restock";
-        const requestURL = "https://rev-api-manager.onrender.com/restock";
-
+        const requestURL = "http://localhost:3300/restock";
         const request = new Request(requestURL);
 
         await fetch(request, {
@@ -266,9 +250,7 @@ console.log(sendData);
             const sendData = {startdate,enddate};
 
             // Create a request URL to send to the server
-            // const requestURL = "http://localhost:3300/sales";
-            const requestURL = "https://rev-api-manager.onrender.com/sales";
-
+            const requestURL = "http://localhost:3300/sales";
             const request = new Request(requestURL);
 
             // Send the request along with the data inside 'request body'
@@ -301,9 +283,7 @@ console.log(sendData);
             const sendData = {startdate,enddate};
 
             // Create a request URL to send to the server
-            // const requestURL = "http://localhost:3300/excess";
-            const requestURL = "https://rev-api-manager.onrender.com/excess";
-
+            const requestURL = "http://localhost:3300/excess";
             const request = new Request(requestURL);
 
             // Send the request along with the data inside 'request body'
