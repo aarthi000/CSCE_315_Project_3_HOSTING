@@ -458,7 +458,7 @@ app.post('/addnewmenuitem', (request,response)=> {
                     insertq += ") ";
                     valueq  += ");";
                     q = insertq + valueq;
-                    //console.log(q);
+                    console.log(q);
                     client.query(q, (err,result) => {
                        if(!err)
                            response.send('success');
@@ -488,11 +488,23 @@ app.post('/addnewingredient', (request,response)=> {
                          + b.itemminamount + ");" 
     //console.log(q);
     client.query(q, (err,result) => {
-          if(!err) {
-             response.send('success');
+        if(!err) {
+             q = "alter table ingredient_map add " + b.ingredient + " INT DEFAULT 0";
+             client.query(q, (err,result) => {
+                 if(!err) {
+                      console.log("added ingredient " + b.ingredient + "to ingredient_map");
+                      response.send('success');
+                 }
+                 else {
+                      console.log("failed to add ingredient " + b.ingredient + "to ingredient_map");
+                      response.send('failed');
+                 }
+             });
           }
-          else
+          else {
+             console.log("failed to add ingredient " + b.ingredient + "to ingredient_map");
              response.send('failed');
+          }
     });
     client.end;
 });
@@ -500,26 +512,29 @@ app.post('/addnewingredient', (request,response)=> {
 app.post('/deleteingredient', (request,response)=> {
     const b = request.body;
     var query =  "Select "+ b.ingredient+" from ingredient_map;";
+    var q = {
+        text: query,
+        rowMode: 'array'
+    };
     // Check if the ingredient is used
-    client.query(query, (err,result) => {
+    client.query(q, (err,result) => {
         if(!err) {
             var ingredientUsed = 0;
             // If any of this ingredient value is not 0.0, then we will not remove
             // and return with 'failed' status
             var data = result.rows;
             data.forEach(row => { 
-console.log(row);
-                  if(row != 0.0)
+                  if(row[0] != 0)
                      ++ingredientUsed;
             });
             if(ingredientUsed == 0) {
                 // ingredient is not used by any menu item
                 // now drop this column from ingredient map
-                query = "ALTER table ingredient_map drop column "+ ingredient+";";
+                query = "ALTER table ingredient_map drop column "+ b.ingredient+";";
                 client.query(query, (err,result) => {
                     if(!err) {
                        // now drop this entry from the inventory table
-                        query = "DELETE from inventory where ingredient='"+ ingredient +"';";
+                        query = "DELETE from inventory where ingredient='"+ b.ingredient +"';";
                         client.query(query, (err,result) => {
                             if(!err) {
                                response.send('success');

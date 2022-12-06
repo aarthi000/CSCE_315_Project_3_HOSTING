@@ -12,7 +12,9 @@ function Manager() {
     const closeModal = () => setOpen(false);
 
     const navigate = useNavigate();
-    var savedIngrList = [];
+    const requestURLHost = "http://localhost:3300";
+    const requestURLHostRender = "https://rev-api-manager.onrender.com";
+    requestURLHost = requestURLHostRender;
 
     const handleAddons = async (event, nameStr) => {
         let timeinput = prompt("Enter Start Time and End Time (YYYY-MM-DD YYYY-MM-DD)");
@@ -26,7 +28,7 @@ function Manager() {
             // Create a JSON object 'sendData' (name: value) format
             const sendData = {startdate,enddate};
             // const requestURL = "http://localhost:3300/addonsDates";
-            const requestURL = "https://rev-api-manager.onrender.com/addonsDates";
+            const requestURL = requestURLHost + "/addonsDates";
 
             const request = new Request(requestURL);
 
@@ -45,7 +47,7 @@ function Manager() {
 
     const handleEditMenuItem = async () => {
         // const requestURL = "http://localhost:3300/getmenuitemlist";
-        const requestURL = "https://rev-api-manager.onrender.com/getmenuitemlist";
+        const requestURL = requestURLHost + "/getmenuitemlist";
 
         const request = new Request(requestURL);
 
@@ -72,7 +74,7 @@ function Manager() {
 
     const handleIngrList = async (menuname) => {
         // const requestURL = "http://localhost:3300/getingredientlist";
-        const requestURL = "https://rev-api-manager.onrender.com/getingredientlist";
+        const requestURL = requestURLHost + "/getingredientlist";
 
         const request = new Request(requestURL);
 
@@ -84,32 +86,22 @@ function Manager() {
             mode: 'cors', 
         });
         const jsondata = await response.json();
-/*
-        if(savedIngrList.length != 0  && jsondata.length != 0) {
-            if (savedIngrList.sort().join(',') == jsondata.sort().join(','))
-               return;
-        }
-        else
-            savedIngrList = JSON.parse(JSON.stringify(jsondata));
-*/
 
         var select = document.getElementById(menuname);
-        var options = select.options;
+        if(select != null && select.options != null) {
+            var optionlength = select.options.length;
 
-        var values = [];
-        for (var k = 0; k < options.length; k++) 
-            values.push(options[k].value);
-
-        for(var i = 1; i < jsondata.length; i++) {
+            while (optionlength--)
+               select.remove(optionlength);
+        }
+        for(var i = 0; i < jsondata.length; i++) {
             var opt = jsondata[i];
 
-            if (values.length == 0 || !values.includes(opt )) {
                var el = document.createElement("option");
                el.text = opt;
                el.value = opt;
 
                select.add(el);
-            }
         }
     }
 
@@ -140,7 +132,7 @@ function Manager() {
         //console.log(sendData);
         // Create a request URL to send to the server
         // const requestURL = "http://localhost:3300/addnewmenuitem";
-        const requestURL = "https://rev-api-manager.onrender.com/addnewmenuitem";
+        const requestURL = requestURLHost + "/addnewmenuitem";
 
         const request = new Request(requestURL);
 
@@ -167,7 +159,7 @@ function Manager() {
     const handleDeleteIngredient = async () => {
 
         // const requestURL = "http://localhost:3300/deleteingredient";
-        const requestURL = "https://rev-api-manager.onrender.com/deleteingredient";
+        const requestURL = requestURLHost + "/deleteingredient";
 
         const request = new Request(requestURL);
 
@@ -208,7 +200,7 @@ console.log(sendData);
 console.log(sendData);
         // Create a request URL to send to the server
         // const requestURL = "http://localhost:3300/editmenuitemprice";
-        const requestURL = "https://rev-api-manager.onrender.com/editmenuitemprice";
+        const requestURL = requestURLHost + "/editmenuitemprice";
 
         const request = new Request(requestURL);
 
@@ -246,7 +238,7 @@ console.log(sendData);
 console.log(sendData);
         // Create a request URL to send to the server
         // const requestURL = "http://localhost:3300/addnewingredient";
-        const requestURL = "https://rev-api-manager.onrender.com/addnewingredient";
+        const requestURL = requestURLHost + "/addnewingredient";
 
         const request = new Request(requestURL);
 
@@ -284,7 +276,6 @@ console.log(sendData);
     }
 
     const handleRestockItem = async (event, nameStr) => {
-alert('restock called');
         var e = document.getElementById("restock-menu-items");
 
         var ingredient = e.value;
@@ -295,7 +286,7 @@ alert('restock called');
 console.log(sendData);
         // Create a request URL to send to the server
         // const requestURL = "http://localhost:3300/restockitem";
-        const requestURL = "https://rev-api-manager.onrender.com/restockitem";
+        const requestURL = requestURLHost + "/restockitem";
 
         const request = new Request(requestURL);
 
@@ -345,7 +336,7 @@ console.log(sendData);
 console.log(sendData);
         // Create a request URL to send to the server
         // const requestURL = "http://localhost:3300/editminimumvalue";
-        const requestURL = "https://rev-api-manager.onrender.com/editminimumvalue";
+        const requestURL = requestURLHost + "/editminimumvalue";
 
         const request = new Request(requestURL);
 
@@ -385,7 +376,7 @@ console.log(sendData);
     }
 
     const handleRestock = async (event, nameStr) => {
-        const requestURL = "http://localhost:3300/restock"  ;
+        const requestURL = requestURLHost + "/restock"  ;
         // const requestURL = "https://rev-api-manager.onrender.com/restock";
 
         const request = new Request(requestURL);
@@ -419,7 +410,7 @@ console.log(sendData);
 
             // Create a request URL to send to the server
             // const requestURL = "http://localhost:3300/salesDates";
-            const requestURL = "https://rev-api-manager.onrender.com/salesDates";
+            const requestURL = requestURLHost + "/salesDates";
 
             const request = new Request(requestURL);
             console.log("here 1");
@@ -455,7 +446,7 @@ console.log(sendData);
 
             // Create a request URL to send to the server
             // const requestURL = "http://localhost:3300/excessDates";
-            const requestURL = "https://rev-api-manager.onrender.com/excessDates";
+            const requestURL = requestURLHost + "/excessDates";
 
             const request = new Request(requestURL);
 
