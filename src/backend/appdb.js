@@ -113,11 +113,11 @@ app.post('/sales', (request,response)=> {
             });
     // console.log(salesdata);
             response.json(salesdata);
-            fs.writeFile("../components/ReportData.json", JSON.stringify(salesdata), function(err) {
-                if (err) {
-                    throw err;
-                }
-            })
+            // fs.writeFile("../components/ReportData.json", JSON.stringify(salesdata), function(err) {
+            //     if (err) {
+            //         throw err;
+            //     }
+            // })
         }
         else {
             response.send(err);
@@ -212,12 +212,12 @@ app.post('/excess', (request,response)=> {
                              } 
 console.log(excessData);
                              response.json(excessData);
-                             fs.writeFile("../components/ReportData.json", 
-                                  JSON.stringify(excessData), function(err) {
-                                 if (err) {
-                                     throw err;
-                                 }
-                             });
+                            //  fs.writeFile("../components/ReportData.json", 
+                            //       JSON.stringify(excessData), function(err) {
+                            //      if (err) {
+                            //          throw err;
+                            //      }
+                            //  });
                         }
                         else {
                           console.log(err);
@@ -286,11 +286,11 @@ app.post('/addonsreport',(request,response)=> {
             }
 console.log(report);
             response.json(report);
-            fs.writeFile("../components/ReportData.json", JSON.stringify(report), function(err) {
-                if (err) {
-                    throw err;
-                }
-            })
+            // fs.writeFile("../components/ReportData.json", JSON.stringify(report), function(err) {
+            //     if (err) {
+            //         throw err;
+            //     }
+            // })
         }
         else {
             console.log(err);
@@ -593,3 +593,4 @@ app.get('/inventory', (request,response)=> {
     });
     client.end;
 });
+

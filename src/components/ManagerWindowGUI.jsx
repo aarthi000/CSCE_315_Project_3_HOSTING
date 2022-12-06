@@ -414,7 +414,7 @@ console.log(sendData);
             let  timeperiods = timeinput.split(" ");
             var  startdate = timeperiods[0];
             var  enddate = timeperiods[1];
-
+            
             // Create a JSON object 'sendData' (name: value) format
             const sendData = {startdate,enddate};
 
@@ -487,10 +487,10 @@ console.log(sendData);
                 </Popup> */}
 
                 <div className="report-btn-group">
-                    {/* <button onClick={event => handleSales(event,'sales')} className="role-button">Sales</button> */}
-                    {/* <button onClick={event => handleExcess(event,'excess')} className="role-button">Excess</button> */}
+                    <button onClick={event => handleSales(event,'sales')} className="role-button">Sales</button>
+                    <button onClick={event => handleExcess(event,'excess')} className="role-button">Excess</button>
                     <button onClick={event => handleRestock(event,'restock')} className="role-button">Restock</button>
-                    {/* <button onClick={event => handleAddons(event,'addons')} className="role-button">Add-ons</button> */}
+                    <button onClick={event => handleAddons(event,'addons')} className="role-button">Add-ons</button>
                 </div>
                 
                 <h2>Add Menu Item</h2>
