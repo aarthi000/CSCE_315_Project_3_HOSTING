@@ -18,7 +18,7 @@ export const Table = ({ columnType, dataType }) => {
 
     const getInventory = async () => {
         try{
-        const response = await fetch ("https://rev-api-customer.onrender.com/inventory");
+        const response = await fetch ("https://rev-api-manager.onrender.com/inventory");
         // const response = await fetch ("http://localhost:3300/inventory");
         const jsonData = await response.json();
         setInventory(jsonData);
@@ -32,7 +32,7 @@ export const Table = ({ columnType, dataType }) => {
 
     const getRestockReport = async () => {
         try{
-        const response = await fetch ("https://rev-api-customer.onrender.com/inventory");
+        const response = await fetch ("https://rev-api-manager.onrender.com/inventory");
         // const response = await fetch ("http://localhost:3300/restock");
         const jsonData = await response.json();
         setRestockReport(jsonData);
