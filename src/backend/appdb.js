@@ -147,9 +147,21 @@ var getTodaysDate = function() {
 
 };
 
-app.post('/excess', (request,response)=> {
-    var fs = require('fs');
-    const b = request.body;
+app.get('/excess', async(request,response)=> {
+    // var fs = require('fs');
+
+    //getting most recent date from database
+    var max = await client.query("SELECT MAX(id) as max_ids FROM excess_requests"); 
+   
+    var id = max.rows[0].max_ids;
+    
+    var data = await client.query("select * from excess_requests where id = " + id); 
+    var b  = data.rows[0];
+    delete b.id;
+    
+
+    //doing calculations
+
     var enddate = getTodaysDate();
 
     // startdate = 9/3/22
@@ -646,5 +658,21 @@ app.post("/addonsDates", async(req,res) => {
     }
 });
 
+app.post("/excessDates", async(req,res) => {
+    try{
+        var data = req.body;
+        var max = await client.query("SELECT MAX(id) as max_ids FROM excess_requests"); 
+        var id = max.rows[0].max_ids + 1;
+
+        var query = "insert into excess_requests(id, startdate) VALUES (" + id + ", '" + data.startdate+ "')";
+        var insert = await client.query(query);
+        res.json(id);
+
+    }catch (err){
+        console.error("Error in customerAPI: /addonsDates");
+        console.error(err.message);
+
+    }
+});
 
 

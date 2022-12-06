@@ -454,8 +454,8 @@ console.log(sendData);
             const sendData = {startdate};
 
             // Create a request URL to send to the server
-            // const requestURL = "http://localhost:3300/excess";
-            const requestURL = "https://rev-api-manager.onrender.com/excess";
+            // const requestURL = "http://localhost:3300/excessDates";
+            const requestURL = "https://rev-api-manager.onrender.com/excessDates";
 
             const request = new Request(requestURL);
 
@@ -468,7 +468,6 @@ console.log(sendData);
                 mode: 'cors', 
                 body: JSON.stringify(sendData)
             });
-            
             navigate("/excess");  
         }
     }

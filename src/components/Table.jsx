@@ -72,6 +72,20 @@ export const Table = ({ columnType, dataType }) => {
             console.error(err.message);
         }
     }
+    
+    const[excessReport, setExcessReport] = useState([]);
+
+    const getExcessReport = async () => {
+        try{
+            const response = await fetch ("https://rev-api-manager.onrender.com/excess");
+            // const response = await fetch ("http://localhost:3300/excess");
+            const jsonData = await response.json();
+            setExcessReport(jsonData);
+        }catch (err){
+            console.error("Error in getExcessReport() in Table.jsx");
+            console.error(err.message);
+        }
+    }
 
 
     useEffect(()=> {
@@ -79,6 +93,7 @@ export const Table = ({ columnType, dataType }) => {
         getRestockReport();
         getSalesReport();
         getAddonsReport();
+        getExcessReport();
     }, []);
 
     switch(columnType) {
@@ -113,6 +128,9 @@ export const Table = ({ columnType, dataType }) => {
             break;
         case 'addons-report':
             data = addonsReport;
+            break;
+        case 'excess-report':
+            data = excessReport;
             break;
     }
     
