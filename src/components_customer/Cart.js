@@ -7,6 +7,21 @@ import Customer from "./googleMaps/googleMaps";
 import CustomerMap from "./googleMaps/googleMaps";
 
 function Cart(props) {
+
+  const removeOrder = async () => {
+    try{
+      // const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
+      const response = await fetch ("http://localhost:4999/removeLastOrder");
+      await alert("Order remove successful!");
+      
+
+    }catch (err){
+      await alert("Order remove not successful due to past menuitem in order that no longer exists!");
+
+      console.error("Error in removeOrder() ");
+      console.error(err.message);
+    }
+  }
     const {orderItems, onAdd, onRemove} = props;
     
     const itemsPrice = orderItems.reduce((a, c) => a + c.qty * c.itemprice, 0);
@@ -110,6 +125,7 @@ function Cart(props) {
                         <h2 className="display-item">Order Total: ${itemsPrice.toFixed(2)}</h2>
                     )}
                     <button onClick={() => {sendOrder(); getOrderid();orderPlaced();}} className='customize_button'>Place Order</button>
+
                     <div> {orderid} </div>
                     
                 </div>

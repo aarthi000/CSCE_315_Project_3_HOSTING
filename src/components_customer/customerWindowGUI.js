@@ -26,6 +26,8 @@ function Customer(props) {
     }
   }
 
+
+
   useEffect(()=> {
     getMenuitems();
   }, []);

@@ -64,6 +64,7 @@ async function getIngredients(menuitem) {
       "SELECT * FROM ingredient_map WHERE itemname = '" + menuitem + "'"
     );
     var data = response.rows[0];
+    console.log(data);
     delete data.itemname;
     return data;
   }
