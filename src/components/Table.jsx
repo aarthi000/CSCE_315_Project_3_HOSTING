@@ -59,11 +59,26 @@ export const Table = ({ columnType, dataType }) => {
         }
     }
 
+    const[addonsReport, setAddonsReport] = useState([]);
+
+    const getAddonsReport = async () => {
+        try{
+            // const response = await fetch ("https://rev-api-manager.onrender.com/addonsreport");
+            const response = await fetch ("http://localhost:3300/addonsreport");
+            const jsonData = await response.json();
+            setAddonsReport(jsonData);
+        }catch (err){
+            console.error("Error in getAddonsReport() in Table.jsx");
+            console.error(err.message);
+        }
+    }
+
 
     useEffect(()=> {
         getInventory();
         getRestockReport();
         getSalesReport();
+        getAddonsReport();
     }, []);
 
     switch(columnType) {
@@ -95,6 +110,9 @@ export const Table = ({ columnType, dataType }) => {
             break;
         case 'sales-report':
             data = salesReport;
+            break;
+        case 'addons-report':
+            data = addonsReport;
             break;
     }
     

@@ -25,9 +25,8 @@ function Manager() {
 
             // Create a JSON object 'sendData' (name: value) format
             const sendData = {startdate,enddate};
-
-            // const requestURL = "http://localhost:3300/addonsreport";
-            const requestURL = "https://rev-api-manager.onrender.com/addonsreport";
+            const requestURL = "http://localhost:3300/addonsDates";
+            // const requestURL = "https://rev-api-manager.onrender.com/addonsDates";
 
             const request = new Request(requestURL);
 

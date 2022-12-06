@@ -113,7 +113,7 @@ app.get('/sales', async(request,response)=> {
                         }       
             });
 
-            console.log(itemSales);
+            // console.log(itemSales);
 
             Array.from(itemSales.keys()).forEach(itemName => {
                 salesrow = {}
@@ -256,11 +256,20 @@ var getDaysArray = function(start, end) {
     return arr;
 };
 
-app.post('/addonsreport',(request,response)=> {
-    var fs = require('fs');
+app.get('/addonsreport',async(request,response)=> {
     // startdate: 2022-09-09
-    const b = request.body;
+    
+    //getting most recent date from database
+    var max = await client.query("SELECT MAX(id) as max_ids FROM addons_requests"); 
+   
+    var id = max.rows[0].max_ids;
+    
+    var data = await client.query("select * from addons_requests where id = " + id); 
+    var b  = data.rows[0];
+    delete b.id;
+    
 
+    //doing calculations
     const query = {
         text: "select * from AddOns_History_copy where date >= '" +  
                       b.startdate + "' and date <= '" + b.enddate + "';",
@@ -294,7 +303,7 @@ app.post('/addonsreport',(request,response)=> {
                 jsondata['addonamount'] = val;
                 report.push(jsondata);
             }
-console.log(report);
+// console.log(report);
             response.json(report);
             // fs.writeFile("../components/ReportData.json", JSON.stringify(report), function(err) {
             //     if (err) {
@@ -616,7 +625,26 @@ app.post("/salesDates", async(req,res) => {
         res.json(id);
 
     }catch (err){
-        console.error("Error in customerAPI: /salesDates")
+        console.error("Error in customerAPI: /salesDates");
     }
 });
+
+app.post("/addonsDates", async(req,res) => {
+    try{
+        var data = req.body;
+        var max = await client.query("SELECT MAX(id) as max_ids FROM addons_requests"); 
+        var id = max.rows[0].max_ids + 1;
+
+        var query = "insert into addons_requests(id, startdate, enddate) VALUES (" + id + ", '" + data.startdate+ "', '" + data.enddate + "')";
+        var insert = await client.query(query);
+        res.json(id);
+
+    }catch (err){
+        console.error("Error in customerAPI: /addonsDates");
+        console.error(err.message);
+
+    }
+});
+
+
 
