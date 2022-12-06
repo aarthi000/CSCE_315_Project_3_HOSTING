@@ -290,52 +290,47 @@ app.get("/coordinates", async(req,res) => {
     }
 });
 
+/*
+removeOrder(): removes order given orderID (int)
+*/
+async function removeOrder(orderID){
+    //query order_history
+    console.log("Starting removeOrder ");
 
-app.get("/removeLastOrder", async(req,res) => {
-    try{
-        console.log("Newwwww");
-        var data1 = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_history");
-        var data2 = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_totals");
-        var orderid1 = data1.rows[0].max_orderids;
-        var orderid2 = data1.rows[0].max_orderids;
-        var orderID;
-        if (orderid1 != orderid2){ //if max orderids in both tables aren't matching, return
-            console.log("Error in /removeLastOrder in customerAPI.js: max orderIDs are not matching in order_history and order_totals");
-            return;
-        }
-        else{
-            orderID = orderid1;
-        }
+    var history_response = await pool.query(  //uncomment me!
+      "select * from order_history where orderid = " + orderID
+    );
 
-        var history_response = await pool.query(  //uncomment me!
-            "select * from order_history where orderid = " + orderID
-        );
+    var menuitems = history_response.rows;
+    // console.log(menuitems);
+
+    //figure out what items were ordered, store in array
+    var itemsOrdered = [];
+    for (var i = 0; i < menuitems.length; i++){
+      itemsOrdered.push(menuitems[i].itemname);
+    }
+    if (itemsOrdered.length == 0){
+      console.log("Order doesn't exist or has already been deleted");
+      return;
+    }
   
-        var menuitems = history_response.rows;
 
-        //figure out what items were ordered, store in array
-        var itemsOrdered = [];
-        for (var i = 0; i < menuitems.length; i++){
-            itemsOrdered.push(menuitems[i].itemname);
-        }
-        if (itemsOrdered.length == 0){
-            console.log("Order doesn't exist or has already been deleted");
-            return;
-        }
+    //delete from order_history 
+    await pool.query(  //uncomment me!
+    "delete from order_history where orderid = " + orderID
+    );
 
-        
-        // delete from order_history 
-        await pool.query(  //uncomment me!
-            "delete from order_history where orderid = " + orderID
-        );
+    // delete from order totals
+    await pool.query(  //uncomment me!
+    "delete from order_totals where orderid = " + orderID
+    );
+    
 
-        // delete from order totals
-        await pool.query(  //uncomment me!
-            "delete from order_totals where orderid = " + orderID
-        );
-
+    //delete from inventory (opp of place order function)
+    
     for (var i = 0; i < itemsOrdered.length; i++){
-        var ingredients = await getIngredients(itemsOrdered[i]);
+      var ingredients = await getIngredients(itemsOrdered[i]);
+      
         for (var key of Object.keys(ingredients)) {
             if (ingredients[key] != 0) {
                 var updateUsed = "update inventory set amountused=amountused-" + ingredients[key]
@@ -352,9 +347,36 @@ app.get("/removeLastOrder", async(req,res) => {
                 );
             }
         }
+        
     }
+    console.log("finishing removeOrder ");
+      
+}
 
-        res.json(orderID);
+async function removeLastOrder(){
+  //get most recent orderID
+  console.log("starting removeLastOrder ");
+
+  var response = await pool.query(
+    "SELECT MAX(orderid) as max_orderids FROM order_totals"
+  );
+  var orderid = response.rows[0].max_orderids;
+  removeOrder(orderid);
+  console.log("finishing removeLastOrder ");
+  
+}
+
+app.get("/removeLastOrder", async(req,res) => {
+    try{
+        console.log("Starting removeLastOrder ");
+        var data1 = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_history");
+        var data2 = await pool.query("SELECT MAX(orderid) as max_orderids FROM order_totals");
+        var orderid1 = data1.rows[0].max_orderids;
+        var orderid2 = data2.rows[0].max_orderids;
+ 
+        removeLastOrder();
+        console.log("Finished removeLastOrder ");
+        res.json(orderid1);
 
     }catch (err){
         console.error("Error in customerAPI: /removeLastOrder")

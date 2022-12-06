@@ -160,11 +160,15 @@ async function placeOrder(menuitems, itemprices, isGameday){
 
 }
 
+
+
 /*
 removeOrder(): removes order given orderID (int)
 */
 async function removeOrder(orderID){
     //query order_history
+    console.log("Starting removeOrder ");
+
     var history_response = await pool.query(  //uncomment me!
       "select * from order_history where orderid = " + orderID
     );
@@ -217,17 +221,23 @@ async function removeOrder(orderID){
         }
         
     }
+    console.log("finishing removeOrder ");
       
 }
 
 async function removeLastOrder(){
   //get most recent orderID
+  console.log("starting removeLastOrder ");
+
   var response = await pool.query(
     "SELECT MAX(orderid) as max_orderids FROM order_totals"
   );
   var orderid = response.rows[0].max_orderids;
   removeOrder(orderid);
+  console.log("finishing removeLastOrder ");
+  
 }
+
 
 
 
