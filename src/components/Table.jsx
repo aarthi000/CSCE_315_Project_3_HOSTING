@@ -28,6 +28,8 @@ export const Table = ({ columnType, dataType }) => {
         }
     }
 
+
+
     const[restockReport, setRestockReport] = useState([]);
 
     const getRestockReport = async () => {
@@ -43,10 +45,25 @@ export const Table = ({ columnType, dataType }) => {
         }
     }
 
+    const[salesReport, setSalesReport] = useState([]);
+
+    const getSalesReport = async () => {
+        try{
+            // const response = await fetch ("https://rev-api-manager.onrender.com/inventory");
+            const response = await fetch ("http://localhost:3300/sales");
+            const jsonData = await response.json();
+            setSalesReport(jsonData);
+        }catch (err){
+            console.error("Error in getSalesReport() in Table.jsx");
+            console.error(err.message);
+        }
+    }
+
 
     useEffect(()=> {
         getInventory();
         getRestockReport();
+        getSalesReport();
     }, []);
 
     switch(columnType) {
@@ -75,6 +92,9 @@ export const Table = ({ columnType, dataType }) => {
             break;
         case 'restock-report':
             data = restockReport;
+            break;
+        case 'sales-report':
+            data = salesReport;
             break;
     }
     

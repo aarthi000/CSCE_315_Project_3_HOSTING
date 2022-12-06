@@ -49,9 +49,9 @@ app.get('/restock', (request,response)=> {
     client.end;
 });
 
-app.post('/sales', (request,response)=> {
-    var fs = require('fs');
-    const b = request.body;
+app.get('/sales', async(request,response)=> {
+    // var fs = require('fs');
+    // const b = request.body;
 
                 //const queryObject = url.parse(request.url, true).query;
                 //console.log(queryObject.startdate);
@@ -59,6 +59,16 @@ app.post('/sales', (request,response)=> {
                 //let starttime = '9/18/2022';
                 //let endtime = '9/24/2022';
 
+    //getting most recent date from database
+    var max = await client.query("SELECT MAX(id) as max_ids FROM sales_requests"); 
+    var id = max.rows[0].max_ids;
+
+    var data = await client.query("select * from sales_requests where id = " + id); 
+    
+    var b  = data.rows[0];
+    delete b.id;
+
+    //doing calculations
     let starttime = b.startdate;
     let endtime   = b.enddate;
 
@@ -592,5 +602,21 @@ app.get('/inventory', (request,response)=> {
         }
     });
     client.end;
+});
+
+
+app.post("/salesDates", async(req,res) => {
+    try{
+        var data = req.body;
+        var max = await client.query("SELECT MAX(id) as max_ids FROM sales_requests"); 
+        var id = max.rows[0].max_ids + 1;
+
+        var query = "insert into sales_requests(id, startdate, enddate) VALUES (" + id + ", '" + data.startdate+ "', '" + data.enddate + "')";
+        var insert = await client.query(query);
+        res.json(id);
+
+    }catch (err){
+        console.error("Error in customerAPI: /salesDates")
+    }
 });
 

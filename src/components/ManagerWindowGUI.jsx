@@ -406,7 +406,7 @@ console.log(sendData);
     const handleSales = async (event, nameStr) => {
         // Read the input from propmpt window
         // It is a text field and user will enter '11/01/2022 11/09/2022'
-
+        
         let timeinput = prompt("Enter Start Time and End Time (MM/DD/YYYY MM/DD/YYYY)");
         if (timeinput != null) {
             // OK button is pressed so timeinput is not null
@@ -419,10 +419,11 @@ console.log(sendData);
             const sendData = {startdate,enddate};
 
             // Create a request URL to send to the server
-            // const requestURL = "http://localhost:3300/sales";
-            const requestURL = "https://rev-api-manager.onrender.com/sales";
+            // const requestURL = "http://localhost:3300/salesDates";
+            const requestURL = "https://rev-api-manager.onrender.com/salesDates";
 
             const request = new Request(requestURL);
+            console.log("here 1");
 
             // Send the request along with the data inside 'request body'
             const response = await fetch(request, {
@@ -433,6 +434,7 @@ console.log(sendData);
                 mode: 'cors', 
                 body: JSON.stringify(sendData)
             });
+            console.log("here 2");
 
             navigate("/sales");
         }
