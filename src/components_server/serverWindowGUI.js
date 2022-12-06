@@ -37,7 +37,94 @@ function Server(props) {
   
   const {items} = menuitems;
 
-  const onAdd = (item) => {
+  // const onAdd = (item) => {
+  //checks for adding menuitem
+  const[ingredients_map, setIngredients_Map] = useState([]);
+
+  const getIngredientsMap = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/ingredients_map");
+      const response = await fetch ("http://localhost:4999/ingredients_map");
+      const jsonData = await response.json();
+      setIngredients_Map(jsonData);
+
+    }catch (err){
+      console.error("error in getIngredientsMap in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+  const[inventory, setInventory] = useState([]);
+
+  const getInventory = async () => {
+    try{
+      // const response = await fetch ("https://revs-api.onrender.com/inventory_customer");
+      const response = await fetch ("http://localhost:4999/inventory_customer");
+      const jsonData = await response.json();
+      setInventory(jsonData);
+
+    }catch (err){
+      console.error("error in getInventory in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+  const ingredientInStock = async (ingred, numRequired) => {
+    try{
+      await getInventory();  
+      var data = await inventory;    
+      for (var i = 0; i < data.length; i++){
+        if (data[i].ingredient == ingred){
+          var numLeft = data[i].ingredientremaining;
+          if (numLeft < numRequired) {
+            // console.log(ingred + " not in stock for required amount: " + numRequired);
+            return false;
+          }
+          else{
+            // console.log(ingred + " IS in stock for required amount: " + numRequired);
+            return true;
+          }
+        }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+
+  const itemInStock = async (menuitem) => {
+    try{
+      await getIngredientsMap();
+      var map = await ingredients_map;
+      for (var i = 0; i < map.length; i++){
+        if (map[i].itemname == menuitem){
+          var ingredients = map[i];
+          for (var key of Object.keys(ingredients)) {
+            if (ingredients[key] != 0 && key != 'itemname') {
+                var inStock = await ingredientInStock(key, ingredients[key]);   
+              if (!inStock) {
+                // console.log(menuitem + " is not in stock because " + key + " is not in stock");
+                return false;
+              }
+            }
+          }
+          // console.log(menuitem + " IS in stock");
+          return true;
+        }
+      }
+    }catch (err){
+      console.error("error in addonInMenuItem in customizePop.js");
+      console.error(err.message);
+    }
+  };
+  
+  
+  const onAdd = async (item) => {
+    var inStock = await itemInStock(item.itemname);
+    if (!inStock){
+      alert(item.itemname + " is out of stock. Please order something else.");
+      return;
+    }
     const exist = orderItems.find(x => x.id === item.id);
     if (exist) {
       const newItems = orderItems.map((x) => 

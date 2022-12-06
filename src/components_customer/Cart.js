@@ -2,8 +2,6 @@ import React, {Fragment, useEffect, useState} from "react";
 import './customerWindowGUI.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import addonOrderItems from "./customizePopup"
-import Customer from "./googleMaps/googleMaps";
 import CustomerMap from "./googleMaps/googleMaps";
 
 function Cart(props) {
@@ -87,23 +85,8 @@ function Cart(props) {
 
 
     return (
-        <div class="cart-delivery">
-            {/* <div className="delivery">  
-                <h2 className="delivery_heading">Delivery Address</h2>
-                <form className ="form">
-                    <label className="text-boxes">
-                        <input type="text" placeholder="12345 Main St." />
-                        <br></br>
-                        <input type="text" placeholder="Dallas, TX" />
-                        <br></br>
-                        <input type="text" placeholder="73628" />
-                        <br></br>
-                    </label>
-                </form>
-                <div className="save-add-div"><button className='save-address-button'>Save Address</button></div>
-            </div> */}
-            <CustomerMap></CustomerMap>
-            <div className="order-summary">
+            <div className="order-summary1">
+              <CustomerMap></CustomerMap>
                 <div className="block1 width-1">
                     <h2 className="sub-headers">Order Summary</h2>
                     <div>
@@ -131,7 +114,6 @@ function Cart(props) {
                 </div>
             </div>  
             
-        </div>
         
     )
 }
