@@ -63,8 +63,8 @@ export const Table = ({ columnType, dataType }) => {
 
     const getAddonsReport = async () => {
         try{
-            // const response = await fetch ("https://rev-api-manager.onrender.com/addonsreport");
-            const response = await fetch ("http://localhost:3300/addonsreport");
+            const response = await fetch ("https://rev-api-manager.onrender.com/addonsreport");
+            // const response = await fetch ("http://localhost:3300/addonsreport");
             const jsonData = await response.json();
             setAddonsReport(jsonData);
         }catch (err){
