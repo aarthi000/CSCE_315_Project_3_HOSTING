@@ -6,6 +6,7 @@ import Customer from "./components_customer/customerWindowGUI"
 import Server from "./components_server/serverWindowGUI";
 import Manager from "./components/ManagerWindowGUI"
 import Report from "./components/Report"
+import RestockReport from "./components/RestockReport"
 import LoginManager from "./login/managerLogin"
 import LoginServer from "./login/serverLogin";
 
@@ -20,7 +21,7 @@ function App() {
 			<Route exact path="/server" element={<Server/>} />
 			{/* <Route exact path="/manager" element={<ManagerWindow/>} /> */}
       <Route exact path="/manager" element={<Manager/>} />
-      <Route exact path="/restock" element={<Report header={'Restock Report'} type={'restock'} />} />
+      <Route exact path="/restock" element={<RestockReport header={'Restock Report'} type={'restock'} />} />
       <Route exact path="/sales" element={<Report header={'Sales Report'} type={'sales'} />} />
       <Route exact path="/excess" element={<Report header={'Excess Report'} type={'excess'} />} />
       <Route exact path="/addons" element={<Report header={'Add-ons Report'} type={'addons'} />} />

@@ -384,3 +384,26 @@ app.get("/removeLastOrder", async(req,res) => {
         console.error(err.message)
     }
 });
+
+app.get("/isGameDay", async(req,res) => {
+    try{
+        console.log("Starting isGameDay ");
+        
+        //get current data and format
+        const date = new Date();
+        var orderday = date.getDate();
+        var ordermonth = date.getMonth() + 1; //0-based indexing    
+        var orderyear = date.getFullYear();
+        var data1 = await pool.query("select * from order_history where orderday = "+ orderday +" and ordermonth = 9 and orderyear = 2022 and isgameday = false;");
+
+"+ +"
+
+        res.json(orderid1);
+        console.log("Finished isGameDay ");
+
+
+    }catch (err){
+        console.error("Error in customerAPI: /isGameDay")
+        console.error(err.message)
+    }
+});

@@ -21,7 +21,7 @@ function Customer(props) {
       setMenuitems(jsonData);
 
     }catch (err){
-      console.error("i will kms fr:  see error message below");
+      console.error("Error in getMenuitems() in customerWindowGUI");
       console.error(err.message);
     }
   }

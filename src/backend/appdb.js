@@ -39,11 +39,11 @@ app.get('/restock', (request,response)=> {
             //                     }});
             response.json(inventory);
             // console.log(inventory);
-            fs.writeFile("../components/ReportData.json", JSON.stringify(inventory), function(err) {
-                if (err) {
-                    throw err;
-                }
-            })
+            // fs.writeFile("../components/ReportData.json", JSON.stringify(inventory), function(err) {
+            //     if (err) {
+            //         throw err;
+            //     }
+            // })
         }
     });
     client.end;
@@ -584,11 +584,11 @@ app.get('/inventory', (request,response)=> {
                                 });
             
             response.json(inventory);
-            fs.writeFile("../components/InventoryData.json", JSON.stringify(inventory), function(err) {
-                if (err) {
-                    throw err;
-                }
-            })
+            // fs.writeFile("../components/InventoryData.json", JSON.stringify(inventory), function(err) {
+            //     if (err) {
+            //         throw err;
+            //     }
+            // })
         }
     });
     client.end;
