@@ -17,13 +17,37 @@ export default function Header(props) {
           console.error(err.message);
         }
       }
+    const isGameDay = async () => {
+        try{
+          // const response = await fetch ("https://rev-api-customer.onrender.com/isGameDay");
+          const response = await fetch ("http://localhost:4999/isGameDay");
+          alert("Today is game day!");
+    
+        }catch (err){
+          console.error("Error in isGameDay() in Header.js");
+          console.error(err.message);
+        }
+    }
+    const isNotGameDay = async () => {
+      try{
+        // const response = await fetch ("https://rev-api-customer.onrender.com/isNotGameDay");
+        const response = await fetch ("http://localhost:4999/isNotGameDay");
+        alert("Today is not game day.");
+
+  
+      }catch (err){
+        console.error("Error in isNotGameDay() in  Header.js");
+        console.error(err.message);
+      }
+  }
+
     return (
         <div>
             <h2 className="welcome">Welcome Server!</h2>
         
             <div className="server-btns">    
-                <button className="customize_button1">Gameday</button>
-                <button className="customize_button1">Not Gameday</button>
+                <button onClick={() => isGameDay()} className="customize_button1">Gameday</button>
+                <button onClick={() => isNotGameDay()} className="customize_button1">Not Gameday</button>
                 <button onClick={() => removeOrder()} className="customize_button1">Remove Last Order</button>
             </div>
         </div>
