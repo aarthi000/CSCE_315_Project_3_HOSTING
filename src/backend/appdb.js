@@ -7,11 +7,21 @@ const PORT = process.env.PORT || 3300;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 client.connect();
-
+/**
+ * Function to specify and start listening to port for the server side 
+ * @param  {} PORT
+ * 
+ */
 app.listen(PORT, () => {
     console.log(`appdb.js is now listening at port ${PORT}`);
 });
 
+/**
+ * Function to set initial configuration for the server side 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @param  {Function} next - next function to call middleware in the stack
+ */
 app.use(function(request,response,next) {
     response.header("Content-Type", "application/json");
     response.header("Access-Control-Allow-Origin", "*");
@@ -19,6 +29,12 @@ app.use(function(request,response,next) {
     next();
 });
 
+/**
+ * @function 'restock' - GET function to return inventory data 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/restock', (request,response)=> {
     var fs = require('fs');
     client.query(`Select * from inventory`, (err,result) => {
@@ -49,6 +65,12 @@ app.get('/restock', (request,response)=> {
     client.end;
 });
 
+/**
+ * @function 'sales' - GET function to return sales report between two dates 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/sales', async(request,response)=> {
     // var fs = require('fs');
     // const b = request.body;
@@ -136,7 +158,10 @@ app.get('/sales', async(request,response)=> {
 
     client.end;
 });
-
+/**
+ * getTodaysDate - Function to return the today's date in the format YYYY-MM-DD
+ * @return {String} - string of today's date
+ */
 var getTodaysDate = function() {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -146,7 +171,12 @@ var getTodaysDate = function() {
     return formattedToday;
 
 };
-
+/**
+ * @function 'excess' - GET function to return excess inventory data from a start date till today 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/excess', async(request,response)=> {
     // var fs = require('fs');
 
@@ -232,7 +262,7 @@ app.get('/excess', async(request,response)=> {
                                      excessData.push(excessRow);
                                  } 
                              } 
-console.log(excessData);
+                            //console.log(excessData);
                              response.json(excessData);
                             //  fs.writeFile("../components/ReportData.json", 
                             //       JSON.stringify(excessData), function(err) {
@@ -259,15 +289,12 @@ console.log(excessData);
     client.end;
 });
 
-var getDaysArray = function(start, end) {
-    var i =0;
-    var arr = [];
-    for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
-        arr[i++] = new Date(dt).toISOString();
-    }
-    return arr;
-};
-
+/**
+ * @function 'addonsreport' - GET function to return addons report between two dates 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/addonsreport',async(request,response)=> {
     // startdate: 2022-09-09
     
@@ -330,11 +357,17 @@ app.get('/addonsreport',async(request,response)=> {
     client.end;
 });
 
+/**
+ * @function 'editminimumvalue' - POST function to set minimum value of an ingredient 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post('/editminimumvalue', (request,response)=> {
       const b = request.body;
       var query = "update inventory set minimumamount=" + b.minimumvalue
                 + " where ingredient='" + b.ingredient + "';";
-console.log(query);
+      //console.log(query);
       client.query(query, (err,result) => {
           if(!err) {
               console.log("Edited minimum value successfully");
@@ -348,6 +381,12 @@ console.log(query);
       client.end;
 });
 
+/**
+ * @function 'updateaddons' - POST function to increment the addons 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post('/updateaddons', (request,response)=> {
       const b = request.body;
       var query = "select * from addons_history_copy where date= '" + b.date + "';";
@@ -376,6 +415,12 @@ app.post('/updateaddons', (request,response)=> {
       client.end;
 });
 
+/**
+ * @function 'getingredientlist' - GET function to obtain ingredient list 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/getingredientlist', (request,response)=> {
     var q = "select ingredient from inventory;"; 
     inventory = [];
@@ -396,6 +441,12 @@ app.get('/getingredientlist', (request,response)=> {
     client.end;
 });
 
+/**
+ * @function 'getmenuitemlist' - Get function to obtain list of menu items 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/getmenuitemlist', (request,response)=> {
     var q = "select itemname from menu_items;"; 
     inventory = [];
@@ -417,6 +468,12 @@ app.get('/getmenuitemlist', (request,response)=> {
     client.end;
 });
 
+/**
+ * @function 'addnewmenuitem' - POST function to create a new menu item with price and ingredients 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post('/addnewmenuitem', (request,response)=> {
     const b = request.body;
 //console.log(b);
@@ -478,6 +535,12 @@ app.post('/addnewmenuitem', (request,response)=> {
     client.end;
 });
 
+/**
+ * @function 'addnewingredient' - POST function to create a new ingredient in inventory and ingredient_map tables 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post('/addnewingredient', (request,response)=> {
     const b = request.body;
     var q = "INSERT into inventory (" + 
@@ -492,23 +555,51 @@ app.post('/addnewingredient', (request,response)=> {
              q = "alter table ingredient_map add " + b.ingredient + " INT DEFAULT 0";
              client.query(q, (err,result) => {
                  if(!err) {
-                      console.log("added ingredient " + b.ingredient + "to ingredient_map");
-                      response.send('success');
+                     q = "alter table addons_history_copy add " + b.ingredient + " INT DEFAULT 0";
+                     client.query(q, (err,result) => {
+                        if(!err) {
+                            q = "alter table inventory_history_copy add " + b.ingredient + " INT DEFAULT 0";
+                            client.query(q, (err,result) => {
+                               if(!err) {
+                                   console.log("added ingredient " + b.ingredient + "to ingredient_map");
+                                   response.send('success');
+                               }
+                               else {
+                                   console.log("0. failed to added ingredient " + b.ingredient + "to ingredient_map");
+                                   console.log(err);
+                                   response.send('failed');
+                               }
+                           });
+                        }
+                        else {
+                            console.log("1. failed to add ingredient " + b.ingredient + "to ingredient_map");
+                            console.log(err);
+                            response.send('failed');
+                        }
+                     });
                  }
                  else {
-                      console.log("failed to add ingredient " + b.ingredient + "to ingredient_map");
+                      console.log("2. failed to add ingredient " + b.ingredient + "to ingredient_map");
+                      console.log(err);
                       response.send('failed');
                  }
              });
           }
           else {
-             console.log("failed to add ingredient " + b.ingredient + "to ingredient_map");
+             console.log("3. failed to add ingredient " + b.ingredient + "to ingredient_map");
+             console.log(err);
              response.send('failed');
           }
     });
     client.end;
 });
 
+/**
+ * @function 'deleteingredient' - POST function to delete an ingredient 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post('/deleteingredient', (request,response)=> {
     const b = request.body;
     var query =  "Select "+ b.ingredient+" from ingredient_map;";
@@ -564,6 +655,12 @@ app.post('/deleteingredient', (request,response)=> {
     client.end;
 });
 
+/**
+ * @function 'restockitem' - POST function to update the remaining value of an ingredient 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post('/restockitem', (request,response)=> {
     const b = request.body;
     var q = "update inventory set ingredientremaining=ingredientremaining+" + b.itemamount
@@ -579,6 +676,12 @@ app.post('/restockitem', (request,response)=> {
     client.end;
 });
 
+/**
+ * @function 'editmenuitemprice' - POST function to set the price of a menu item 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post('/editmenuitemprice', (request,response)=> {
     const b = request.body;
     var q = "UPDATE menu_items SET itemprice = " + b.itemprice + " WHERE "
@@ -593,7 +696,12 @@ app.post('/editmenuitemprice', (request,response)=> {
     });
     client.end;
 });
-
+/**
+ * @function 'editminimumvalue' - GET function to return ingredient remaining value of an ingredient 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/ingredientinstock', (request,response)=> {
     const b = request.body;
     var q = "SELECT ingredientremaining FROM inventory WHERE ingredient = '" + b.ingredient + "';";
@@ -607,9 +715,12 @@ app.get('/ingredientinstock', (request,response)=> {
     client.end;
 });
 
-var getinventory = function() {
-}
-
+/**
+ * @function 'inventory' - GET function to return inventory of ingredients 
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.get('/inventory', (request,response)=> {
     var fs = require('fs');
     client.query(`Select * from inventory`, (err,result) => {
@@ -640,7 +751,12 @@ app.get('/inventory', (request,response)=> {
     client.end;
 });
 
-
+/**
+ * @function 'salesDates' - POST function to return sales requests between start date and end date 
+ * @param  {Request} req - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} res - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post("/salesDates", async(req,res) => {
     try{
         var data = req.body;
@@ -656,6 +772,12 @@ app.post("/salesDates", async(req,res) => {
     }
 });
 
+/**
+ * @function 'addonsDates' - POST function to insert into add on requests table between start date and end date 
+ * @param  {Request} req - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} res - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post("/addonsDates", async(req,res) => {
     try{
         var data = req.body;
@@ -673,6 +795,12 @@ app.post("/addonsDates", async(req,res) => {
     }
 });
 
+/**
+ * @function 'excessDates' - POST function to excess_requests table from start date till today 
+ * @param  {Request} req - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} res - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
 app.post("/excessDates", async(req,res) => {
     try{
         var data = req.body;
@@ -689,5 +817,4 @@ app.post("/excessDates", async(req,res) => {
 
     }
 });
-
 

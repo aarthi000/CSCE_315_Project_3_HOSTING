@@ -103,14 +103,13 @@ h3 {
     border-right: 15px solid #fdfdfd;
     border-top: 3px solid #fdfdfd;
     border-bottom: 3px solid #fdfdfd;
-    color: white; 
+    color: black; 
     padding: 10px 120px; 
     cursor: pointer; 
     float: center; 
     font-weight : bold ;
     font-size: 16px;
-    color: white;
-    text-shadow: 2px 2px #5A0625; 
+    /* text-shadow: 2px 2px #5A0625;  */
   }
   
 .customize_button:not(:last-child) {
@@ -195,7 +194,7 @@ background-color: #d49f00;
     font-weight : bold ;
     font-size: 14px;
     color: white;
-    text-shadow: 2px 2px #5A0625; 
+    /* text-shadow: 2px 2px #5A0625;  */
   }
 
 .delivery_heading {
@@ -285,13 +284,13 @@ background-color: #d49f00;
 
 .customize_button1 {
     background-color: #f5bf1a;
-    color: white; 
+    color: black; 
     padding: 10px 80px; 
     cursor: pointer; 
     float: center; 
     font-weight : bold ;
     font-size: 16px;
-    text-shadow: 2px 2px #5A0625; 
+    /* text-shadow: 2px 2px #5A0625;  */
   }
   
 .customize_button1:not(:last-child) {

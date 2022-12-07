@@ -103,14 +103,14 @@ h3 {
     border-right: 15px solid #fdfdfd;
     border-top: 3px solid #fdfdfd;
     border-bottom: 3px solid #fdfdfd;
-    color: white; 
+    color: black; 
     padding: 10px 120px; 
     cursor: pointer; 
     float: center; 
     font-weight : bold ;
     font-size: 16px;
-    color: white;
-    text-shadow: 2px 2px #5A0625; 
+    color: black;
+    /* text-shadow: 2px 2px #5A0625;  */
   }
   
 .customize_button:not(:last-child) {

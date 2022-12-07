@@ -44,7 +44,7 @@
 .btn-group button {
   background-color: #f5bf1a;
   border: 30px solid #5A0625; 
-  color: white; 
+  color: black; 
   padding: 20px 80px; 
   cursor: pointer; 
   float: left; 
@@ -67,9 +67,8 @@
 
 .role-button {
   font-weight : bold ;
-  font-size: 18px;
-  color: white;
-  text-shadow: 2px 2px #5A0625; 
+  font-size: 20px;
+  /* text-shadow: 2px 2px white;  */
 }
 
 

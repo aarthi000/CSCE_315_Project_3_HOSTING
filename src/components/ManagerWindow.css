@@ -48,7 +48,7 @@ body {
     text-shadow: none; */
     background-color: #f5bf1a;
     border: 20px solid #5A0625; 
-    color: white; 
+    color: black; 
     padding: 10px 30px; 
     cursor: pointer; 
 }
@@ -74,7 +74,7 @@ body {
 .report-btn-group button {
     font-weight : bold ;
     font-size: 14px;
-    color: white;
+    color: black;
     /* text-shadow: none;  */
 }
 
@@ -83,7 +83,7 @@ body {
 }
 
 .textcolorwhite {
-    color: white;
+    color: black;
 }
 
 h2 {
