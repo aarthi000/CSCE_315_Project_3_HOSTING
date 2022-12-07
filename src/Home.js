@@ -13,18 +13,18 @@ function Home() {
         navigate("/customer")
     }
     function clickServer () {
-        // navigate("/loginServer")
-        navigate("/server")
+        navigate("/loginServer")
+        // navigate("/server")
     }
     function clickManager () {
-      // navigate("/loginManager");
-      navigate("/manager")
+      navigate("/loginManager");
+      // navigate("/manager")
     }
 
     return (
         <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={logo} className="App-logo" alt="Rev's American Grill Logo" />
           <div className="btn-group">
             <button className="role-button" onClick={clickCustomer}>Customer</button>
             <button className="role-button" onClick={clickServer}>Server</button>

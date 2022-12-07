@@ -1,6 +1,6 @@
 import React from "react";
 import './App.css';
-import { BrowserRouter as Routers, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Routers, Route, Routes, Redirect } from "react-router-dom";
 import Home from "./Home";
 import Customer from "./components_customer/customerWindowGUI"
 import Server from "./components_server/serverWindowGUI";
@@ -13,7 +13,8 @@ import ExcessReport from "./components/ExcessReport"
 import LoginManager from "./login/managerLogin"
 import LoginServer from "./login/serverLogin";
 
-function App() {
+function App({ component: Component, ...rest }) {
+  var session_token=localStorage.getItem('token')
   return (
     <div className="main-app">
       <Routers>
