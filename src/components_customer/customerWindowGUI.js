@@ -19,8 +19,8 @@ function Customer(props) {
    */
   const getMenuitems = async () => {
     try{
-      // const response = await fetch ("https://rev-api-customer.onrender.com/menuitems_list");
-      const response = await fetch ("http://localhost:4999/menuitems_list");
+      const response = await fetch ("https://rev-api-customer.onrender.com/menuitems_list");
+      // const response = await fetch ("http://localhost:4999/menuitems_list");
       const jsonData = await response.json();
       setMenuitems(jsonData);
 
