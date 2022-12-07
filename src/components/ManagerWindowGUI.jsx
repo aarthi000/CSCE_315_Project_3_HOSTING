@@ -16,6 +16,12 @@ function Manager() {
     const requestURLHostRender = "https://rev-api-manager.onrender.com";
     requestURLHost = requestURLHostRender;
 
+    /**
+     * @function 'handleAddons' - Function to handle client code to get add on dates and show in the manager window
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleAddons = async (event, nameStr) => {
         let timeinput = prompt("Enter Start Time and End Time (YYYY-MM-DD YYYY-MM-DD)");
         if (timeinput != null) {
@@ -45,6 +51,10 @@ function Manager() {
         }
     }
 
+    /**
+     * @function 'handleEditMenuItem' - Function to get menu items after making a server side call
+     * @return {void} 
+     */
     const handleEditMenuItem = async () => {
         // const requestURL = "http://localhost:3300/getmenuitemlist";
         const requestURL = requestURLHost + "/getmenuitemlist";
@@ -72,6 +82,11 @@ function Manager() {
         }
     }
 
+    /**
+     * @function 'handleIngrList' - Function to get the ingredient list 
+     * @param  {string} menuname - since this API is called by multiple actions, menuname containas action that called this
+     * @return {void} 
+     */
     const handleIngrList = async (menuname) => {
         // const requestURL = "http://localhost:3300/getingredientlist";
         const requestURL = requestURLHost + "/getingredientlist";
@@ -105,6 +120,12 @@ function Manager() {
         }
     }
 
+    /**
+     * @function 'handleAddNewMenuItem' - Function to handle adding new menu item
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleAddNewMenuItem = async (event, nameStr) => {
         var e = document.getElementById("new-menu-item-name");
         var itemname = e.value;
@@ -156,6 +177,10 @@ function Manager() {
         }
     }
 
+    /**
+     * @function 'handleDeleteIngredient' - Function to handle delet ingredient request
+     * @return {void} 
+     */
     const handleDeleteIngredient = async () => {
 
         // const requestURL = "http://localhost:3300/deleteingredient";
@@ -183,12 +208,20 @@ console.log(sendData);
         });
         const status = await response.text();
         if(status == 'success') {
+            alert('successfully deleted ingredient  - '+ingredient);
             setStatus("Successfully deleted ingredient");
         } else {
+            alert('failed to delete ingredient  - '+ingredient);
             setStatus("Failed to delete ingredient");
         }
     }
 
+    /**
+     * @function 'handleSetEditMenuItem' - Function to change menu item price
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleSetEditMenuItem = async (event, nameStr) => {
         var e = document.getElementById("edit-menu-items");
         var itemname = e.value;
@@ -224,6 +257,12 @@ console.log(sendData);
         }
     }
 
+    /**
+     * @function 'handleNewIngredient' - Function to handle adding new ingredient. Takes amount of ingredients, minimum  amount as inputs
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleNewIngredient = async (event, nameStr) => {
         var e = document.getElementById("new-ingredient-name");
         var ingredient = e.value;
@@ -275,6 +314,12 @@ console.log(sendData);
         });
     }
 
+    /**
+     * @function 'handleRestockItem' - Function to set restock item count for an ingredient
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleRestockItem = async (event, nameStr) => {
         var e = document.getElementById("restock-menu-items");
 
@@ -325,6 +370,12 @@ console.log(sendData);
         });
     }
 
+    /**
+     * @function 'handleEditMinimumValue' - Function to set minimum value for an ingredient
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleEditMinimumValue = async (event, nameStr) => {
         var e = document.getElementById("editmin-menu-items");
 
@@ -375,6 +426,12 @@ console.log(sendData);
         });
     }
 
+    /**
+     * @function 'handleRestock' - Function to return data of ingredients to show in the restock report
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleRestock = async (event, nameStr) => {
         const requestURL = requestURLHost + "/restock"  ;
         // const requestURL = "https://rev-api-manager.onrender.com/restock";
@@ -392,8 +449,14 @@ console.log(sendData);
         navigate("/restock");
     }
 
-    // Client code to process 'Sales' when user clicks on 'sales' button
+    /**
+     * @function 'handleSales' - Function to show the sales report between two dates input by the user
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleSales = async (event, nameStr) => {
+    // Client code to process 'Sales' when user clicks on 'sales' button
         // Read the input from propmpt window
         // It is a text field and user will enter '11/01/2022 11/09/2022'
         
@@ -430,6 +493,12 @@ console.log(sendData);
         }
     }
 
+    /**
+     * @function 'handleExcess' - Function to show excess report of ingredients from the start date to current date
+     * @param  {Event} event - handle to event object
+     * @param  {string} nameStr - unused
+     * @return {void} 
+     */
     const handleExcess = async (event, nameStr) => {
         // Read the input from propmpt window
         // It is a text field and user will enter '11/01/2022 11/09/2022'
