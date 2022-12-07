@@ -595,6 +595,37 @@ app.post('/addnewingredient', (request,response)=> {
 });
 
 /**
+ * @function 'deletemenuitem' - POST function to delete a menu item
+ * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
+ * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
+ * @return {void} 
+ */
+app.post('/deletemenuitem', (request,response)=> {
+    const b = request.body;
+    var q = "DELETE from menu_items where itemname = '" + b.itemname + "';";
+    client.query(q, (err,result) => {
+        if(!err) {
+            q = "DELETE from ingredient_map where itemname = '" + b.itemname + "';";
+            client.query(q, (err,result) => {
+                if(!err) {
+                   console.log('Successfully deleted menu item ' + b.itemname);
+                   response.send('success');
+                }
+                else {
+                   console.log('2. Failed to run query select ingredient from ingredient map');
+                   response.send('failed');
+                }
+           });
+        }
+        else {
+            console.log('2. Failed to run query select ingredient from ingredient map');
+            response.send('failed');
+        }
+    });
+    client.end;
+});
+
+/**
  * @function 'deleteingredient' - POST function to delete an ingredient 
  * @param  {Request} request - Object represents the HTTP request and has properties for the request query string
  * @param  {Response} response - Object that has HTTP response that an Express app sends when it gets an HTTP
@@ -648,7 +679,7 @@ app.post('/deleteingredient', (request,response)=> {
             }
         }
         else {
-            console.log('Failed to run query select ingredient form ingredient map');
+            console.log('Failed to run query select ingredient from ingredient map');
             response.send('failed');
         }
     });

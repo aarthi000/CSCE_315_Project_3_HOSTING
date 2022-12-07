@@ -55,7 +55,7 @@ function Manager() {
      * @function 'handleEditMenuItem' - Function to get menu items after making a server side call
      * @return {void} 
      */
-    const handleEditMenuItem = async () => {
+    const handleEditMenuItem = async (menuitemname) => {
         // const requestURL = "http://localhost:3300/getmenuitemlist";
         const requestURL = requestURLHost + "/getmenuitemlist";
 
@@ -69,7 +69,13 @@ function Manager() {
             mode: 'cors', 
         });
         const jsondata = await response.json();
-        var select = document.getElementById("edit-menu-items"); 
+        var select = document.getElementById(menuitemname);
+        if(select != null && select.options != null) {
+            var optionlength = select.options.length;
+
+            while (optionlength--)
+               select.remove(optionlength);
+        }
 
         for(var i = 1; i < jsondata.length; i++) {
             var opt = jsondata[i];
@@ -174,6 +180,44 @@ function Manager() {
         } else {
             alert('Failed to added new menu item - '+itemname+', price to ' + itemprice);
             // setStatus("Failed to add new menu item");
+        }
+    }
+
+    /**
+     * @function 'handleDeleteMenuItem' - Function to handle delete menu item
+     * @return {void} 
+     */
+    const handleDeleteMenuItem = async () => {
+
+        const requestURL = requestURLHost + "/deletemenuitem";
+
+        const request = new Request(requestURL);
+
+        var e = document.getElementById("delete-menu-items");
+        var itemname = e.value;
+
+        if(confirm("Are you sure you want to delete item '" + itemname + "'?") != true)
+        {
+            setStatus("Operation canceled");
+           return;
+        }
+        const sendData = {itemname};
+        //console.log(sendData);
+        const response = await fetch(request, {
+            method: 'POST', 
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors', 
+            body: JSON.stringify(sendData)
+        });
+        const status = await response.text();
+        if(status == 'success') {
+            alert("successfully deleted item  - "+itemname);
+            //setStatus("Successfully deleted ingredient");
+        } else {
+            alert('failed to delete item  - '+itemname);
+            //setStatus("Failed to delete ingredient");
         }
     }
 
@@ -604,7 +648,7 @@ console.log(sendData);
                     <div className='input-class'>
                         <form>
                             <label>
-                                <select name='edit-menu-items' id='edit-menu-items' onChange={handleEditMenuItem()}>
+                                <select name='edit-menu-items' id='edit-menu-items' onChange={handleEditMenuItem('edit-menu-items')}>
                                 </select>
                                 <br></br>
                                 <input type="text" name='edit-item-price' id='edit-item-price' placeholder="Enter new menu item price" />
@@ -730,6 +774,28 @@ console.log(sendData);
                         </button>
 
                         {/* <button onClick={event => handleNewIngredient(event,'restock-item')} className='submit-btn'>+</button> */}
+                    </div>
+                </div>
+                <h2>Delete Menu Item</h2>
+                <div className='delete-menu-item'>
+                    <div className='input-class'>
+                        <form>
+                            <label>
+                                <select name='delete-menu-items' id='delete-menu-items' onChange={handleEditMenuItem('delete-menu-items')}>
+                                </select>
+                                <br></br>
+                            </label>
+                        </form>
+                    </div>
+                    <div className='submit-class'>
+                        <button className='submit-btn'
+                            onClick={event => {
+                                handleDeleteMenuItem(event,'delete-menu-item');
+                                setOpen(o => !o);
+                            }}
+                        >
+                            +
+                        </button>
                     </div>
                 </div>
                 <h2>Delete Ingredient</h2>
