@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import './ManagerWindow.css';
 import { Table } from './Table';
 
+/**
+ * @function 'SalesReport' - Function to display Sales report
+ * @param  {Header} header - handle to event object
+ * @param  {string} type - column type
+ * @return {HtmlElement} sales report in html
+ */
 function SalesReport({ header, type }) {
     return (
         <div>

@@ -13,6 +13,10 @@ import Col from 'react-bootstrap/Col';
 function Server(props) {
   const[menuitems, setMenuitems] = useState([]);
 
+  /**
+   * @function 'getMenuitems' - Function to get menu items 
+   * @return {void}
+   */
   const getMenuitems = async () => {
     try{
       // const response = await fetch ("http://localhost:4999/menuitems_list");
@@ -41,6 +45,10 @@ function Server(props) {
   //checks for adding menuitem
   const[ingredients_map, setIngredients_Map] = useState([]);
 
+  /**
+   * @function 'getIngredientsMap' - Function to get contents of ingredient map 
+   * @return {void}
+   */
   const getIngredientsMap = async () => {
     try{
       // const response = await fetch ("https://revs-api.onrender.com/ingredients_map");
@@ -56,6 +64,10 @@ function Server(props) {
 
   const[inventory, setInventory] = useState([]);
 
+  /**
+   * @function 'getInventory' - Function to get inventory of ingredients
+   * @return {void}
+   */
   const getInventory = async () => {
     try{
       // const response = await fetch ("https://revs-api.onrender.com/inventory_customer");
@@ -69,6 +81,12 @@ function Server(props) {
     }
   };
 
+  /**
+   * @function 'ingredientInStock' - Function to get ingredients in stock given the ingredient name and required amount 
+   * @param {string} ingred - name of the ingredient
+   * @param {number} numRequired - required amount
+   * @return {boolean} true if ingredient is in stock, false otherwise
+   */
   const ingredientInStock = async (ingred, numRequired) => {
     try{
       await getInventory();  
@@ -92,6 +110,11 @@ function Server(props) {
     }
   };
 
+  /**
+   * @function 'itemInStock' - Function to check if the menu item is in stock
+   * @param {string} menuitem - name of the menu item
+   * @return {boolean} true if menu item is in stock, false otherwise
+   */
   const itemInStock = async (menuitem) => {
     try{
       await getIngredientsMap();
@@ -119,6 +142,11 @@ function Server(props) {
   };
   
   
+  /**
+   * @function 'onAdd' - Function to add order
+   * @param {string} item - name of the menu item
+   * @return {void}
+   */
   const onAdd = async (item) => {
     var inStock = await itemInStock(item.itemname);
     if (!inStock){
@@ -140,6 +168,11 @@ function Server(props) {
 
     };
 
+  /**
+   * @function 'onRemove' - Function to remove an item from  order
+   * @param {string} item - name of the menu item
+   * @return {void}
+   */
     const onRemove = (item) => {
       const exist = orderItems.find(x => x.id === item.id);
       if (exist.qty === 1) {

@@ -5,6 +5,10 @@ import {useState} from 'react';
 
 /* import getMenuitems from '../appdb';*/
 
+/**
+ * @function 'AddonItems' - Function to handle addon itemss
+ * @return {HtmlElement} html element to perform add on  items
+ */
 export default function AddonItems(props) {
     const {item, addonAdd} = props;
     return (

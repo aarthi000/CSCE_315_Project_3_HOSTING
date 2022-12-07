@@ -24,6 +24,10 @@ function Cart(props) {
     
     const itemsPrice = orderItems.reduce((a, c) => a + c.qty * c.itemprice, 0);
 
+  /**
+   * @function 'sendOrder' - place the order from cart
+   * @return {void}
+   */
     const sendOrder = async () => {
         try{
           const body = orderItems;
@@ -45,6 +49,10 @@ function Cart(props) {
   
       const[orderid, setOrderid] = useState([]);
 
+  /**
+   * @function 'getOrderid' - Function to get order id
+   * @return {void}
+   */
   const getOrderid = async () => {
     try{
 
@@ -68,6 +76,10 @@ function Cart(props) {
     }
   }
 
+  /**
+   * @function 'orderPlaced' - Function to display alert that order is placed
+   * @return {void}
+   */
   function orderPlaced() {
     alert("Thank you for your order, we will notify you when it is ready!")
     window.location.reload() 

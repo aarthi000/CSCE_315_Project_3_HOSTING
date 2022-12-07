@@ -5,6 +5,11 @@ import {useState} from 'react';
 
 /* import getMenuitems from '../appdb';*/
 
+/**
+ * @function 'MenuItems' - Function to show menu items 
+ * @param {Array} props - array of properties
+ * @return {HtmlElement} html element to show menu items
+ */
 export default function MenuItems(props) {
     const [buttonPopup, setButtonPopup] = useState(false);
     const {item, onAdd} = props;

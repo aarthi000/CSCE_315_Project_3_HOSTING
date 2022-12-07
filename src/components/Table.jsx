@@ -16,6 +16,10 @@ export const Table = ({ columnType, dataType }) => {
     
     const[inventory, setInventory] = useState([]);
 
+    /**
+     * @function 'getInventory' - Function to get inventory of ingredients
+     * @return {void}
+     */
     const getInventory = async () => {
         try{
         const response = await fetch ("https://rev-api-manager.onrender.com/inventory");
@@ -32,6 +36,10 @@ export const Table = ({ columnType, dataType }) => {
 
     const[restockReport, setRestockReport] = useState([]);
 
+    /**
+     * @function 'getRestockReport' - Function to get Restock Report
+     * @return {void}
+     */
     const getRestockReport = async () => {
         try{
         const response = await fetch ("https://rev-api-manager.onrender.com/inventory");
@@ -47,6 +55,10 @@ export const Table = ({ columnType, dataType }) => {
 
     const[salesReport, setSalesReport] = useState([]);
 
+    /**
+     * @function 'getSalesReport' - Function to get Sales Report
+     * @return {void}
+     */
     const getSalesReport = async () => {
         try{
             // const response = await fetch ("https://rev-api-manager.onrender.com/inventory");
@@ -61,6 +73,10 @@ export const Table = ({ columnType, dataType }) => {
 
     const[addonsReport, setAddonsReport] = useState([]);
 
+    /**
+     * @function 'getAddonsReport' - Function to get Addons  Report
+     * @return {void}
+     */
     const getAddonsReport = async () => {
         try{
             const response = await fetch ("https://rev-api-manager.onrender.com/addonsreport");
@@ -75,6 +91,10 @@ export const Table = ({ columnType, dataType }) => {
     
     const[excessReport, setExcessReport] = useState([]);
 
+    /**
+     * @function 'getExcessReport' - Function to get Excess Report
+     * @return {void}
+     */
     const getExcessReport = async () => {
         try{
             const response = await fetch ("https://rev-api-manager.onrender.com/excess");

@@ -3,6 +3,10 @@ import './serverWindowGUI.css';
 import AddonItems from './addonItem';
 
 
+/**
+ * @function 'Addon' - Function to add addon items
+ * @return {HtmlElement} html element to perform add on
+ */
 function Addon(props) {
     const{items, addonAdd} = props;
     return (

@@ -11,10 +11,19 @@ import addonsData from './tempAddons'
 
 
 
+/**
+ * @function 'Popup' - Function to provide popup for misc functions
+ * @param {Array} props - property array
+ * @return {void}
+ */
 function Popup(props) {
 
   const[ingredientsList, setIngredientsList] = useState([]);
 
+  /**
+   * @function 'getIngredientsList' - Function to get ingredient list
+   * @return {void}
+   */
   const getIngredientsList = async () => {
     try{
       const response = await fetch ("https://rev-api-customer.onrender.com/ingredients_list");
@@ -29,6 +38,10 @@ function Popup(props) {
   };
   const[ingredients_map, setIngredients_Map] = useState([]);
 
+  /**
+   * @function 'getIngredientMap' - Function to get ingredient map
+   * @return {void}
+   */
   const getIngredientsMap = async () => {
     try{
       const response = await fetch ("https://rev-api-customer.onrender.com/ingredients_map");
@@ -44,6 +57,10 @@ function Popup(props) {
 
   const[inventory, setInventory] = useState([]);
 
+  /**
+   * @function 'getInventory' - Function to get inventory 
+   * @return {void}
+   */
   const getInventory = async () => {
     try{
       const response = await fetch ("https://rev-api-customer.onrender.com/inventory_customer");
@@ -58,6 +75,12 @@ function Popup(props) {
   };
 
 
+  /**
+   * @function 'addonInMenuItem' - Function to get menu items 
+   * @param {string} _addon - name of the add on
+   * @param {string} _menuitem - name of the menu item
+   * @return {boolean} true if success
+   */
   
   const addonInMenuItem = async (_addon, _menuitem) => {
     try{
@@ -83,6 +106,12 @@ function Popup(props) {
     }
   };
 
+  /**
+   * @function 'ingredientInStock' - Function to check if ingredient is in stock
+   * @param {string} ingred - name of the ingredient
+   * @param {number} numRequired - number of required ingredinets
+   * @return {boolean} true if success
+   */
   const ingredientInStock = async (ingred, numRequired) => {
     try{
       await getInventory();  
@@ -106,6 +135,11 @@ function Popup(props) {
     }
   };
 
+  /**
+   * @function 'isIngredientEmpty' - Function to check if ingredient is not available
+   * @param {string} ingred - name of the ingredient
+   * @return {boolean} true if success
+   */
   const isIngredientEmpty = async (ingred) => {
     try{
       var inStock = await ingredientInStock(ingred, 1);
@@ -123,6 +157,11 @@ function Popup(props) {
     }
   };
 
+  /**
+   * @function 'itemInStock ' - Function to check if menu item is in stock
+   * @param {string} menuitem - name of the menu item
+   * @return {boolean} true if success
+   */
   const itemInStock = async (menuitem) => {
     try{
       await getIngredientsMap;
@@ -168,6 +207,10 @@ function Popup(props) {
 
   const[allAddOns, setAllAddOns] = useState([]);
 
+  /**
+   * @function 'getAllAddOns' - get list of all add ons
+   * @return {void}
+   */
   const getAllAddOns = async () => {
     try{
       const response = await fetch ("https://rev-api-customer.onrender.com/addons");
@@ -186,6 +229,11 @@ function Popup(props) {
 
    
   // const addonAdd = (item) => 
+  /**
+   * @function 'addonAdd' - Function to add an Add on
+   * @param {string} item - menu item
+   * @return {void}
+   */
   const addonAdd = async (item) => {
     var inStock = await ingredientInStock(item.itemname, 0);
     // console.log(inStock);

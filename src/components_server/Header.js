@@ -3,6 +3,10 @@ import './serverWindowGUI.css'
 import { Row } from 'react-bootstrap';
 
 export default function Header(props) {
+   /**
+    * @function 'removeOrder' - Function to remove order 
+    * @return {void}
+    */
     const removeOrder = async () => {
         try{
           // const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
@@ -17,6 +21,10 @@ export default function Header(props) {
           console.error(err.message);
         }
       }
+   /**
+    * @function 'isGameDay' - Function to check if it is gameday
+    * @return {void}
+    */
     const isGameDay = async () => {
         try{
           // const response = await fetch ("https://rev-api-customer.onrender.com/isGameDay");
@@ -28,6 +36,10 @@ export default function Header(props) {
           console.error(err.message);
         }
     }
+   /**
+    * @function 'isNotGameDay' - Function to check if it is not gameday
+    * @return {void}
+    */
     const isNotGameDay = async () => {
       try{
         // const response = await fetch ("https://rev-api-customer.onrender.com/isNotGameDay");

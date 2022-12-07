@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import './ManagerWindow.css';
 import { Table } from './Table';
 
+/**
+ * @function 'ExcessReport' - Function to display excess report
+ * @param  {Header} header - handle to event object
+ * @param  {string} type - column type
+ * @return {HtmlElement} excess report in html
+ */
 function ExcessReport({ header, type }) {
     return (
         <div>

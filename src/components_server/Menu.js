@@ -3,6 +3,11 @@ import './serverWindowGUI.css'
 import MenuItems from './MenuItem';
 
 
+/**
+ * @function 'Menu' - Function to get menu items 
+ * @param {Array} props - array of properties
+ * @return {HtmlElement} html to show menu add
+ */
 function Menu(props) {
     const{items, onAdd} = props;
     return (
