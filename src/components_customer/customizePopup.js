@@ -225,7 +225,25 @@ function Popup(props) {
   }
 
 
-  
+  const sendAddOn = async (addonItem) => {
+    try{
+      const body = addonItem;
+      const response = await fetch ("https://rev-api-customer.onrender.com/addOnUpdate",{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      });
+      // const response = await fetch ("http://localhost:4999/addOnUpdate",{
+      //   method: "POST",
+      //   headers: {"Content-Type": "application/json"},
+      //   body: JSON.stringify(body),
+      // });
+
+    }catch (err){
+      console.error("Error in sendOrder in Cart.js -- see below msg:");
+      console.error(err.message);
+    }  
+  }
 
    
   // const addonAdd = (item) => 
@@ -241,6 +259,10 @@ function Popup(props) {
       alert(item.itemname + " is out of stock. Please order something else.");
       return;
     }
+    sendAddOn(item);
+    alert(item.itemname + " has been added on to your order!");
+
+
     const exist = addonOrderItems.find(x => x.id === item.id);
     if (exist) {
       const newItems = addonOrderItems.map((x) => 
@@ -253,8 +275,6 @@ function Popup(props) {
       setAddonOrderItems(newItems);
       localStorage.setItem('addonOrderItems', JSON.stringify(newItems));
     } 
-    // console.log("ADDONS-ADD");
-    // console.log(addonOrderItems);
 
     };
 

@@ -24,8 +24,8 @@ function Popup(props) {
    */
   const getIngredientsList = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/ingredients_list");
-      const response = await fetch ("http://localhost:4999/ingredients_list");
+      const response = await fetch ("https://revs-api.onrender.com/ingredients_list");
+      // const response = await fetch ("http://localhost:4999/ingredients_list");
       const jsonData = await response.json();
       setIngredientsList(jsonData);
 
@@ -41,8 +41,8 @@ function Popup(props) {
    */
   const getIngredientsMap = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/ingredients_map");
-      const response = await fetch ("http://localhost:4999/ingredients_map");
+      const response = await fetch ("https://revs-api.onrender.com/ingredients_map");
+      // const response = await fetch ("http://localhost:4999/ingredients_map");
       const jsonData = await response.json();
      
 	 setIngredients_Map(jsonData);
@@ -59,8 +59,8 @@ function Popup(props) {
    */
  const getInventory = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/inventory_customer");
-      const response = await fetch ("http://localhost:4999/inventory_customer");
+      const response = await fetch ("https://revs-api.onrender.com/inventory_customer");
+      // const response = await fetch ("http://localhost:4999/inventory_customer");
       const jsonData = await response.json();
       setInventory(jsonData);
 
@@ -198,8 +198,8 @@ const[allAddOns, setAllAddOns] = useState([]);
    */
  const getAllAddOns = async () => {
     try{
-      // const response = await fetch ("https://revs-api.onrender.com/addons");
-      const response = await fetch ("http://localhost:4999/addons");
+      const response = await fetch ("https://revs-api.onrender.com/addons");
+      // const response = await fetch ("http://localhost:4999/addons");
       const jsonData = await response.json();
       setAllAddOns(jsonData);
 
@@ -208,6 +208,27 @@ const[allAddOns, setAllAddOns] = useState([]);
       console.error(err.message);
     }
   }
+
+  const sendAddOn = async (addonItem) => {
+    try{
+      const body = addonItem;
+      const response = await fetch ("https://rev-api-customer.onrender.com/addOnUpdate",{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      });
+      // const response = await fetch ("http://localhost:4999/addOnUpdate",{
+      //   method: "POST",
+      //   headers: {"Content-Type": "application/json"},
+      //   body: JSON.stringify(body),
+      // });
+
+    }catch (err){
+      console.error("Error in sendOrder in Cart.js -- see below msg:");
+      console.error(err.message);
+    }  
+  }
+
  // const addonAdd = (item) => 
   /**
    * @function 'addonAdd' - Function to add an Add on
@@ -221,6 +242,8 @@ const[allAddOns, setAllAddOns] = useState([]);
       alert(item.itemname + " is out of stock. Please order something else.");
       return;
     }
+    sendAddOn(item);
+    alert(item.itemname + " has been added on to your order!");
     const exist = addonOrderItems.find(x => x.id === item.id);
     if (exist) {
       const newItems = addonOrderItems.map((x) => 
