@@ -31,7 +31,9 @@ function Cart(props) {
 const getOrderid = async () => {
     try{
 
-      const response = await fetch ("http://localhost:4999/lastOrder");
+      // const response = await fetch ("http://localhost:4999/lastOrder");
+      const response = await fetch ("https://rev-api-customer.onrender.com/lastOrder");
+
 
       const jsonData = await response.json();
       setOrderid(jsonData.max_orderids + 1);

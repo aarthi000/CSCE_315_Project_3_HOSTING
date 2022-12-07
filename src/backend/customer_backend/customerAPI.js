@@ -438,5 +438,61 @@ app.get("/isNotGameDay", async(req,res) => {
 });
 
 //addon
+app.post("/addOnUpdate", async(req,res) => {
+    try{
+        console.log("Started addOnUpdate");
+
+        var data = req.body;
+        var ingredient = data.itemname;
+
+        //getting todays date
+
+        function padTo2Digits(num) {
+            return num.toString().padStart(2, '0');
+        }
+        function formatDate(date) {
+            return [
+                date.getFullYear(),
+                padTo2Digits(date.getMonth() + 1),
+                padTo2Digits(date.getDate()),
+            ].join('-');
+        }
+        var date = formatDate(new Date());
+    
+        //check if in addons_history_copy
+        var q = "select * from addons_history_copy where date= '" + date + "'";
+        var tbl = await pool.query(q);
+        // console.log(tbl.rows);
+        if (tbl.rows.length == 0){
+           return;
+        }
+
+        //update addons_history_copy
+        var updateUsed = "update addons_history_copy set " + ingredient + "=" + ingredient + "+" + 1 + " where date='"
+        + date
+        + "'";
+
+        var query = await pool.query(updateUsed);
+        var change = await pool.query("select * from addons_history_copy where date = '2022-12-06'");
+
+         //update inventory
+        var amountused = "update inventory set amountused=amountused+" + 1
+                                + " where ingredient='" + ingredient + "'";
+        var ingredientremaining = "update inventory set ingredientremaining=ingredientremaining-" + 1
+                                + " where ingredient='" + ingredient + "'";
+                    
+
+        var query1 = await pool.query(amountused);
+        var query2 = await pool.query(ingredientremaining);
+
+        res.send("Hello");
+        console.log("finished addOnUpdate");
+
+
+    }catch (err){
+        console.error("Error in customerAPI: /addOnUpdate")
+        console.error(err.message)
+    }
+});
 
 

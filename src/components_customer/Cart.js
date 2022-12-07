@@ -28,7 +28,12 @@ function Cart(props) {
         try{
           const body = orderItems;
           // const response = await fetch ("http://localhost:4999/placeOrder",
-          const response = await fetch ("https://rev-api-customer.onrender.com/placeOrder",{
+          // const response = await fetch ("https://rev-api-customer.onrender.com/placeOrder",{
+          //   method: "POST",
+          //   headers: {"Content-Type": "application/json"},
+          //   body: JSON.stringify(body),
+          // });
+          const response = await fetch ("http://localhost:4999/placeOrder",{
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body),
@@ -48,8 +53,8 @@ function Cart(props) {
   const getOrderid = async () => {
     try{
 
-      // const response = await fetch ("http://localhost:4999/lastOrder");
-      const response = await fetch ("https://rev-api-customer.onrender.com/lastOrder");
+      const response = await fetch ("http://localhost:4999/lastOrder");
+      // const response = await fetch ("https://rev-api-customer.onrender.com/lastOrder");
 
 
       const jsonData = await response.json();

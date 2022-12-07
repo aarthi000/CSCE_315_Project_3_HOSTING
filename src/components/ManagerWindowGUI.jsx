@@ -12,8 +12,8 @@ function Manager() {
     const closeModal = () => setOpen(false);
 
     const navigate = useNavigate();
-    const requestURLHost = "http://localhost:3300";
-    const requestURLHostRender = "https://rev-api-manager.onrender.com";
+    var requestURLHost = "http://localhost:3300";
+    var requestURLHostRender = "https://rev-api-manager.onrender.com";
     requestURLHost = requestURLHostRender;
 
     const handleAddons = async (event, nameStr) => {
@@ -303,10 +303,10 @@ console.log(sendData);
         // const jsondata = await response.json();
         const status = await response.text();
         if(status == '["success"]') {
-            alert('successfully added new ingredient - '+ ingredient);
+            alert('Successfully restocked ingredient - '+ ingredient);
             // setStatus("Successfully restocked menu item");
         } else {
-            alert('failed to add new ingredient - '+ ingredient);
+            alert('failed to restock ingredient - '+ ingredient);
             // setStatus("Failed to restock menu item");
         }
 

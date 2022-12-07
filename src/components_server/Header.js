@@ -5,8 +5,8 @@ import { Row } from 'react-bootstrap';
 export default function Header(props) {
     const removeOrder = async () => {
         try{
-          // const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
-          const response = await fetch ("http://localhost:4999/removeLastOrder");
+          const response = await fetch ("https://rev-api-customer.onrender.com/removeLastOrder");
+          // const response = await fetch ("http://localhost:4999/removeLastOrder");
           await alert("Order remove successful!");
           
     
@@ -19,8 +19,8 @@ export default function Header(props) {
       }
     const isGameDay = async () => {
         try{
-          // const response = await fetch ("https://rev-api-customer.onrender.com/isGameDay");
-          const response = await fetch ("http://localhost:4999/isGameDay");
+          const response = await fetch ("https://rev-api-customer.onrender.com/isGameDay");
+          // const response = await fetch ("http://localhost:4999/isGameDay");
           alert("Today is game day!");
     
         }catch (err){
@@ -30,8 +30,8 @@ export default function Header(props) {
     }
     const isNotGameDay = async () => {
       try{
-        // const response = await fetch ("https://rev-api-customer.onrender.com/isNotGameDay");
-        const response = await fetch ("http://localhost:4999/isNotGameDay");
+        const response = await fetch ("https://rev-api-customer.onrender.com/isNotGameDay");
+        // const response = await fetch ("http://localhost:4999/isNotGameDay");
         alert("Today is not game day.");
 
   
