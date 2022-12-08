@@ -149,11 +149,11 @@ function Customer(props) {
    * @return {void}
    */
   const onAdd = async (item) => {
-    var inStock = await itemInStock(item.itemname);
-    if (!inStock){
-      alert(item.itemname + " is out of stock. Please order something else.");
-      return;
-    }
+    // var inStock = await itemInStock(item.itemname);
+    // if (!inStock){
+    //   alert(item.itemname + " is out of stock. Please order something else.");
+    //   return;
+    // }
     const exist = orderItems.find(x => x.id === item.id);
     if (exist) {
       const newItems = orderItems.map((x) => 

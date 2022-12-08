@@ -253,12 +253,12 @@ function Popup(props) {
    * @return {void}
    */
   const addonAdd = async (item) => {
-    var inStock = await ingredientInStock(item.itemname, 0);
-    // console.log(inStock);
-    if (!inStock){
-      alert(item.itemname + " is out of stock. Please order something else.");
-      return;
-    }
+    // var inStock = await ingredientInStock(item.itemname, 0);
+    // // console.log(inStock);
+    // if (!inStock){
+    //   alert(item.itemname + " is out of stock. Please order something else.");
+    //   return;
+    // }
     sendAddOn(item);
     alert(item.itemname + " has been added on to your order!");
 
